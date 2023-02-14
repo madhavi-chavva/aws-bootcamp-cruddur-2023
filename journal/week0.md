@@ -91,6 +91,9 @@ https://lucid.app/lucidchart/cc550498-caaa-476a-911d-603834a56530/edit?beaconFlo
 **MFA for the IAM user**
 ![mfa iam user](https://user-images.githubusercontent.com/125069098/218841164-414559e2-71a8-482f-b4d3-07718e2fff89.png)
 
+**AWS CLI install in gitpod**
+![aws cli](https://user-images.githubusercontent.com/125069098/218868841-d55d12ef-af87-4752-81b5-3baea711c602.png)
+
 
  
 
