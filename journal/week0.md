@@ -50,10 +50,10 @@ Momento as a third party caching system
 
 https://lucid.app/lucidchart/502abf0f-1ba8-421b-aa25-14f8ed82e082/edit?viewport_loc=-655%2C199%2C2368%2C1172%2C0_0&invitationId=inv_c1f3c813-094d-4dc1-b1f5-959b3ceb7b6c
 
-I have uploaded the images in the wiki tab for napkin design.
+**Napkin design**
 ![IMG_2926](https://user-images.githubusercontent.com/125069098/218804640-721831a0-bb3a-4a8d-a3c9-db57ff805c6c.JPG)
 
-https://lucid.app/lucidchart/9e66072d-0fe3-4b06-8e02-bd3c456c2a2f/edit?beaconFlowId=2117C9FD1BC60FD6&invitationId=inv_4063e6b8-09bf-4136-856e-59b9967ee2ac&page=0_0#
+
 
 **Architecture Diagram for CI/CD pipeline**
 https://lucid.app/lucidchart/cc550498-caaa-476a-911d-603834a56530/edit?beaconFlowId=09150CAE4C35EED1&invitationId=inv_28046c1a-0399-4971-9bd8-67839edf8516&page=0_0#![image](https://user-images.githubusercontent.com/125069098/218788849-405ea333-2840-4f65-839d-ece44b9b32e8.png)
