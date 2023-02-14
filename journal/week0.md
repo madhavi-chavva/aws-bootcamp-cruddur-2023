@@ -48,6 +48,9 @@ Authetnication using Cognito
 Use as much as possible the aws free tier
 Momento as a third party caching system
 
+**Cruddur logical diagram**
+![architectial diagram](https://user-images.githubusercontent.com/125069098/218807933-4e7e27c5-96e8-4a19-b3d3-2f73ffd36379.png)
+
 https://lucid.app/lucidchart/502abf0f-1ba8-421b-aa25-14f8ed82e082/edit?viewport_loc=-655%2C199%2C2368%2C1172%2C0_0&invitationId=inv_c1f3c813-094d-4dc1-b1f5-959b3ceb7b6c
 
 **Napkin design**
