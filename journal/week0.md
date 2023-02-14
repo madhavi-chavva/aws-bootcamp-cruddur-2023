@@ -2,13 +2,13 @@
 
 You will need to register to the following services:
 
-Create a Github Account. You will copy Andrew's repository with the right formatting of the repo and must be public.
-Create a Gitpod account and install the extention for your browser.
-Create Github CodeSpace.
-Create the AWS account (This is the important one as you will spin all the service here). Make sure you have a credit/debit card ready.
-Create Lucidchart. This app allows you to create chart/diagram. Having a visual structure are really useful to see the overview of what are you creating.
-Create Honeycomb.io account.
-Create Rollbar account.
+- Create a Github Account. You will copy Andrew's repository with the right formatting of the repo and must be public.
+- Create a Gitpod account and install the extention for your browser.
+- Create Github CodeSpace.
+- Create the AWS account (This is the important one as you will spin all the service here). Make sure you have a credit/debit card ready.
+- Create Lucidchart. This app allows you to create chart/diagram. Having a visual structure are really useful to see the overview of what are you creating.
+- Create Honeycomb.io account.
+- Create Rollbar account.
 
 
 # Week 0 — Billing and Architecture
