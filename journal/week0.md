@@ -76,7 +76,7 @@ https://lucid.app/lucidchart/502abf0f-1ba8-421b-aa25-14f8ed82e082/edit?viewport_
 https://lucid.app/lucidchart/cc550498-caaa-476a-911d-603834a56530/edit?beaconFlowId=09150CAE4C35EED1&invitationId=inv_28046c1a-0399-4971-9bd8-67839edf8516&page=0_0#![image](https://user-images.githubusercontent.com/125069098/218788849-405ea333-2840-4f65-839d-ece44b9b32e8.png)
 ![test image 2](https://user-images.githubusercontent.com/125069098/218806448-15c099ae-f35c-4331-9364-5fb6bd47e478.png)
 
-**Learned Basic pricing in free tier**
+**IAM User and Role Access to Billing Information**
 '''
    Gained knowledge on how to grant permissions to the admin user to perfrom billing activies from the root account.
    Steps to perform:
