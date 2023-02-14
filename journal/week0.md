@@ -50,8 +50,8 @@ Momento as a third party caching system
 
 https://lucid.app/lucidchart/502abf0f-1ba8-421b-aa25-14f8ed82e082/edit?viewport_loc=-655%2C199%2C2368%2C1172%2C0_0&invitationId=inv_c1f3c813-094d-4dc1-b1f5-959b3ceb7b6c
 
-I have uploaded the images in the wiki tab for napkin design. https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023.wiki.git
-https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/blob/main/_docs/assets/napkin%20design
+I have uploaded the images in the wiki tab for napkin design.
+![IMG_2926](https://user-images.githubusercontent.com/125069098/218804640-721831a0-bb3a-4a8d-a3c9-db57ff805c6c.JPG)
 
 https://lucid.app/lucidchart/9e66072d-0fe3-4b06-8e02-bd3c456c2a2f/edit?beaconFlowId=2117C9FD1BC60FD6&invitationId=inv_4063e6b8-09bf-4136-856e-59b9967ee2ac&page=0_0#
 
