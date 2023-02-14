@@ -50,5 +50,8 @@ Momento as a third party caching system
 
 https://lucid.app/lucidchart/502abf0f-1ba8-421b-aa25-14f8ed82e082/edit?viewport_loc=-655%2C199%2C2368%2C1172%2C0_0&invitationId=inv_c1f3c813-094d-4dc1-b1f5-959b3ceb7b6c
 
-I have uploaded the images in the wiki tab for napkin design.https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023.wiki.git
-![alt text](https://lucid.app/lucidchart/502abf0f-1ba8-421b-aa25-14f8ed82e082/edit?beaconFlowId=FCB11375991CCCAA&invitationId=inv_c1f3c813-094d-4dc1-b1f5-959b3ceb7b6c&page=0_0#)
+I have uploaded the images in the wiki tab for napkin design. https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023.wiki.git
+
+**Architecture Diagram for CI/CD pipeline**
+https://lucid.app/lucidchart/cc550498-caaa-476a-911d-603834a56530/edit?beaconFlowId=09150CAE4C35EED1&invitationId=inv_28046c1a-0399-4971-9bd8-67839edf8516&page=0_0#![image](https://user-images.githubusercontent.com/125069098/218788849-405ea333-2840-4f65-839d-ece44b9b32e8.png)
+
