@@ -17,6 +17,9 @@ In this section, we will be discussing the billing dashboard and all its compone
 **Billing Alerts**
 There are 2 ways to set the billing alerts.
 
+![image](https://user-images.githubusercontent.com/125069098/218822748-70c7bde9-e036-42e9-9e9d-e8e5c3fcf566.png)
+
+
 **Using Budget**.
 Using Cloudwatch Alarm. In this case, you need to create an alarm on us-east-1 region (since it is the only region you can create an alarm). You can create up to 10 free cloudwatch alarm
 Those 2 alarms will be helpful to identify if you are underspending/overspending.
@@ -25,6 +28,13 @@ Those 2 alarms will be helpful to identify if you are underspending/overspending
 
 **Free Tier**
 This section will show all the usage of your free tier. It will show all the services free for the 12 months (starting with the registration) and its usage and forcast. After the 12 months, they are still some services are always free. And also there are some service are "Trial" which means that is available for a short period such as 30 days.
+
+ **Billing preferences**
+ ![billing preferences](https://user-images.githubusercontent.com/125069098/218819172-20b0e28a-7595-404b-a436-b189a59a7290.png)
+ 
+ **Redeem Credits**
+![image](https://user-images.githubusercontent.com/125069098/218821254-f318e889-9669-48a4-94ee-114faa157059.png)
+
 
 **Tags**
 Tags (are Key/Value pair) are useful when you want to know how your cost is allocated. For example if your want to identify all the services you used under the tag enviromenrt: dev (for example)
@@ -76,9 +86,8 @@ https://lucid.app/lucidchart/cc550498-caaa-476a-911d-603834a56530/edit?beaconFlo
    - Now go to IAM -> policies -> search for billing and enable the billing permission and click on the **attach policy** and select the user to whom you want to grant the permission.
    - Now Login as IAM user and check the billing service. Now the IAM user has the permission to perform actions related to billing like creating budgets, redeem credits, cost allowcation tags, check the free tier service limits
  
- **Billing preferences**
- ![billing preferences](https://user-images.githubusercontent.com/125069098/218819172-20b0e28a-7595-404b-a436-b189a59a7290.png)
+
  
-**Redeem Credits**
-![image](https://user-images.githubusercontent.com/125069098/218821254-f318e889-9669-48a4-94ee-114faa157059.png)
+
+
 
