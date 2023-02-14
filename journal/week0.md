@@ -89,7 +89,9 @@ https://lucid.app/lucidchart/cc550498-caaa-476a-911d-603834a56530/edit?beaconFlo
    - Now Login as IAM user and check the billing service. Now the IAM user has the permission to perform actions related to billing like creating budgets, redeem credits, cost allowcation tags, check the free tier service limits
 
 **MFA for the IAM user**
-![mfa iam user](https://user-images.githubusercontent.com/125069098/218837858-4831b676-5012-4dea-9874-73add968fe48.png)
+![mfa iam user](https://user-images.githubusercontent.com/125069098/218841164-414559e2-71a8-482f-b4d3-07718e2fff89.png)
+
+
  
 
  
