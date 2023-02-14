@@ -26,6 +26,8 @@ Those 2 alarms will be helpful to identify if you are underspending/overspending
 
 ![image](https://user-images.githubusercontent.com/125069098/218820054-7a9d85d8-1424-4032-a62f-29a60d86c5cb.png)
 
+![image](https://user-images.githubusercontent.com/125069098/218833465-a5b249bc-ee6c-4724-95f2-8e3110296a3d.png)
+
 **Free Tier**
 This section will show all the usage of your free tier. It will show all the services free for the 12 months (starting with the registration) and its usage and forcast. After the 12 months, they are still some services are always free. And also there are some service are "Trial" which means that is available for a short period such as 30 days.
 
