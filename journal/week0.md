@@ -79,4 +79,6 @@ https://lucid.app/lucidchart/cc550498-caaa-476a-911d-603834a56530/edit?beaconFlo
  **Billing preferences**
  ![billing preferences](https://user-images.githubusercontent.com/125069098/218819172-20b0e28a-7595-404b-a436-b189a59a7290.png)
  
+**Redeem Credits**
+![image](https://user-images.githubusercontent.com/125069098/218821254-f318e889-9669-48a4-94ee-114faa157059.png)
 
