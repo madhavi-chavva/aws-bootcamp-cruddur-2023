@@ -97,8 +97,17 @@ https://lucid.app/lucidchart/cc550498-caaa-476a-911d-603834a56530/edit?beaconFlo
 **AWS CLI with --cli-auto-prompt**
 ![gitpod aws cli](https://user-images.githubusercontent.com/125069098/218918357-1968dac6-7d5b-4450-9115-d3b9a2af43ed.png)
 
+**To obtain Account-ID using gitpod aws cli**
+![image](https://user-images.githubusercontent.com/125069098/219112362-0d9a3677-dfdd-4a71-96ec-f6dc71e4b4e3.png)
 
+**Screenshot for the budget creation using aws-cli github**
+![budget aws cli](https://user-images.githubusercontent.com/125069098/219121308-5203209c-e779-40c8-ad39-13aa882b267b.png)
  
+ **create SNS Topic and Subscription using aws-cli**
+ ![sns](https://user-images.githubusercontent.com/125069098/219130065-66bf8f89-d07d-473a-be23-5a9f4ecf3484.png)
+ 
+ **screenshot from AWS
+ ![image](https://user-images.githubusercontent.com/125069098/219130439-af0a373e-78ed-4d1a-b78b-de71f3eed01b.png)
 
  
 
