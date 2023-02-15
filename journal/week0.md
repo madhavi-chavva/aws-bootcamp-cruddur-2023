@@ -115,40 +115,44 @@ https://lucid.app/lucidchart/cc550498-caaa-476a-911d-603834a56530/edit?beaconFlo
  **screenshot for alarm**
  ![image](https://user-images.githubusercontent.com/125069098/219135374-5976d1c0-aaeb-4643-83a6-be9ce80adc22.png)
  
- **SECURITY**
+ #### SECURITY
  The important thing when it comes to security. Always inform the business of the technical risk that can exist of open vulnerabilities that have not been resolved and can potentially affect the business and how will be solved.
 
-Definition of the cloud security
+#### Definition of the cloud security
 Cybersecurity protects data, applications and services associated with cloud environments from both external and internal security threats.
 
-Why care about cloud security
-Reducing the impact of the breach
-Protecting all the system (application, network etc) against malicious data theft
-Reducing the human error responsible for data leaks
-Cloud Security requires practice
-Understand the complexity of the system
-Always keep updated with the new services announced
-Bad hackers are improving as well.
-MFA for root account
-Root user is the most powerful user in aws environment. I consider it the key to your kingdom. Once it is compromised, hackers can spin any services on your AWS account (for example creating a bitcoin mining) Enable the MFA for the root account gives you an extra layer of security. Could be virtual or physical.
+### Why care about cloud security
+- Reducing the impact of the breach
+- Protecting all the system (application, network etc) against malicious data theft
+- Reducing the human error responsible for data leaks
+#### Cloud Security requires practice
+- Understand the complexity of the system
+- Always keep updated with the new services announced
+- Bad hackers are improving as well.
 
-AWS Organization
+#### MFA for root account
+-Root user is the most powerful user in aws environment. I consider it the key to your kingdom. Once it is compromised, hackers can spin any services on your AWS account (for example creating a bitcoin mining) Enable the MFA for the root account gives you an extra layer of security. Could be virtual or physical.
+
+#### AWS Organization
 Create an organization unit (AWS Organization) AWS Organization allows you to create and manage multiple account. Also it allows to apply governance policies to accounts or group. There are 2 approce to create the organization:
 
-Creating business unit (HR Ou, Finance Ou, Engineering Ou)
-Creating a Standby and Active Pool.
+- Creating business unit (HR Ou, Finance Ou, Engineering Ou)
+- Creating a Standby and Active Pool.
+
 SCP (Service Control Policy) are a type of organisational policy that you can use to manage permission in your organisation.
 
-AWS Cloud Trail
+#### AWS Cloud Trail
 Auditing Service in AWS. Most all the api will be recorded in this service. Cloudtrail will record only the activity in the region you will operate. This service is not free
 
-IAM
+#### IAM
 Ability to access using user and password 3 kinds of users:
 
-IAM user with user and password (make sure MFA is active as well as you activated on root account)
-Federated user are users federated from an on-premise environment without a password
-Web Token User
+- IAM user with user and password (make sure MFA is active as well as you activated on root account)
+- Federated user are users federated from an on-premise environment without a password
+- Web Token User
+
 Always Give the least privilege to the users. Don't give more than what it is necessary.
+
 When you are working on AWS, it is a best practice to use the IAM user instead of the Root account. If for some reason the IAM user is compromised, it is simple to solve the problem by removing the policy attached to it/deleting the user himself.
 
 Policies are assigned to either an IAM user or IAM role or IAM group and consist of what the entity can/can not do. For example, a policy could be the possibility to read the content of the s3 bucket.
@@ -157,12 +161,21 @@ Access Key and Secret Access key are similar to the user and password (keep it a
 
 Make sure to create the IAM role as simply as possible.
 
-Share Responsibility
+#### Share Responsibility
 This diagram shows what is the responsibility of the customer and what is the responsibility of AWS. For example, AWS is responsible for the global infrastructure. they care about everything work accordingly and are secure. Meanwhile, the customer is responsible for the application, eventually configuration (NACL/SG), and encryption at rest and in transit.
 ![shared responsibility](https://user-images.githubusercontent.com/125069098/219216125-e1ccce0e-63cc-4647-a0f8-43da3c5c398a.png)
  
+### AWS CLI
 
+There are 2 types to access aws via CLI.
+One is installing the aws CLi from you terminal and after providing the secret key and secret access key and the region where you will call the api.
+
+Another way is to use cloudshell from your the aws console.
+Note that not all the region are available for this functionality. Please check the icon close to the name of you IAM User.
  
+A  trick that I learnt from Bootcamp is to activate the auto prompt. This helped me a lot to complete the command that i wanted to launch and give you an overview of the command all on the terminal.
 
+aws --cli-auto-prompt
+if you want to put the pipe sign just type the following command "alt+124"
 
 
