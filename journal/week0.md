@@ -94,6 +94,9 @@ https://lucid.app/lucidchart/cc550498-caaa-476a-911d-603834a56530/edit?beaconFlo
 **AWS CLI install in gitpod**
 ![aws cli](https://user-images.githubusercontent.com/125069098/218868841-d55d12ef-af87-4752-81b5-3baea711c602.png)
 
+**AWS CLI with --cli-auto-prompt**
+![gitpod aws cli](https://user-images.githubusercontent.com/125069098/218918357-1968dac6-7d5b-4450-9115-d3b9a2af43ed.png)
+
 
  
 
