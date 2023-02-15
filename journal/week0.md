@@ -178,4 +178,6 @@ A  trick that I learnt from Bootcamp is to activate the auto prompt. This helped
 aws --cli-auto-prompt
 if you want to put the pipe sign just type the following command "alt+124"
 
+#### IAM ROLE creation
+![iam role](https://user-images.githubusercontent.com/125069098/219220907-26f296c7-6288-489c-bcfb-2675bb5df964.png)
 
