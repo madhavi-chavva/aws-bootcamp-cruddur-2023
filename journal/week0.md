@@ -63,7 +63,7 @@ Use as much as possible the aws free tier
 Momento as a third party caching system
 
 **Cruddur logical diagram**
-![architectial diagram](https://user-images.githubusercontent.com/125069098/218807933-4e7e27c5-96e8-4a19-b3d3-2f73ffd36379.png)
+![architectial diagram](https://user-images.githubusercontent.com/125069098/219069732-712f0c43-269a-44a3-952a-6a7ba6117fef.png)
 
 or
 
