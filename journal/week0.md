@@ -108,6 +108,13 @@ https://lucid.app/lucidchart/cc550498-caaa-476a-911d-603834a56530/edit?beaconFlo
  
  **screenshot from AWS
  ![image](https://user-images.githubusercontent.com/125069098/219130439-af0a373e-78ed-4d1a-b78b-de71f3eed01b.png)
+ 
+ **subscription**
+ ![image](https://user-images.githubusercontent.com/125069098/219130846-2be61615-9235-402a-af93-224e8a3241a8.png)
+ 
+ **screenshot for alarm**
+ ![image](https://user-images.githubusercontent.com/125069098/219135374-5976d1c0-aaeb-4643-83a6-be9ce80adc22.png)
+ 
 
  
 
