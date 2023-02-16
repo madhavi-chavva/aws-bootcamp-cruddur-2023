@@ -73,13 +73,15 @@ https://lucid.app/lucidchart/502abf0f-1ba8-421b-aa25-14f8ed82e082/edit?viewport_
 ![IMG_2926](https://user-images.githubusercontent.com/125069098/218804640-721831a0-bb3a-4a8d-a3c9-db57ff805c6c.JPG)
 
 
-
+# Homework Challenge
 **Architecture Diagram for CI/CD pipeline**
 https://lucid.app/lucidchart/cc550498-caaa-476a-911d-603834a56530/edit?beaconFlowId=09150CAE4C35EED1&invitationId=inv_28046c1a-0399-4971-9bd8-67839edf8516&page=0_0#![image](https://user-images.githubusercontent.com/125069098/218788849-405ea333-2840-4f65-839d-ece44b9b32e8.png)
 ![test image 2](https://user-images.githubusercontent.com/125069098/218806448-15c099ae-f35c-4331-9364-5fb6bd47e478.png)
 
+Code pipeline is a automation tool  for CI/CD(Continuous integration and continuous deploy of an application)to automate codecommits which we push into the source(codecommit we use manifest file using yaml or script ) and build the code which we pushed into the source code using the codebuild(we can validate,compile,build the application into package like war,jar files and store them in the artificates like s3 buckets.). The codedeploy is used to deploy the build image into ECR, ECS.  
+
 **IAM User and Role Access to Billing Information**
-'''
+
    Gained knowledge on how to grant permissions to the admin user to perfrom billing activies from the root account.
    Steps to perform:
    - Login to the root account -> click on the right corner where your name is shown and select **account** 
@@ -177,10 +179,46 @@ A  trick that I learnt from Bootcamp is to activate the auto prompt. This helped
 
 aws --cli-auto-prompt
 if you want to put the pipe sign just type the following command "alt+124"
+## Homework challenge
+**MFA for the IAM user**
+![mfa iam user](https://user-images.githubusercontent.com/125069098/218841164-414559e2-71a8-482f-b4d3-07718e2fff89.png)
 
-#### IAM ROLE creation
+**IAM ROLE creation**
 ![iam role](https://user-images.githubusercontent.com/125069098/219220907-26f296c7-6288-489c-bcfb-2675bb5df964.png)
 
 ** Policies**
 Policies are another way to attach policy to a user, group and Role
 ![image](https://user-images.githubusercontent.com/125069098/219222438-964b46bc-d006-4520-97bd-62c39e2cc515.png)
+
+**destroy root user credentials**
+ **Note:** 
+![deactivate root user credentials](https://user-images.githubusercontent.com/125069098/219430532-e58b9af7-6c31-4eaf-b0aa-28cc36de1681.png)
+![delete root user credentials](https://user-images.githubusercontent.com/125069098/219431227-1d3b75ba-3b61-4473-8013-0e8a644aeb45.png)
+
+## Eventbridge to hookup health dashboard to SNS and send notifications when there is a service health issue.
+we can used aws health dashboard to learn about aws health events. These events can effect your AWS services or AWS Account.
+ - **Your Account Events**: shows events specific to your account. you can view open,recent and schedule changes.You can also view notications and an event log that        shows all events from the past 90 days.
+ - **Your AWS organization8**:shows events that are specific to your organization in AWS Organizations.you can view open,recent and schedule changes.You can also view      notications and an event log that shows all organization events from the past 90 days.
+choose the following options:
+**Open and recent issues**: view shows recently opened and closed events.
+**Scheduled changes**: view upcoming event that might effect your services and resources.
+**Other Notifications**: view all other notification and ongoing events that you performed in the past 7 days on your account.
+**Event Logs**: View all events from the past 90 days.
+ An event is a record of action taken. 
+ when we have a aws account that means we have a default event bus configured for that account. All the aws services, or third party services sends the events to the event bus. Aws eventbridge allow to setup rules for this events, and evaluates each rule against  on the event in the event bus if the rule is applied is matched then it will send a copy of notifications to that specific target. 
+Eventbridge is a serverless event bus that make it easy to build event driven applications at scale using events generated from your application like SAAS and aws services.
+use Amazon EventBridge to detect and react to AWS Health events. Then, based on rules that you create, EventBridge invokes one or more target actions when an event matches the values that you specify in a rule. Depending on the type of event, you can capture event information, initiate additional events, send notifications, take corrective action, or perform other actions. 
+ **Unable to create a eventbridge as my account don't have any running instance.**
+ we can use this link to create an eventbridge for the aws health
+ [eventbridge for aws health](https://docs.aws.amazon.com/health/latest/ug/cloudwatch-events-health.html)
+ 
+ ## Service quota limit increase
+ We can request service limit increase in differnt ways:
+ - service quota 
+ - AWS CLI
+ - support ticket
+ we can create a support ticket for increasing service limits of a service based on the region specific.
+ ![service limit increase](https://user-images.githubusercontent.com/125069098/219467594-36165eba-baa4-430f-a427-c42ef8270f62.png)
+
+
+
