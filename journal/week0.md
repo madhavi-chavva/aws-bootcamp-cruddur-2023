@@ -200,12 +200,12 @@ we can used aws health dashboard to learn about aws health events. These events 
  - **Your Account Events**: shows events specific to your account. you can view open,recent and schedule changes.You can also view notications and an event log that        shows all events from the past 90 days.
  - **Your AWS organization8**:shows events that are specific to your organization in AWS Organizations.you can view open,recent and schedule changes.You can also view      notications and an event log that shows all organization events from the past 90 days.
 choose the following options:
-**Open and recent issues**: view shows recently opened and closed events.
-**Scheduled changes**: view upcoming event that might effect your services and resources.
-**Other Notifications**: view all other notification and ongoing events that you performed in the past 7 days on your account.
-**Event Logs**: View all events from the past 90 days.
+- **Open and recent issues**: view shows recently opened and closed events.
+- **Scheduled changes**: view upcoming event that might effect your services and resources.
+- **Other Notifications**: view all other notification and ongoing events that you performed in the past 7 days on your account.
+- **Event Logs**: View all events from the past 90 days.
  An event is a record of action taken. 
- when we have a aws account that means we have a default event bus configured for that account. All the aws services, or third party services sends the events to the event bus. Aws eventbridge allow to setup rules for this events, and evaluates each rule against  on the event in the event bus if the rule is applied is matched then it will send a copy of notifications to that specific target. 
+when we have a aws account that means we have a default event bus configured for that account. All the aws services, or third party services sends the events to the event bus. Aws eventbridge allow to setup rules for this events, and evaluates each rule against  on the event in the event bus if the rule is applied is matched then it will send a copy of notifications to that specific target. 
 Eventbridge is a serverless event bus that make it easy to build event driven applications at scale using events generated from your application like SAAS and aws services.
 use Amazon EventBridge to detect and react to AWS Health events. Then, based on rules that you create, EventBridge invokes one or more target actions when an event matches the values that you specify in a rule. Depending on the type of event, you can capture event information, initiate additional events, send notifications, take corrective action, or perform other actions. 
  **Unable to create a eventbridge as my account don't have any running instance.**
@@ -219,6 +219,14 @@ use Amazon EventBridge to detect and react to AWS Health events. Then, based on 
  - support ticket
  we can create a support ticket for increasing service limits of a service based on the region specific.
  ![service limit increase](https://user-images.githubusercontent.com/125069098/219467594-36165eba-baa4-430f-a427-c42ef8270f62.png)
+ 
+ ## Service limits of aws services
+ we can view all the service limits in the aws service quota service. select the **Aws Service** in the service quota. It will displays all the aws services, you can select the service you want to see the limit or enter name of the service you want view the limit.
+ ![service limit lambda](https://user-images.githubusercontent.com/125069098/219470892-c12a1ac9-b1d0-402e-b34b-38855f06c92f.png)
+ 
+ ![service limit RDS](https://user-images.githubusercontent.com/125069098/219472385-694d39c9-2ec6-497e-99f1-17a7d07c0758.png)
+
+## Well Architected Tool
 
 
 
