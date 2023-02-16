@@ -181,3 +181,6 @@ if you want to put the pipe sign just type the following command "alt+124"
 #### IAM ROLE creation
 ![iam role](https://user-images.githubusercontent.com/125069098/219220907-26f296c7-6288-489c-bcfb-2675bb5df964.png)
 
+** Policies**
+Policies are another way to attach policy to a user, group and Role
+![image](https://user-images.githubusercontent.com/125069098/219222438-964b46bc-d006-4520-97bd-62c39e2cc515.png)
