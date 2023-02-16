@@ -230,3 +230,11 @@ use Amazon EventBridge to detect and react to AWS Health events. Then, based on 
 
 
 
+**Learn from my mistakes**
+- I have created a branch in the gitpod workspace then commited the changes to the main,the next day I accidently deleted the workspace in gitpod when I saw my main     branch I made a mistake in a line of code so I made the change and tried to commit the changes to main it was not in sync with the main it was throwing me an error
+  then researched on the google and  find the solution to it why it is throwing the error.
+- I have created a topic and subscription then later i have deleted the topic before I confirm the subscription to the email. when I was trying to delete the             subscription I was unable to delete after search in the google I came to know that amazon will automatically delete the subscription after 3 days  which 
+  are not appoved. 
+
+
+
