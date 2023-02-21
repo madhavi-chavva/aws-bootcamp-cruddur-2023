@@ -322,6 +322,14 @@ volumes:
 # Get Records:
 ![get records](https://user-images.githubusercontent.com/125069098/220441168-e8e21d67-5e88-4577-92e4-c180b6924e94.png)
 
+# Connecting to Postgres database
+To connect to the Postgres Database client use
+```postgres
+psql -Upostgres --host localhost
+```
+![connecting to postgres client](https://user-images.githubusercontent.com/125069098/220447715-70985730-1b6b-4107-8698-5541a978cb5e.png)
+
+
 
 
 
