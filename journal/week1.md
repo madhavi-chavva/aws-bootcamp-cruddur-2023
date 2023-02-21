@@ -310,6 +310,18 @@ volumes:
     driver: local
 ```
 
+# Create a DynamoDB table
+![create dynamodb table](https://user-images.githubusercontent.com/125069098/220440382-e23b9439-d61d-47ef-b916-7ca3ab417236.png)
+
+# Create an item
+![create an item](https://user-images.githubusercontent.com/125069098/220440623-717a6288-96d8-416a-ba4e-b48dae489c9a.png)
+
+# List the tables:
+![list tables](https://user-images.githubusercontent.com/125069098/220440928-c450ff64-5399-49e1-baad-dd8c4fcf8d8b.png)
+
+# Get Records:
+![get records](https://user-images.githubusercontent.com/125069098/220441168-e8e21d67-5e88-4577-92e4-c180b6924e94.png)
+
 
 
 
