@@ -227,6 +227,13 @@ networks:
 ```
 ![cruddur app](https://user-images.githubusercontent.com/125069098/220158475-d32ffbda-935e-405a-b57e-6f1fc6f2f2cd.png)
 
+# Create the notification feature (Backend and Front)
+Watched the video and did changes accordingly in the frontend app and backend app. I have encounted some issues but able to fix them.Finally able to get the proper out come out of it. 
+
+![notification cruddur](https://user-images.githubusercontent.com/125069098/220436857-88ae5002-7cc0-4351-9f45-58bc389a5205.png)
+
+
+
 ## Adding DynamoDB Local and Postgres
 
 We are going to use Postgres and DynamoDB local in future labs
