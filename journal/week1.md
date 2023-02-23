@@ -329,6 +329,216 @@ psql -Upostgres --host localhost
 ```
 ![connecting to postgres client](https://user-images.githubusercontent.com/125069098/220447715-70985730-1b6b-4107-8698-5541a978cb5e.png)
 
+# Homework Challenges
+## Learn how to install a docker on your local machine and get the same containers running outside of gitpod/codespaces
+
+ I have refer to the link [docker desktop on windows](https://docs.docker.com/desktop/install/windows-install/)
+ I have already installed docker desktop before bootcamp while was self learning about the docker container.
+ 1. Clone the repository using git bash to your local machine.
+ 2. Build the image using the command
+   ```docker
+   docker build -t frontend-react-js ./frontend-react-js
+   ```
+ ![build frontend image](https://user-images.githubusercontent.com/125069098/220703245-7662210f-cde1-484b-a607-c71f1cc6787c.png)
+ 
+ 3. Run the docker container using the command:
+   ```docker
+   docker run -p 3000:3000 -d frontend-react-js
+   ```
+   ![run frontend container](https://user-images.githubusercontent.com/125069098/220704034-c7afbb45-39a8-47e5-9a02-421319d41943.png)
+  4. Open a browser and enter http://localhost:3000/
+  ![view container app](https://user-images.githubusercontent.com/125069098/220704466-f3859598-227f-4b87-b1af-67dc5ec082f0.png)
+  
+  ## push and tag a image to docker hub.
+  1. build an **HellWorld** app in the app.py
+  2. create a docker file.
+  ```docker
+  # syntax=docker/dockerfile:1.4
+FROM --platform=$BUILDPLATFORM python:3.10-alpine AS builder
+
+WORKDIR /app
+
+COPY requirements.txt /app
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip3 install -r requirements.txt
+
+COPY . /app
+
+ENTRYPOINT ["python3"]
+CMD ["app.py"]
+
+FROM builder as dev-envs
+
+RUN <<EOF
+apk update
+apk add git
+EOF
+
+RUN <<EOF
+addgroup -S docker
+adduser -S --shell /bin/bash --ingroup docker vscode
+EOF
+
+# install Docker tools (cli, buildx, compose)
+COPY --from=gloursdocker/docker / /
+```
+3. build the docker image using docker build
+```docker
+docker image build -t flask_docker .
+```
+4. Run the docker image using the docker run
+```
+docker run -p 5000:8000 -d flask_docker
+```
+5.Tag the docker image using docker tag
+```
+docker tag flask_docker madhu2023/release0.0.1
+```
+6. Push the image into the docker hub
+```
+docker push madhu2023/release0.0.1 
+```
+![push dockerhub](https://user-images.githubusercontent.com/125069098/220719117-2b75d71e-6ac6-40f6-a0d8-5ddb7dc0da90.png)
+
+## Research on Best practices for writing Dockerfiles
+refered from the link [best practices](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/)
+1.Create **ephemeal** containers. ephemeal means containers can be stoped and destroyed and rebuilt and replaced with minimum set up and configuration.
+2.Build from a remote build context,using dockerfile from **stdin**
+3.Exclude with **.dockerignore** :exclude the file not relevant to docker build, without reconstructing source repository, use .dockerignore similar to .gitignore files
+4.Use **multi-stage** build: it allows to reduce the size of your final image,without struggling to reduce number of intermediate layers and files.
+5.Don't install unnecessary packages.
+6.Decoupling the application
+7.Minimixe the number of layers
+8.Sort multi-line arguments.
+
+## Use nulti-stage building for a dockerfile build.
+
+One excellent benefit of multi-stage Docker builds is that it reduces the number of dependencies and unnecessary packages in the image, 
+reducing the attack surface and improving security. In addition, it keeps the build clean and lean by having only the things required to run your application in production.
+
+```docker
+  # syntax=docker/dockerfile:1.4
+FROM --platform=$BUILDPLATFORM python:3.10-alpine AS builder
+
+WORKDIR /app
+
+COPY requirements.txt /app
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip3 install -r requirements.txt
+
+COPY . /app
+
+ENTRYPOINT ["python3"]
+CMD ["app.py"]
+
+FROM builder as dev-envs
+
+RUN <<EOF
+apk update
+apk add git
+EOF
+
+RUN <<EOF
+addgroup -S docker
+adduser -S --shell /bin/bash --ingroup docker vscode
+EOF
+
+# install Docker tools (cli, buildx, compose)
+COPY --from=gloursdocker/docker / /
+
+## RUN the dockerfile CMD as an external script
+1. Create a bash script file in backend-flask folder
+```bash script
+#!bin/bash
+"python3", "-m" , "flask", "run", "--host=0.0.0.0", "--port=4567"
+```
+![script](https://user-images.githubusercontent.com/125069098/220822927-7f508a57-be16-41bf-a573-7fd878ea6757.png)
+
+2. Modify the dockerfile to include the script file.
+```docker
+FROM python:3.10-slim-buster
+
+WORKDIR /backend-flask
+
+COPY requirements.txt requirements.txt
+RUN pip3 install -r requirements.txt
+
+COPY . .
+
+ENV FLASK_ENV=development
+
+EXPOSE ${PORT}
+COPY script.sh /
+RUN chmod +x script.sh
+ENTRYPOINT [ "/script.sh" ]
+#CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0", "--port=4567"]
+```
+![dockerfile backend-flask](https://user-images.githubusercontent.com/125069098/220823279-e0d8954b-b142-4752-86bf-24f8ab5f7c4e.png)
+
+3. Build the image using the docker build command.
+```docker
+docker build -t  backend-flask ./backend-flask
+```
+4. Run the container using the docker run command
+```
+docker run --rm -p 4567:4567 -it -e FRONTEND_URL='*' -e BACKEND_URL='*' -d backend-flask
+```
+![build run backend-flask](https://user-images.githubusercontent.com/125069098/220824026-05b0cb86-eeca-4ecb-b646-582d651c47f1.png)
+
+**Do the same with frontend-react-js
+1.  Create a bash script file in frontend-react-js folder
+```bash script
+#!bin/bash
+npm start
+```
+```
+![image](https://user-images.githubusercontent.com/125069098/220825269-43998478-1786-41![image](https://user-images.githubusercontent.com/125069098/220825343-59168246-d551-4446-8464-16de68fad739.png)
+2.Modify the dockerfile to include the script file.
+```docker
+FROM node:16.18
+
+ENV PORT=3000
+
+COPY . /frontend-react-js
+WORKDIR /frontend-react-js
+RUN npm install
+EXPOSE ${PORT}
+COPY myscript.sh /
+RUN chmod +x myscript.sh
+ENTRYPOINT [ "/myscript.sh" ]
+#CMD [ "npm", "start" ]
+```
+3. Build the image using the docker build command.
+```docker
+docker build -t frontend-react-js ./frontend-react-js
+```
+4. Run the container using the docker run command.
+```docker
+docker run -p 3000:3000 -d frontend-react-js
+```
+![build run frontend-react-js](https://user-images.githubusercontent.com/125069098/220825853-d2a328c2-f8b9-4235-8c14-d449d0e9fde6.png)
+
+![localhost:3000](https://user-images.githubusercontent.com/125069098/220825601-7d52d335-5220-4b71-9403-771e738c59f7.png)
+
+
+## Implement a healthcheck on the docker compose file
+Health checks are exactly what they sound like - a way of checking the health of some resource. In the case of Docker, a health check is a command used to determine the health of a running container.When a health check command is specified, it tells Docker how to test the container to see if it's working. With no health check specified, Docker has no way of knowing whether or not the services running within your container are actually up or not.
+In Docker, health checks can be specified in the Dockerfile as well as in a compose file.
+A health check is configured in the Dockerfile using the **HEALTHCHECK** instruction.
+```
+HEALTHCHECK [OPTIONS] CMD command
+```
+
+
+
+   
+    
+    
+  
+
+
+ 
+
 
 
 
