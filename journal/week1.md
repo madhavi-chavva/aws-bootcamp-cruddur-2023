@@ -350,55 +350,35 @@ psql -Upostgres --host localhost
   ![view container app](https://user-images.githubusercontent.com/125069098/220704466-f3859598-227f-4b87-b1af-67dc5ec082f0.png)
   
   ## push and tag a image to docker hub.
-  1. build an **HellWorld** app in the app.py
-  2. create a docker file.
-  ```docker
-  # syntax=docker/dockerfile:1.4
-FROM --platform=$BUILDPLATFORM python:3.10-alpine AS builder
-
-WORKDIR /app
-
-COPY requirements.txt /app
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip3 install -r requirements.txt
-
-COPY . /app
-
-ENTRYPOINT ["python3"]
-CMD ["app.py"]
-
-FROM builder as dev-envs
-
-RUN <<EOF
-apk update
-apk add git
-EOF
-
-RUN <<EOF
-addgroup -S docker
-adduser -S --shell /bin/bash --ingroup docker vscode
-EOF
-
-# install Docker tools (cli, buildx, compose)
-COPY --from=gloursdocker/docker / /
-```
-3. build the docker image using docker build
+  1. build the images of frontend-react-js and backend-flask
 ```docker
-docker image build -t flask_docker .
+docker build -t frontend-react-js ./frontend-react-js                                                           
 ```
-4. Run the docker image using the docker run
+```docker
+docker build -t  backend-flask ./backend-flask
 ```
-docker run -p 5000:8000 -d flask_docker
+2. Run the docker image using the docker run
 ```
-5.Tag the docker image using docker tag
+docker run -p 3000:3000 -d frontend-react-js
 ```
-docker tag flask_docker madhu2023/release0.0.1
+```docker
+docker run --rm -p 4567:4567 -it -e FRONTEND_URL='*' -e BACKEND_URL='*' -d backend-flask
 ```
-6. Push the image into the docker hub
+3.Tag the docker image using docker tag
 ```
-docker push madhu2023/release0.0.1 
+docker tag frontend-react-js madhu2023/frontend-react-js:release0.0.1
 ```
-![push dockerhub](https://user-images.githubusercontent.com/125069098/220719117-2b75d71e-6ac6-40f6-a0d8-5ddb7dc0da90.png)
+```
+docker tag backend-flask madhu2023/backend-flask:release0.0.1
+```
+4. Push the image into the docker hub
+```
+docker push  madhu2023/frontend-react-js:release0.0.1
+```
+```docker
+docker push madhu2023/backend-flask:release0.0.1 
+```
+![push dockerhub](https://user-images.githubusercontent.com/125069098/221032677-a8166f7c-19d2-4b35-9159-91f663b2c929.png)
 
 ## Research on Best practices for writing Dockerfiles
 refered from the link [best practices](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/)
@@ -447,12 +427,12 @@ EOF
 COPY --from=gloursdocker/docker / /
 
 ## RUN the dockerfile CMD as an external script
+
 1. Create a bash script file in backend-flask folder
 ```bash script
-#!bin/bash
-"python3", "-m" , "flask", "run", "--host=0.0.0.0", "--port=4567"
+#!/bin/bash
+python3 -m flask run --host=0.0.0.0 --port=4567
 ```
-![script](https://user-images.githubusercontent.com/125069098/220822927-7f508a57-be16-41bf-a573-7fd878ea6757.png)
 
 2. Modify the dockerfile to include the script file.
 ```docker
@@ -483,14 +463,15 @@ docker build -t  backend-flask ./backend-flask
 ```
 docker run --rm -p 4567:4567 -it -e FRONTEND_URL='*' -e BACKEND_URL='*' -d backend-flask
 ```
-![build run backend-flask](https://user-images.githubusercontent.com/125069098/220824026-05b0cb86-eeca-4ecb-b646-582d651c47f1.png)
+![build backend-flask](https://user-images.githubusercontent.com/125069098/220939049-1cc31cae-8501-438d-a0fc-479242d736b3.png)
+
+
 
 **Do the same with frontend-react-js
 1.  Create a bash script file in frontend-react-js folder
 ```bash script
-#!bin/bash
+#!/bin/bash
 npm start
-```
 ```
 ![image](https://user-images.githubusercontent.com/125069098/220825269-43998478-1786-41![image](https://user-images.githubusercontent.com/125069098/220825343-59168246-d551-4446-8464-16de68fad739.png)
 2.Modify the dockerfile to include the script file.
@@ -503,9 +484,8 @@ COPY . /frontend-react-js
 WORKDIR /frontend-react-js
 RUN npm install
 EXPOSE ${PORT}
-COPY myscript.sh /
 RUN chmod +x myscript.sh
-ENTRYPOINT [ "/myscript.sh" ]
+CMD [ "/myscript.sh" ]
 #CMD [ "npm", "start" ]
 ```
 3. Build the image using the docker build command.
@@ -525,9 +505,52 @@ docker run -p 3000:3000 -d frontend-react-js
 Health checks are exactly what they sound like - a way of checking the health of some resource. In the case of Docker, a health check is a command used to determine the health of a running container.When a health check command is specified, it tells Docker how to test the container to see if it's working. With no health check specified, Docker has no way of knowing whether or not the services running within your container are actually up or not.
 In Docker, health checks can be specified in the Dockerfile as well as in a compose file.
 A health check is configured in the Dockerfile using the **HEALTHCHECK** instruction.
+When a HEALTHCHECK instruction is specified in an image, the container is started with it, the initial state will be starting, and will become healthy after the HEALTHCHECK instruction is checked successfully. If it fails for a certain number of times, it will become unhealth
 ```
 HEALTHCHECK [OPTIONS] CMD command
 ```
+**Options does HEALTHCHECK support**
+ - --interval=<interval>: interval between two health checks, the default is 30 seconds; 
+ - --timeout=<time length>: The health check command runs the timeout period. If this time is exceeded, the health check is regarded as a failure. The default is 30       seconds. 
+ - --retries=<number>: When the specified number of consecutive failures, the container status is treated as unhealthy, the default is 3 times. 
+ Like CMD, ENTRYPOINT, HEALTHCHECK can only appear once. If more than one is written, only the last one will take effect.
+ 
+ 1. Modified the docker-compose file
+ ```docker
+ version: "3.8"
+services:
+  backend-flask:
+    environment:
+      FRONTEND_URL: "https://3000-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
+      BACKEND_URL: "https://4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
+    build: ./backend-flask
+    ports:
+      - "4567:4567"
+    healthcheck:
+      test: curl --fail "https://4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}/api/activities/home" || exit 1
+      interval: 60s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
+    volumes:
+      - ./backend-flask:/backend-flask
+  frontend-react-js:
+    environment:
+      REACT_APP_BACKEND_URL: "https://4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
+    build: ./frontend-react-js
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test: curl --fail "https://3000-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}" || exit 1
+      interval: 60s
+      retries: 5
+      start_period: 20s
+      timeout: 10s 
+    volumes:
+      - ./frontend-react-js:/frontend-react-js
+ ```
+ 
+ ![healthcheck](https://user-images.githubusercontent.com/125069098/221094024-7bb87db7-094f-4c44-bb8e-42e678a4abe9.png)
 
 
 
