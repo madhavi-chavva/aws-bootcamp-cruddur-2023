@@ -334,7 +334,9 @@ psql -Upostgres --host localhost
 ## Learn how to install a docker on your local machine and get the same containers running outside of gitpod/codespaces
 
  I have refer to the link [docker desktop on windows](https://docs.docker.com/desktop/install/windows-install/)
- I have already installed docker desktop before bootcamp while was self learning about the docker container.
+ ![docker desktop](https://user-images.githubusercontent.com/125069098/221331618-c98dbffb-1ef8-44b3-8c37-19fa4307b77d.png)
+
+ I have already installed docker desktop before bootcamp while I was self learning about the docker container.
  1. Clone the repository using git bash to your local machine.
  2. Build the image using the command
    ```docker
@@ -590,22 +592,55 @@ services:
  ```docker
  docker info
  ```
+ - Install docker-compose using the following commmands
+ ```docker
+ sudo curl -L https://github.com/docker/compose/releases/download/1.21.0/docker-compose-`uname -s`-`uname -m` | sudo tee /usr/local/bin/docker-compose > /dev/null
+ ```
+ - For permission
+ ```docker
+ sudo chmod +x /usr/local/bin/docker-compose
+ ```
+ - Create a symbolic link
+ ```docker
+ sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+ ```
+ -docker-compose version
+ ```docker
+ docker-compose --version
+ ```
+ 
  ![ec2instance dockerinfo](https://user-images.githubusercontent.com/125069098/221322534-b195ea19-00e4-46e2-942a-37ad3647a7c6.png)
  - Pull the docker image from dockerhub using docker pull command
  ```docker 
  docker image pull madhu2023/frontend-react-js:release0.0.1
  ```
- ![docker pull](https://user-images.githubusercontent.com/125069098/221322664-3300b993-5d13-4e88-810e-0f5bdbf949c7.png)
+ - installed git in ec2 instance
+ ```linux
+ sudo yum install git -y
+ ```
+ -Cloned the git repository
+ ```git
+ git clone https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023.git
+ ```
+ -Build and run the frontend and backend apps separately.(when I did with docker-compose up it didn't work properly
+ ```docker
+ docker build -t  backend-flask ./backend-flask
+ docker run --rm -p 4567:4567 -it -e FRONTEND_URL='*' -e BACKEND_URL='*' -d backend-flask
+ docker build -t frontend-react-js ./frontend-react-js
+  docker run -p 3000:3000 -d frontend-react-js
+ ```
+ ![ec2instance](https://user-images.githubusercontent.com/125069098/221334840-34e8c2ff-3a2f-4f97-a587-938a22ac502c.png)
+ ![pullfrontend](https://user-images.githubusercontent.com/125069098/221338299-31b44453-2819-4e0c-826e-9b135fa7eb11.png)
+ ![pull run backend](https://user-images.githubusercontent.com/125069098/221338368-81780166-336b-4617-ab4b-84c6526029c6.png)
+ ![run backend](https://user-images.githubusercontent.com/125069098/221338403-ff3b81bc-b061-4a88-865f-515b4ca1d574.png)
+ ![docker ps](https://user-images.githubusercontent.com/125069098/221338536-6c6e4032-04a2-456b-9668-ce9dd9e5f7d5.png)
+
+
+![frontend ec2instance](https://user-images.githubusercontent.com/125069098/221334976-a9129068-3073-494d-9ac1-c1403d64c11b.png)
  
- - List the images in the ec2 instance using docker image ls
- 
- ![docker image ls](https://user-images.githubusercontent.com/125069098/221322890-17ea8675-a829-4f18-b7c4-c2d70f38ac53.png)
  **Referred the link**
  [ec2 docker install](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/create-container-image.html#create-container-image-install-docker)
  
- run a different image.
- 
- ![ec2 helloword](https://user-images.githubusercontent.com/125069098/221327227-bc71c636-8e07-4e09-9a6b-d609fb2e7da3.png)
 
 
 
