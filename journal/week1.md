@@ -394,50 +394,7 @@ refered from the link [best practices](https://docs.docker.com/develop/develop-i
 - Minimixe the number of layers
 - Sort multi-line arguments.
 
-## Use Multi-stage building for a dockerfile build.
-
-One excellent benefit of multi-stage Docker builds is that it reduces the number of dependencies and unnecessary packages in the image, 
-reducing the attack surface and improving security. In addition, it keeps the build clean and lean by having only the things required to run your application in production. With multi-stage builds, you use multiple **FROM** statements in your dockerfile.Each **FROM** instruction can use a different base, and each of them begins a new stage of the build. you can selectively copy aetifacts from one stage to another,leaving behind everything you don't want in the final image.
-
-```docker
-  # syntax=docker/dockerfile:1.4
-FROM --platform=$BUILDPLATFORM python:3.10-alpine AS builder
-
-WORKDIR /app
-
-COPY requirements.txt /app
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip3 install -r requirements.txt
-
-COPY . /app
-
-ENTRYPOINT ["python3"]
-CMD ["app.py"]
-
-FROM builder as dev-envs
-
-RUN <<EOF
-apk update
-apk add git
-EOF
-
-RUN <<EOF
-addgroup -S docker
-adduser -S --shell /bin/bash --ingroup docker vscode
-EOF
-
-# install Docker tools (cli, buildx, compose)
-COPY --from=gloursdocker/docker / /
-
-## RUN the dockerfile CMD as an external script
-
-1. Create a bash script file in backend-flask folder
-```bash script
-#!/bin/bash
-python3 -m flask run --host=0.0.0.0 --port=4567
-```
-
-2. Modify the dockerfile to include the script file.
+## Run the dockerfile CMD using external script .
 ```docker
 FROM python:3.10-slim-buster
 
@@ -640,6 +597,50 @@ services:
  
  **Referred the link**
  [ec2 docker install](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/create-container-image.html#create-container-image-install-docker)
+ 
+ ## Use Multi-stage building for a dockerfile build.
+
+One excellent benefit of multi-stage Docker builds is that it reduces the number of dependencies and unnecessary packages in the image, 
+reducing the attack surface and improving security. In addition, it keeps the build clean and lean by having only the things required to run your application in production. With multi-stage builds, you use multiple **FROM** statements in your dockerfile.Each **FROM** instruction can use a different base, and each of them begins a new stage of the build. you can selectively copy aetifacts from one stage to another,leaving behind everything you don't want in the final image.
+
+```docker
+  # syntax=docker/dockerfile:1.4
+FROM --platform=$BUILDPLATFORM python:3.10-alpine AS builder
+
+WORKDIR /app
+
+COPY requirements.txt /app
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip3 install -r requirements.txt
+
+COPY . /app
+
+ENTRYPOINT ["python3"]
+CMD ["app.py"]
+
+FROM builder as dev-envs
+
+RUN <<EOF
+apk update
+apk add git
+EOF
+
+RUN <<EOF
+addgroup -S docker
+adduser -S --shell /bin/bash --ingroup docker vscode
+EOF
+
+# install Docker tools (cli, buildx, compose)
+COPY --from=gloursdocker/docker / /
+
+## RUN the dockerfile CMD as an external script
+
+1. Create a bash script file in backend-flask folder
+```bash script
+#!/bin/bash
+python3 -m flask run --host=0.0.0.0 --port=4567
+```
+
  
 
 
