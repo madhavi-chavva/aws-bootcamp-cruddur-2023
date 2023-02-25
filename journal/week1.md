@@ -330,6 +330,7 @@ psql -Upostgres --host localhost
 ![connecting to postgres client](https://user-images.githubusercontent.com/125069098/220447715-70985730-1b6b-4107-8698-5541a978cb5e.png)
 
 # Homework Challenges
+
 ## Learn how to install a docker on your local machine and get the same containers running outside of gitpod/codespaces
 
  I have refer to the link [docker desktop on windows](https://docs.docker.com/desktop/install/windows-install/)
@@ -554,7 +555,9 @@ services:
  ![healthcheck](https://user-images.githubusercontent.com/125069098/221094024-7bb87db7-094f-4c44-bb8e-42e678a4abe9.png)
  
  ## Launch an EC2 instance that has docker installed, and pull a container to demonstrate you can run your own docker process.
-  - Provision or spin up an instance in AWS with rsa key and security group  with inbound rules ssh,443,80
+ 
+  - Provision or spin up an instance in AWS with rsa key and security group  with inbound rules ssh,443,80 and download the rsa key into your system.
+ 
  ![docker ec2instance](https://user-images.githubusercontent.com/125069098/221321194-92beff57-ca5f-4692-a405-b5f51acc23e2.png)
  ![ec2instance](https://user-images.githubusercontent.com/125069098/221321279-dc9778ea-080d-42f7-8c53-12fc8e67fd98.png)
  ![securitygroup](https://user-images.githubusercontent.com/125069098/221321358-d0a11117-1bcd-49a0-b6a5-997ef01250e2.png)
@@ -593,8 +596,12 @@ services:
  docker image pull madhu2023/frontend-react-js:release0.0.1
  ```
  ![docker pull](https://user-images.githubusercontent.com/125069098/221322664-3300b993-5d13-4e88-810e-0f5bdbf949c7.png)
+ 
  - List the images in the ec2 instance using docker image ls
+ 
  ![docker image ls](https://user-images.githubusercontent.com/125069098/221322890-17ea8675-a829-4f18-b7c4-c2d70f38ac53.png)
+ **Referred the link**
+ [ec2 docker install](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/create-container-image.html#create-container-image-install-docker)
 
 
 
