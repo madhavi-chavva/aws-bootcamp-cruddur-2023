@@ -602,6 +602,11 @@ services:
  ![docker image ls](https://user-images.githubusercontent.com/125069098/221322890-17ea8675-a829-4f18-b7c4-c2d70f38ac53.png)
  **Referred the link**
  [ec2 docker install](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/create-container-image.html#create-container-image-install-docker)
+ 
+ run a different image.
+ 
+ ![ec2 helloword](https://user-images.githubusercontent.com/125069098/221327227-bc71c636-8e07-4e09-9a6b-d609fb2e7da3.png)
+
 
 
 
