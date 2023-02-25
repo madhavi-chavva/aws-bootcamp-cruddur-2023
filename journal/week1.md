@@ -382,19 +382,19 @@ docker push madhu2023/backend-flask:release0.0.1
 
 ## Research on Best practices for writing Dockerfiles
 refered from the link [best practices](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/)
-1.Create **ephemeal** containers. ephemeal means containers can be stoped and destroyed and rebuilt and replaced with minimum set up and configuration.
-2.Build from a remote build context,using dockerfile from **stdin**
-3.Exclude with **.dockerignore** :exclude the file not relevant to docker build, without reconstructing source repository, use .dockerignore similar to .gitignore files
-4.Use **multi-stage** build: it allows to reduce the size of your final image,without struggling to reduce number of intermediate layers and files.
-5.Don't install unnecessary packages.
-6.Decoupling the application
-7.Minimixe the number of layers
-8.Sort multi-line arguments.
+- Create **ephemeal** containers. ephemeal means containers can be stoped and destroyed and rebuilt and replaced with minimum set up and configuration.
+- Build from a remote build context,using dockerfile from **stdin**
+- Exclude with **.dockerignore** :exclude the file not relevant to docker build, without reconstructing source repository, use .dockerignore similar to .gitignore       files
+- Use **multi-stage** build: it allows to reduce the size of your final image,without struggling to reduce number of intermediate layers and files.
+- Don't install unnecessary packages.
+- Decoupling the application
+- Minimixe the number of layers
+- Sort multi-line arguments.
 
-## Use nulti-stage building for a dockerfile build.
+## Use Multi-stage building for a dockerfile build.
 
 One excellent benefit of multi-stage Docker builds is that it reduces the number of dependencies and unnecessary packages in the image, 
-reducing the attack surface and improving security. In addition, it keeps the build clean and lean by having only the things required to run your application in production.
+reducing the attack surface and improving security. In addition, it keeps the build clean and lean by having only the things required to run your application in production. With multi-stage builds, you use multiple **FROM** statements in your dockerfile.Each **FROM** instruction can use a different base, and each of them begins a new stage of the build. you can selectively copy aetifacts from one stage to another,leaving behind everything you don't want in the final image.
 
 ```docker
   # syntax=docker/dockerfile:1.4
@@ -473,7 +473,8 @@ docker run --rm -p 4567:4567 -it -e FRONTEND_URL='*' -e BACKEND_URL='*' -d backe
 #!/bin/bash
 npm start
 ```
-![image](https://user-images.githubusercontent.com/125069098/220825269-43998478-1786-41![image](https://user-images.githubusercontent.com/125069098/220825343-59168246-d551-4446-8464-16de68fad739.png)
+
+![image](https://user-images.githubusercontent.com/125069098/220825343-59168246-d551-4446-8464-16de68fad739.png)
 2.Modify the dockerfile to include the script file.
 ```docker
 FROM node:16.18
@@ -551,6 +552,58 @@ services:
  ```
  
  ![healthcheck](https://user-images.githubusercontent.com/125069098/221094024-7bb87db7-094f-4c44-bb8e-42e678a4abe9.png)
+ 
+ ## Launch an EC2 instance that has docker installed, and pull a container to demonstrate you can run your own docker process.
+  - Provision or spin up an instance in AWS with rsa key and security group  with inbound rules ssh,443,80
+ ![docker ec2instance](https://user-images.githubusercontent.com/125069098/221321194-92beff57-ca5f-4692-a405-b5f51acc23e2.png)
+ ![ec2instance](https://user-images.githubusercontent.com/125069098/221321279-dc9778ea-080d-42f7-8c53-12fc8e67fd98.png)
+ ![securitygroup](https://user-images.githubusercontent.com/125069098/221321358-d0a11117-1bcd-49a0-b6a5-997ef01250e2.png)
+ - Connect to your EC2 instance using the SSH-client.
+  chmod 400 free-bootcamp.pem ---change the permission to read for the rsa key.
+ - Connect to the SSH-client using the command **ssh -i "free-bootcamp.pem" ec2-user@174.129.55.90**
+  ![login ec2instance](https://user-images.githubusercontent.com/125069098/221321835-865747dc-64b1-4a95-a7cf-dd7744e2e35b.png)
+ - Update the installed packages and package cache on your instance.
+ ```linux
+ sudo yum update -y
+ ```
+ -Install the most recent Docker Engine package.
+ ```linux
+ sudo amazon-linux-extras install docker
+ ```
+ -Start the Docker service.
+ ```linux
+ sudo service docker start
+ ```
+ -To ensure that the Docker daemon starts after each system reboot, run the following command:
+ ```linux
+ sudo systemctl enable docker
+ ```
+ - Add the ec2-user to the docker group so you can execute Docker commands without using sudo.
+ ```linux
+ sudo usermod -a -G docker ec2-user
+ ```
+ - Log out and log back in again to pick up the new docker group permissions.
+ - Verify that you can run Docker commands without sudo.
+ ```docker
+ docker info
+ ```
+ ![ec2instance dockerinfo](https://user-images.githubusercontent.com/125069098/221322534-b195ea19-00e4-46e2-942a-37ad3647a7c6.png)
+ - Pull the docker image from dockerhub using docker pull command
+ ```docker 
+ docker image pull madhu2023/frontend-react-js:release0.0.1
+ ```
+ ![docker pull](https://user-images.githubusercontent.com/125069098/221322664-3300b993-5d13-4e88-810e-0f5bdbf949c7.png)
+ - List the images in the ec2 instance using docker image ls
+ ![docker image ls](https://user-images.githubusercontent.com/125069098/221322890-17ea8675-a829-4f18-b7c4-c2d70f38ac53.png)
+
+
+
+ 
+ 
+ 
+
+
+
 
 
 
