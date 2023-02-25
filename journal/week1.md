@@ -394,7 +394,14 @@ refered from the link [best practices](https://docs.docker.com/develop/develop-i
 - Minimixe the number of layers
 - Sort multi-line arguments.
 
-## Run the dockerfile CMD using external script .
+## RUN the dockerfile CMD as an external script
+
+1. Create a bash script file in backend-flask folder
+```bash script
+#!/bin/bash
+python3 -m flask run --host=0.0.0.0 --port=4567
+```
+2. Modify the dockerfile to include the script.
 ```docker
 FROM python:3.10-slim-buster
 
@@ -633,13 +640,7 @@ EOF
 # install Docker tools (cli, buildx, compose)
 COPY --from=gloursdocker/docker / /
 
-## RUN the dockerfile CMD as an external script
 
-1. Create a bash script file in backend-flask folder
-```bash script
-#!/bin/bash
-python3 -m flask run --host=0.0.0.0 --port=4567
-```
 
  
 
