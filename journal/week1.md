@@ -611,35 +611,42 @@ One excellent benefit of multi-stage Docker builds is that it reduces the number
 reducing the attack surface and improving security. In addition, it keeps the build clean and lean by having only the things required to run your application in production. With multi-stage builds, you use multiple **FROM** statements in your dockerfile.Each **FROM** instruction can use a different base, and each of them begins a new stage of the build. you can selectively copy aetifacts from one stage to another,leaving behind everything you don't want in the final image.
 
 ```docker
-  # syntax=docker/dockerfile:1.4
-FROM --platform=$BUILDPLATFORM python:3.10-alpine AS builder
+FROM node:16.18 AS build
 
-WORKDIR /app
+ENV PORT=3000
 
-COPY requirements.txt /app
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip3 install -r requirements.txt
+COPY . /frontend-react-js
+WORKDIR /frontend-react-js
+RUN npm install
+EXPOSE ${PORT}
+#CMD ["npm", "start"]
+COPY myscript.sh /
+RUN chmod +x myscript.sh
+ENTRYPOINT [ "/myscript.sh" ]
 
-COPY . /app
+# Stage 2: Run the application
+FROM nginx:1.22.1 AS runtime 
+WORKDIR /usr/share/nginx/html 
+RUN rm -rf ./* 
+COPY --from=build /frontend-react-js . 
+EXPOSE 80 
+CMD ["nginx", "-g", "daemon off;"]
+```
+ Build the frontend using the Docker build
+ ```
+ docker build -t frontend-react-js ./frontend-react-js  
+ ```
+ Run the frontend using the docker run
+ ```
+ docker run -p 3000:80 -d frontend-react-js
+ ```
+ ![multistage dockerfile](https://user-images.githubusercontent.com/125069098/221607308-0f72e866-c3a1-4157-9c09-5b3fa8e43c25.png)
 
-ENTRYPOINT ["python3"]
-CMD ["app.py"]
-
-FROM builder as dev-envs
-
-RUN <<EOF
-apk update
-apk add git
-EOF
-
-RUN <<EOF
-addgroup -S docker
-adduser -S --shell /bin/bash --ingroup docker vscode
-EOF
-
-# install Docker tools (cli, buildx, compose)
-COPY --from=gloursdocker/docker / /
-
+ I am getting error 403 forbidden
+ 
+ 
+ 
+ 
 
 
  
