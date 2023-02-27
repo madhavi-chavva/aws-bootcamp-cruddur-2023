@@ -644,6 +644,9 @@ CMD ["nginx", "-g", "daemon off;"]
 
  I am getting error 403 forbidden
  
+ ![403 forbidden](https://user-images.githubusercontent.com/125069098/221619818-212df0c0-d701-45ab-84af-14cf68c4b9c3.png)
+
+ 
  
  
  
