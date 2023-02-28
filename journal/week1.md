@@ -598,9 +598,12 @@ services:
  ![pull run backend](https://user-images.githubusercontent.com/125069098/221338368-81780166-336b-4617-ab4b-84c6526029c6.png)
  ![run backend](https://user-images.githubusercontent.com/125069098/221338403-ff3b81bc-b061-4a88-865f-515b4ca1d574.png)
  ![docker ps](https://user-images.githubusercontent.com/125069098/221338536-6c6e4032-04a2-456b-9668-ce9dd9e5f7d5.png)
+ 
+ Unable to get the frontend so redo on different instance with edited security group with inbound rule of tcp 3000 and 4567 then able to pull and run the apps.
+ ![pull images from dockerhub](https://user-images.githubusercontent.com/125069098/221983428-47caa311-794a-4eda-a223-adce9c753fcd.png)
 
-
-![frontend ec2instance](https://user-images.githubusercontent.com/125069098/221334976-a9129068-3073-494d-9ac1-c1403d64c11b.png)
+ ![run apps](https://user-images.githubusercontent.com/125069098/221983280-469a4258-954b-463e-86e7-a317ca45d0ea.png)
+ ![ec2 frontend](https://user-images.githubusercontent.com/125069098/221982217-526062d9-a8e2-410c-953a-b103fab9ed7b.png)
  
  **Referred the link**
  [ec2 docker install](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/create-container-image.html#create-container-image-install-docker)
