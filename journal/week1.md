@@ -526,7 +526,7 @@ services:
  
  ![docker ec2instance](https://user-images.githubusercontent.com/125069098/221321194-92beff57-ca5f-4692-a405-b5f51acc23e2.png)
  ![ec2instance](https://user-images.githubusercontent.com/125069098/221321279-dc9778ea-080d-42f7-8c53-12fc8e67fd98.png)
- ![securitygroup](https://user-images.githubusercontent.com/125069098/221321358-d0a11117-1bcd-49a0-b6a5-997ef01250e2.png)
+ ![securitygroup](https://user-images.githubusercontent.com/125069098/221975216-da87d505-c406-4fff-a581-5b9bbb1bfa1c.png)
  - Connect to your EC2 instance using the SSH-client.
   chmod 400 free-bootcamp.pem ---change the permission to read for the rsa key.
  - Connect to the SSH-client using the command **ssh -i "free-bootcamp.pem" ec2-user@174.129.55.90**
