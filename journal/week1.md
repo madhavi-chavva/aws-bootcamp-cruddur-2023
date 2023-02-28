@@ -522,7 +522,7 @@ services:
  
  ## Launch an EC2 instance that has docker installed, and pull a container to demonstrate you can run your own docker process.
  
-  - Provision or spin up an instance in AWS with rsa key and security group  with inbound rules ssh,443,80 and download the rsa key into your system.
+  - Provision or spin up an instance in AWS with rsa key and security group  with inbound rules ssh,443,80,3000.4567 and download the rsa key into your system.
  
  ![docker ec2instance](https://user-images.githubusercontent.com/125069098/221321194-92beff57-ca5f-4692-a405-b5f51acc23e2.png)
  ![ec2instance](https://user-images.githubusercontent.com/125069098/221321279-dc9778ea-080d-42f7-8c53-12fc8e67fd98.png)
