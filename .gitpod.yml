@@ -9,10 +9,9 @@ tasks:
       sudo ./aws/install
       cd $THEIA_WORKSPACE_ROOT
   - name: npm-install
-    init: |
-      cd /workspace/aws-bootcamp-cruddur-2023/front-react-js
+    command: |
+      cd front-react-js
       npm i
-      exit
   - name: postgres
     init: |
       curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc|sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/postgresql.gpg
