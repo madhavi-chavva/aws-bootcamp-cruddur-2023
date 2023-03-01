@@ -211,6 +211,14 @@ We need to add these two env vars to our backend-flask in our `docker-compose.ym
 ```
 ![aws trace](https://user-images.githubusercontent.com/125069098/221948724-c5c124f5-9536-4e16-93a5-81f607aa8c58.png)
 
+### Check service data for last 10 minutes
+
+```sh
+EPOCH=$(date +%s)
+aws xray get-service-graph --start-time $(($EPOCH-600)) --end-time $EPOCH
+```
+
+
 
 
 
