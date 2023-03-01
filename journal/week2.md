@@ -287,6 +287,8 @@ Set the env var in your backend-flask for `docker-compose.yml`
 
 > passing AWS_REGION doesn't seems to get picked up by boto3 so pass default region instead
 
+![cloudwatchlog](https://user-images.githubusercontent.com/125069098/222278787-34a31a0f-960a-452f-88b9-d57a21d90562.png)
+
 ![cloudwatch logs](https://user-images.githubusercontent.com/125069098/222221744-14185a3c-3769-43a5-87a5-196dbcfbcfad.png)
 
 ## Rollbar
