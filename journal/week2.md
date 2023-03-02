@@ -364,6 +364,11 @@ def rollbar_test():
 
 [Rollbar Flask Example](https://github.com/rollbar/rollbar-flask-example/blob/master/hello.py)
 
+![rollbar](https://user-images.githubusercontent.com/125069098/222280298-db2b67f2-3282-4b14-ad95-6298a9c3929f.png)
+![rollvar screenshot](https://user-images.githubusercontent.com/125069098/222280802-f7a83afa-79fd-41d7-af6d-eb14e54b2f07.png)
+![rollbar screenshot2](https://user-images.githubusercontent.com/125069098/222281896-a471b1e1-2a9c-48d8-acc4-6c9ebf6b8ab8.png)
+![rollbar typeerror](https://user-images.githubusercontent.com/125069098/222282076-b743daa7-8998-4975-8f40-f78a93703f2b.png)
+
 
 
 
