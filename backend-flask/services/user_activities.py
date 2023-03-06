@@ -11,12 +11,12 @@ class UserActivities:
 
     now = datetime.now(timezone.utc).astimezone()
      # x-ray -------
-    dict = {
-      "now": now.isoformat()
-    }
-    subsegment = xray_recorder.begin_subsegment('mock-data')
-    subsegment.put_annotation('key', 'value')
-    subsegment.put_metadata('key', dict, 'namespace')
+    #dict = {
+    #  "now": now.isoformat()
+    #}
+    #subsegment = xray_recorder.begin_subsegment('mock-data')
+    #subsegment.put_annotation('key', 'value')
+    #subsegment.put_metadata('key', dict, 'namespace')
 
     if user_handle == None or len(user_handle) < 1:
       model['errors'] = ['blank_user_handle']
