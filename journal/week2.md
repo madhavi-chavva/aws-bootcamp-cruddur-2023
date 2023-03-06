@@ -169,6 +169,13 @@ aws xray create-group \
 
 ![xray group](https://user-images.githubusercontent.com/125069098/221940669-04d3fa33-7d68-45ed-9a7a-3fc538588e22.png)
 
+![xray home activities](https://user-images.githubusercontent.com/125069098/223182301-c8662e8e-a737-4a3f-98a3-4421b397eff3.png)
+
+![xray mock data](https://user-images.githubusercontent.com/125069098/223181479-4700d293-5051-40d4-bf7d-f1192ce02394.png)
+
+
+
+
 ```sh
 aws xray create-sampling-rule --cli-input-json file://aws/json/xray.json
 ```
