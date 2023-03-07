@@ -1,6 +1,9 @@
 import './HomeFeedPage.css';
 import React from "react";
 
+// cognito
+import { Auth } from 'aws-amplify';
+
 import DesktopNavigation  from '../components/DesktopNavigation';
 import DesktopSidebar     from '../components/DesktopSidebar';
 import ActivityFeed from '../components/ActivityFeed';
@@ -10,7 +13,7 @@ import ReplyForm from '../components/ReplyForm';
 // [TODO] Authenication
 import Cookies from 'js-cookie'
 
-import { Auth } from 'aws-amplify';
+
 
 export default function HomeFeedPage() {
   const [activities, setActivities] = React.useState([]);
