@@ -236,4 +236,161 @@ Use the same credentials to signin the cruddur app signin
 signin with the username and password in the cruddur app signin
 ![image](https://user-images.githubusercontent.com/125069098/223285005-37c8047b-e52d-421a-b24e-15454f7b5a82.png)
 
+### Force change password
+ In we can do this by using aws-cli command
+ 
+ ```aws-cli
+ aws cognito-idp admin-set-user-password \
+  --user-pool-id <your-user-pool-id> \
+  --username <username> \
+  --password <password> \
+  --permanent
+  ```
+ 
+![sign in app](https://user-images.githubusercontent.com/125069098/223477034-1852c166-5636-47ae-bdae-f9683c80260f.png)
+
+![image](https://user-images.githubusercontent.com/125069098/223481892-b4155325-9ac2-4757-91b8-a27b55ea70fd.png)
+## Signup Page
+
+```js
+import { Auth } from 'aws-amplify';
+
+const [cognitoErrors, setCognitoErrors] = React.useState('');
+
+const onsubmit = async (event) => {
+  event.preventDefault();
+  setErrors('')
+  try {
+      const { user } = await Auth.signUp({
+        username: email,
+        password: password,
+        attributes: {
+            name: name,
+            email: email,
+            preferred_username: username,
+        },
+        autoSignIn: { // optional - enables auto sign in after user is confirmed
+            enabled: true,
+        }
+      });
+      console.log(user);
+      window.location.href = `/confirm?email=${email}`
+  } catch (error) {
+      console.log(error);
+      setErrors(error.message)
+  }
+  return false
+}
+
+let errors;
+if (cognitoErrors){
+  errors = <div className='errors'>{cognitoErrors}</div>;
+}
+
+//before submit component
+{errors}
+```
+
+## Confirmation Page
+
+```js
+const resend_code = async (event) => {
+  setErrors('')
+  try {
+    await Auth.resendSignUp(email);
+    console.log('code resent successfully');
+    setCodeSent(true)
+  } catch (err) {
+    // does not return a code
+    // does cognito always return english
+    // for this to be an okay match?
+    console.log(err)
+    if (err.message == 'Username cannot be empty'){
+      setErrors("You need to provide an email in order to send Resend Activiation Code")   
+    } else if (err.message == "Username/client id combination not found."){
+      setErrors("Email is invalid or cannot be found.")   
+    }
+  }
+}
+
+const onsubmit = async (event) => {
+  event.preventDefault();
+  setErrors('')
+  try {
+    await Auth.confirmSignUp(email, code);
+    window.location.href = "/"
+  } catch (error) {
+    setErrors(error.message)
+  }
+  return false
+}
+```
+
+
+![signup confirmation page](https://user-images.githubusercontent.com/125069098/223499570-515ef0f9-7bb3-4462-9e92-df3ae6fe6574.png)
+![cognito user exist](https://user-images.githubusercontent.com/125069098/223500593-08874920-4826-405c-af1c-f4e33b10e00e.png)
+![signin app](https://user-images.githubusercontent.com/125069098/223501988-66a6f97c-ad9d-410e-88b4-fef51662f3e0.png)
+
+## Recovery Page
+
+```js
+import { Auth } from 'aws-amplify';
+
+const onsubmit_send_code = async (event) => {
+  event.preventDefault();
+  setCognitoErrors('')
+  Auth.forgotPassword(username)
+  .then((data) => setFormState('confirm_code') )
+  .catch((err) => setCognitoErrors(err.message) );
+  return false
+}
+
+const onsubmit_confirm_code = async (event) => {
+  event.preventDefault();
+  setCognitoErrors('')
+  if (password == passwordAgain){
+    Auth.forgotPasswordSubmit(username, code, password)
+    .then((data) => setFormState('success'))
+    .catch((err) => setCognitoErrors(err.message) );
+  } else {
+    setCognitoErrors('Passwords do not match')
+  }
+  return false
+}
+
+
+![recovery page](https://user-images.githubusercontent.com/125069098/223503949-15492caa-de4c-4cd4-bf51-aeb8752ccd4f.png)
+![recovery confirmation](https://user-images.githubusercontent.com/125069098/223504594-c33d436f-3905-4f0b-a404-43e3484c6d4c.png)
+![signin](https://user-images.githubusercontent.com/125069098/223505142-755a1913-a3de-4e34-9843-a68de5234082.png)
+
+## Authenticating Server Side
+
+Add in the `HomeFeedPage.js` a header eto pass along the access token
+
+```js
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem("access_token")}`
+  }
+```
+
+In the `app.py`
+
+```py
+cors = CORS(
+  app, 
+  resources={r"/api/*": {"origins": origins}},
+  headers=['Content-Type', 'Authorization'], 
+  expose_headers='Authorization',
+  methods="OPTIONS,GET,HEAD,POST"
+)
+```
+Add a Flask-AWSCognito to the requirements.txt in the backend-flask folder
+
+```py
+pip install -r requirements.txt
+```
+
+
+
+
 
