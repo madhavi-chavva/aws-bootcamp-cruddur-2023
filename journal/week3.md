@@ -357,7 +357,7 @@ const onsubmit_confirm_code = async (event) => {
   }
   return false
 }
-
+```
 
 ![recovery page](https://user-images.githubusercontent.com/125069098/223503949-15492caa-de4c-4cd4-bf51-aeb8752ccd4f.png)
 ![recovery confirmation](https://user-images.githubusercontent.com/125069098/223504594-c33d436f-3905-4f0b-a404-43e3484c6d4c.png)
