@@ -11,8 +11,12 @@
 		"vscode": {
 			"extensions": [
 				"ms-azuretools.vscode-docker",
-				"ms-python.python"
-			]
+				"ms-python.python",
+				"dracula-theme.theme-dracula"
+			],
+			"settings": {
+				"workbench.colorTheme": "Default Dark+ Experimental"
+			  }
 		}
 	}
 
