@@ -363,6 +363,11 @@ const onsubmit_confirm_code = async (event) => {
 ![recovery confirmation](https://user-images.githubusercontent.com/125069098/223504594-c33d436f-3905-4f0b-a404-43e3484c6d4c.png)
 ![signin](https://user-images.githubusercontent.com/125069098/223505142-755a1913-a3de-4e34-9843-a68de5234082.png)
 
+## Forgot password
+![forgot password](https://user-images.githubusercontent.com/125069098/224359888-62d6152e-cea0-4bb4-b01e-9272e4650b68.png)
+![recovery password](https://user-images.githubusercontent.com/125069098/224360521-8fbcd7e8-46e8-4812-85b8-999fb62511d4.png)
+![success recovery password](https://user-images.githubusercontent.com/125069098/224360751-d9d95184-0b62-4729-b4c7-8845e26757b1.png)
+
 ## Authenticating Server Side
 
 Add in the `HomeFeedPage.js` a header eto pass along the access token
