@@ -376,6 +376,25 @@ def rollbar_test():
 ![rollbar screenshot2](https://user-images.githubusercontent.com/125069098/222281896-a471b1e1-2a9c-48d8-acc4-6c9ebf6b8ab8.png)
 ![rollbar typeerror](https://user-images.githubusercontent.com/125069098/222282076-b743daa7-8998-4975-8f40-f78a93703f2b.png)
 
+## Xray subsegment of user_activities
+Modify the code in the user_activities
+```py
+subsegment = xray_recorder.begin_subsegment('mock-data')
+      # xray ---
+      dict = {
+        "now": now.isoformat(),
+        "results-size": len(model['data'])
+      }
+      subsegment.put_metadata('key', dict, 'namespace')
+      xray_recorder.end_subsegment()
+    finally:  
+    #  # Close the segment
+      xray_recorder.end_subsegment()
+ ```     
+      
+![image](https://user-images.githubusercontent.com/125069098/224727900-f9efdce5-c54b-40e1-9e62-c2c737f9da6b.png)
+
+
 
 
 
