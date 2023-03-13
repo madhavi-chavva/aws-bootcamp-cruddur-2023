@@ -394,6 +394,7 @@ Add a Flask-AWSCognito to the requirements.txt in the backend-flask folder
 ```py
 pip install -r requirements.txt
 ```
+
 In the create a new file to validate the JWT in backend-flask folder/lib/cognito_jwt_token.py
 ```py
 import time
@@ -406,8 +407,7 @@ class FlaskAWSCognitoError(Exception):
 class TokenVerifyError(Exception):
   pass
 def extract_access_token(request_headers):
-  
-    
+     
     access_token = None
     auth_header = request_headers.get("Authorization")
     if auth_header and " " in auth_header:
@@ -430,8 +430,8 @@ class CognitoJwtToken:
     self._load_jwk_keys()
 
   def _load_jwk_keys(self):
-    #keys_url = f"https://cognito-idp.{self.region}.amazonaws.com/{self.user_pool_id}/.well-known/jwks.json"
-    keys_url = f"https://cognito-idp.<region>.amazonaws.com/<poolid>/.well-known/jwks.json" 
+    keys_url = f"https://cognito-idp.{self.region}.amazonaws.com/{self.user_pool_id}/.well-known/jwks.json"
+    #keys_url = f"https://cognito-idp.<region>.amazonaws.com/<poolid>/.well-known/jwks.json" 
     try:
       response = self.request_client(keys_url)
       self.jwk_keys = response.json()["keys"]
@@ -508,7 +508,7 @@ class CognitoJwtToken:
     self.claims = claims
     return claims
 ```
-Modify the code in the app.py in backend-flask folder
+Modify the code in the **app.py** in backend-flask folder
 
 ```py
 #Authorization JWT
@@ -541,13 +541,13 @@ def data_home():
     data = HomeActivities.run()
   return data, 200
 ```
-Modify the code in docker-compose.yml to include the environments
+Modify the code in **docker-compose.yml** to include the environments
 ```docker
       AWS_COGNITO_USER_POOL_ID: "ca-central-1_CQ4wDfnwc"
       AWS_COGNITO_USER_POOL_CLIENT_ID: "5b6ro31g97urk767adrbrdj1g5"
  ```
  
- Modify the code in the Home_Activities.py in backend-flask folder
+ Modify the code in the **Home_Activities.py** in backend-flask folder
  
  ```py
  class HomeActivities:
@@ -565,11 +565,22 @@ Modify the code in docker-compose.yml to include the environments
           'replies': []
         }
         results.insert(0,extra_crud)
-```        
-
-
-
+```     
 ![signin](https://user-images.githubusercontent.com/125069098/224725849-a5bec431-404b-4b84-97fc-cfa34a094329.png)
+
+Modify the code in the **ProfileInfo.py**
+
+```py
+const signOut = async () => {
+    try {
+        await Auth.signOut({ global: true });
+        window.location.href = "/"
+        localStorage.removeItem("access_token")
+    } catch (error) {
+        console.log('error signing out: ', error);
+    }
+  }
+```  
 ![signout](https://user-images.githubusercontent.com/125069098/224725972-7b6cbd25-48c4-4b56-8414-e36dc21e46a9.png)
 
 
