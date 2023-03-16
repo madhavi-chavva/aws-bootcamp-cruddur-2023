@@ -308,6 +308,174 @@ psql $URL cruddur < $seed_path
 ```
 ![image](https://user-images.githubusercontent.com/125069098/225387659-55d0e92f-e6d9-4cc7-912a-d36a21ea1e6a.png)
 
+https://askubuntu.com/questions/595269/use-sed-on-a-string-variable-rather-than-a-file
+
+## See what connections we are using
+```sh
+NO_DB_CONNECTION_URL=$(sed 's/\/cruddur//g' <<<"$CONNECTION_URL")
+psql $NO_DB_CONNECTION_URL -c "select pid as process_id, \
+       usename as user,  \
+       datname as db, \
+       client_addr, \
+       application_name as app,\
+       state \
+from pg_stat_activity;"
+```
+```bash
+#! /usr/bin/bash
+
+CYAN='\033[1;36m'
+NO_COLOR='\033[0m'
+LABEL="db-sessions"
+printf "${CYAN}== ${LABEL}${NO_COLOR}\n"
+
+if [ "$1" = "prod" ]; then
+  echo "Running in production mode"
+  URL=$PROD_CONNECTION_URL
+else
+  URL=$CONNECTION_URL
+fi
+
+
+NO_DB_URL=$(sed 's/\/cruddur//g' <<<"$URL")
+psql $NO_DB_URL -c "select pid as process_id, \
+       usename as user,  \
+       datname as db, \
+       client_addr, \
+       application_name as app,\
+       state \
+from pg_stat_activity;"
+```
+![sessions](https://user-images.githubusercontent.com/125069098/225635231-bbfa7801-8151-41f8-a6f7-430a7b0b1ee5.png)
+
+Do the Docker-compose down and up again to see only the active session
+
+![image](https://user-images.githubusercontent.com/125069098/225637577-df99e4b5-86e8-4b3f-b6d0-7df57713c222.png)
+
+## Easily setup (reset) everything for our database
+
+
+```sh
+#! /usr/bin/bash
+-e # stop if it fails at any point
+
+#echo "==== db-setup"
+
+bin_path="$(realpath .)/bin"
+
+source "$bin_path/db-drop"
+source "$bin_path/db-create"
+source "$bin_path/db-schema-load"
+source "$bin_path/db-seed"
+```
+![db-setup](https://user-images.githubusercontent.com/125069098/225639536-206724a9-5bbb-4167-b589-3d46d4ef01ba.png)
+
+## Make prints nicer
+
+We we can make prints for our shell scripts coloured so we can see what we're doing:
+
+https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux
+
+## Install postgres drivers for python
+
+https://www.psycopg.org/psycopg3/
+
+We'll add the following to our `requirments.txt`
+
+```
+psycopg[binary]
+psycopg[pool]
+```
+
+```
+pip install -r requirements.txt
+```
+
+## DB Object and Connection Pool
+
+`lib/db.py`
+```py
+from psycopg_pool import ConnectionPool
+import os
+
+def query_wrap_object(template):
+  sql = f"""
+  (SELECT COALESCE(row_to_json(object_row),'{{}}'::json) FROM (
+  {template}
+  ) object_row);
+  """
+  return sql
+
+def query_wrap_array(template):
+  sql = f"""
+  (SELECT COALESCE(array_to_json(array_agg(row_to_json(array_row))),'[]'::json) FROM (
+  {template}
+  ) array_row);
+  """
+  return sql
+
+connection_url = os.getenv("CONNECTION_URL")
+pool = ConnectionPool(connection_url)
+```
+In our home activities we'll replace our mock endpoint with real api call
+
+```py
+from lib.db import pool, query_wrap_array
+       
+      sql = query_wrap_array("""
+      SELECT
+        activities.uuid,
+        users.display_name,
+        users.handle,
+        activities.message,
+        activities.replies_count,
+        activities.reposts_count,
+        activities.likes_count,
+        activities.reply_to_activity_uuid,
+        activities.expires_at,
+        activities.created_at
+      FROM public.activities
+      LEFT JOIN public.users ON users.uuid = activities.user_uuid
+      ORDER BY activities.created_at DESC
+      """)
+      print(sql)
+      with pool.connection() as conn:
+        with conn.cursor() as cur:
+          cur.execute(sql)
+          # this will return a tuple
+          # the first field being the data
+          json = cur.fetchone()
+      return json[0]
+```  
+![sql query working](https://user-images.githubusercontent.com/125069098/225669198-3683e65c-c5fa-4701-9af7-8b037a8f7bea.png)
+
+![driver sql working](https://user-images.githubusercontent.com/125069098/225668309-e8e954a6-3df6-457c-93d9-c1c234b90a0e.png)
+
+Connect to RDS
+
+> This will take about 10-15 mins
+
+We can temporarily stop an RDS instance for 4 days when we aren't using it.
+
+## Connect to RDS via Gitpod
+
+![Hanging to connnect RDS](https://user-images.githubusercontent.com/125069098/225678794-f7caddc8-b3ff-4a87-a169-d9eb3b09c94d.png)
+
+
+In order to connect to the RDS instance we need to provide our Gitpod IP and whitelist for inbound traffic on port 5432.
+
+```sh
+GITPOD_IP=$(curl ifconfig.me)
+```
+
+We'll create an inbound rule for Postgres (5432) and provide the GITPOD ID.
+
+We'll get the security group rule id so we can easily modify it in the future from the terminal here in Gitpod.
+
+
+
+
+
 
 
 
