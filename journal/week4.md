@@ -472,6 +472,184 @@ We'll create an inbound rule for Postgres (5432) and provide the GITPOD ID.
 
 We'll get the security group rule id so we can easily modify it in the future from the terminal here in Gitpod.
 
+![edit inbound rule to gitpod ip for postgres](https://user-images.githubusercontent.com/125069098/225686008-c852b412-e7b4-4462-818b-082777a87d9a.png)
+
+![connect to RDS](https://user-images.githubusercontent.com/125069098/225685872-649c4291-460e-4024-8cfd-c38243350f94.png)
+
+cruddur: \l To list the databases
+
+![image](https://user-images.githubusercontent.com/125069098/225686462-bcbbd038-2e8e-464c-b83b-0e26757ec382.png)
+
+```sh 
+export DB_SG_ID="sg-09a083de1a3d3ba3e"
+gp env DB_SG_ID="sg-09a083de1a3d3ba3e"
+
+export DB_SG_RULE_ID="sgr-08525ddf8e5afbe53"
+gp env DB_SG_RULE_ID="sgr-08525ddf8e5afbe53"
+```
+Whenever we need to update our security groups we can do this for access.
+
+```sh
+aws ec2 modify-security-group-rules \
+    --group-id $DB_SG_ID \
+    --security-group-rules "SecurityGroupRuleId=$DB_SG_RULE_ID,SecurityGroupRule={Description=GITPOD,IpProtocol=tcp,FromPort=5432,ToPort=5432,CidrIpv4=$GITPOD_IP/32}"
+```
+
+
+![image](https://user-images.githubusercontent.com/125069098/225689873-a1e2d3e9-3b90-4fde-b9ea-b3211a20ceee.png)
+![image](https://user-images.githubusercontent.com/125069098/225690785-33ed38c7-9b51-4bc5-aa0a-d7b643209fa1.png)
+
+ Add the command to postgres to add the gitpod ip when you login to gitpod
+```docker 
+command: |
+      export GITPOD_IP=$(curl ifconfig.me)
+      source  "$THEIA_WORKSPACE_ROOT/backend-flask/db-update-sg-rule"
+```
+
+![image](https://user-images.githubusercontent.com/125069098/225698193-bc88e8c1-1efa-4b6c-8618-0416fc971fd5.png)
+
+![image](https://user-images.githubusercontent.com/125069098/225700357-08c871be-7cb1-43f9-8e23-627753c7f601.png)
+
+Create lambda fucntion in AWS console
+## Setup Cognito post confirmation lambda
+
+### Create the handler function
+
+- Create lambda in same vpc as rds instance Python 3.8
+- Add a layer for psycopg2 with one of the below methods for development or production 
+
+ENV variables needed for the lambda environment.
+```
+PG_HOSTNAME='cruddur-db-instance.czz1cuvepklc.ca-central-1.rds.amazonaws.com'
+PG_DATABASE='cruddur'
+PG_USERNAME='root'
+PG_PASSWORD='huEE33z2Qvl383'
+```
+
+The function
+```
+import json
+import psycopg2
+
+def lambda_handler(event, context):
+    user = event['request']['userAttributes']
+    try:
+        conn = psycopg2.connect(
+            host=(os.getenv('PG_HOSTNAME')),
+            database=(os.getenv('PG_DATABASE')),
+            user=(os.getenv('PG_USERNAME')),
+            password=(os.getenv('PG_SECRET'))
+        )
+        cur = conn.cursor()
+        cur.execute("INSERT INTO users (display_name, handle, cognito_user_id) VALUES(%s, %s, %s)", (user['name'], user['email'], user['sub']))
+        conn.commit() 
+
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+        
+    finally:
+        if conn is not None:
+            cur.close()
+            conn.close()
+            print('Database connection closed.')
+
+    return event
+```
+### Development
+https://github.com/AbhimanyuHK/aws-psycopg2
+
+`
+This is a custom compiled psycopg2 C library for Python. Due to AWS Lambda missing the required PostgreSQL libraries in the AMI image, we needed to compile psycopg2 with the PostgreSQL libpq.so library statically linked libpq library instead of the default dynamic link.
+`
+
+`EASIEST METHOD`
+
+Some precompiled versions of this layer are available publicly on AWS freely to add to your function by ARN reference.
+
+https://github.com/jetbridge/psycopg2-lambda-layer
+
+- Just go to Layers + in the function console and add a reference for your region
+
+`arn:aws:lambda:ca-central-1:898466741470:layer:psycopg2-py38:1`
+
+
+Alternatively you can create your own development layer by downloading the psycopg2-binary source files from https://pypi.org/project/psycopg2-binary/#files
+
+- Download the package for the lambda runtime environment: [psycopg2_binary-2.9.5-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl](https://files.pythonhosted.org/packages/36/af/a9f06e2469e943364b2383b45b3209b40350c105281948df62153394b4a9/psycopg2_binary-2.9.5-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl)
+
+- Extract to a folder, then zip up that folder and upload as a new lambda layer to your AWS account
+
+### Production
+
+Follow the instructions on https://github.com/AbhimanyuHK/aws-psycopg2 to compile your own layer from postgres source libraries for the desired version.
+
+![image](https://user-images.githubusercontent.com/125069098/225702312-a103a0c2-d975-424a-8687-eb9145a76cf4.png)
+
+## Add the function to Cognito 
+
+Under the user pool properties add the function as a `Post Confirmation` lambda trigger.
+
+
+```py
+import json
+import psycopg2
+import os
+
+def lambda_handler(event, context):
+    user = event['request']['userAttributes']
+    print(user)
+
+    user_display_name = user['name']
+    user_email        = user['email']
+    user_handle       = user['preferred_username']
+    user_cognito_id   = user['sub']
+
+    try:
+        #conn = psycopg2.connect(os.getenv('CONNECTION_URL'))
+        #cur = conn.cursor()
+		
+        sql = f"""
+          INSERT INTO public.users (
+            display_name,
+            email, 
+            handle, 
+            cognito_user_id
+            ) 
+          VALUES(
+            '{user_display_name}', 
+            '{user_email}',
+            '{user_handle}',
+            '{user_cognito_id}'
+          )
+        """ 
+        print("SQL statement ---------")
+        print(sql)
+        conn = psycopg2.connect(os.getenv('CONNECTION_URL'))
+        cur = conn.cursor()
+        cur.execute(sql)
+        conn.commit() 
+
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+        
+    finally:
+        if conn is not None:
+            cur.close()
+            conn.close()
+            print('Database connection closed.')
+
+    return event
+```
+
+
+
+
+
+
+
+
+
+
 
 
 
