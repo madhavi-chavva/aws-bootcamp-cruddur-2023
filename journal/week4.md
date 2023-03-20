@@ -597,6 +597,7 @@ import os
 
 def lambda_handler(event, context):
     user = event['request']['userAttributes']
+    print("userAttributes")
     print(user)
 
     user_display_name = user['name']
@@ -605,42 +606,43 @@ def lambda_handler(event, context):
     user_cognito_id   = user['sub']
 
     try:
-        #conn = psycopg2.connect(os.getenv('CONNECTION_URL'))
-        #cur = conn.cursor()
-		
-        sql = f"""
-          INSERT INTO public.users (
-            display_name,
-            email, 
-            handle, 
-            cognito_user_id
-            ) 
-          VALUES(
-            '{user_display_name}', 
-            '{user_email}',
-            '{user_handle}',
-            '{user_cognito_id}'
-          )
-        """ 
-        print("SQL statement ---------")
-        print(sql)
-        conn = psycopg2.connect(os.getenv('CONNECTION_URL'))
-        cur = conn.cursor()
-        cur.execute(sql)
-        conn.commit() 
+      print('entered-try')  
+      sql = f"""
+         INSERT INTO public.users (
+          display_name, 
+          email,
+          handle, 
+          cognito_user_id
+          ) 
+        VALUES(
+          '{user_display_name}', 
+          '{user_email}',
+          '{user_handle}',
+          '{user_cognito_id}'
+        )
+      """ 
+      print("SQL statement ---------")
+      print(sql)
+      conn = psycopg2.connect(os.getenv('CONNECTION_URL'))
+      cur = conn.cursor()
+      cur.execute(sql)
+      conn.commit() 
 
     except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
+      print(error)
         
     finally:
-        if conn is not None:
-            cur.close()
-            conn.close()
-            print('Database connection closed.')
-
+      if conn is not None:
+          cur.close()
+          conn.close()
+          print('Database connection closed.')
     return event
 ```
+![connected prod](https://user-images.githubusercontent.com/125069098/226068489-7dff01ea-025c-4e79-ab9d-ee2abcb15f45.png)
 
+![user data prod](https://user-images.githubusercontent.com/125069098/226069027-208d1b46-7abe-468b-91e7-ed621d320c89.png)
+
+![crud](https://user-images.githubusercontent.com/125069098/226069243-a3da65c1-c769-4824-b452-39eb8fb67bfc.png)
 
 
 
