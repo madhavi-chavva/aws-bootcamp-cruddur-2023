@@ -644,6 +644,257 @@ def lambda_handler(event, context):
 
 ![crud](https://user-images.githubusercontent.com/125069098/226069243-a3da65c1-c769-4824-b452-39eb8fb67bfc.png)
 
+## Code change for the create activity 
+'backend-flask/db/sql/activities/create.sql'
+```sql
+INSERT INTO public.activities (
+  user_uuid,
+  message,
+  expires_at
+)
+VALUES (
+  (SELECT uuid 
+    FROM public.users 
+    WHERE users.handle = %(handle)s
+    LIMIT 1
+  ),
+  %(message)s,
+  %(expires_at)s
+) RETURNING uuid;
+```
+'backend-flask/db/sql/activities/object.sql'
+```sql
+SELECT
+  activities.uuid,
+  users.display_name,
+  users.handle,
+  activities.message,
+  activities.created_at,
+  activities.expires_at
+FROM public.activities
+INNER JOIN public.users ON users.uuid = activities.user_uuid 
+WHERE 
+  activities.uuid = %(uuid)s
+```
+'backend-flask/db/sql/activities/home.sql'
+```sql
+SELECT
+  activities.uuid,
+  users.display_name,
+  users.handle,
+  activities.message,
+  activities.replies_count,
+  activities.reposts_count,
+  activities.likes_count,
+  activities.reply_to_activity_uuid,
+  activities.expires_at,
+  activities.created_at
+FROM public.activities
+LEFT JOIN public.users ON users.uuid = activities.user_uuid
+ORDER BY activities.created_at DESC
+```
+## Creata a python class to pass the sql file (which we have created above) and validate it and store it in the RDS database.
+```py
+import re
+import sys
+from flask import current_app as app
+
+class Db:
+  def __init__(self):
+    self.init_pool()
+
+  def template(self,*args):
+    pathing = list((app.root_path,'db','sql',) + args)
+    pathing[-1] = pathing[-1] + ".sql"
+
+    template_path = os.path.join(*pathing)
+
+    green = '\033[92m'
+    no_color = '\033[0m'
+    print("\n")
+    print(f'{green} Load SQL Template: {template_path} {no_color}')
+
+    with open(template_path, 'r') as f:
+      template_content = f.read()
+    return template_content
+
+  def init_pool(self):
+    connection_url = os.getenv("CONNECTION_URL")
+    self.pool = ConnectionPool(connection_url)
+  # we want to commit data such as an insert
+  # be sure to check for RETURNING in all uppercases
+  def print_params(self,params):
+    blue = '\033[94m'
+    no_color = '\033[0m'
+    print(f'{blue} SQL Params:{no_color}')
+    for key, value in params.items():
+      print(key, ":", value)
+
+  def print_sql(self,title,sql):
+    cyan = '\033[96m'
+    no_color = '\033[0m'
+    print(f'{cyan} SQL STATEMENT-[{title}]------{no_color}')
+    print(sql)
+  def query_commit(self,sql,params={}):
+    self.print_sql('commit with returning',sql)
+
+    pattern = r"\bRETURNING\b"
+    is_returning_id = re.search(pattern, sql)
+
+    try:
+      with self.pool.connection() as conn:
+        cur =  conn.cursor()
+        cur.execute(sql,params)
+        if is_returning_id:
+          returning_id = cur.fetchone()[0]
+        conn.commit() 
+        if is_returning_id:
+          return returning_id
+    except Exception as err:
+      self.print_sql_err(err)
+  # when we want to return a json object
+  def query_array_json(self,sql,params={}):
+    self.print_sql('array',sql)
+
+    wrapped_sql = self.query_wrap_array(sql)
+    with self.pool.connection() as conn:
+      with conn.cursor() as cur:
+        cur.execute(wrapped_sql,params)
+        json = cur.fetchone()
+        return json[0]
+  # When we want to return an array of json objects
+  def query_object_json(self,sql,params={}):
+
+    self.print_sql('json',sql)
+    self.print_params(params)
+    wrapped_sql = self.query_wrap_object(sql)
+
+    with self.pool.connection() as conn:
+      with conn.cursor() as cur:
+        cur.execute(wrapped_sql,params)
+        json = cur.fetchone()
+        if json == None:
+          "{}"
+        else:
+          return json[0]
+   def query_wrap_object(self,template):
+    sql = f"""
+    (SELECT COALESCE(row_to_json(object_row),'{{}}'::json) FROM (
+    {template}
+    ) object_row);
+    """
+    return sql
+  def query_wrap_array(self,template):
+    sql = f"""
+    (SELECT COALESCE(array_to_json(array_agg(row_to_json(array_row))),'[]'::json) FROM (
+    {template}
+    ) array_row);
+    """
+    return sql
+  def print_sql_err(self,err):
+    # get details about the exception
+    err_type, err_obj, traceback = sys.exc_info()
+
+    # get the line number when exception occured
+    line_num = traceback.tb_lineno
+
+    # print the connect() error
+    print ("\npsycopg ERROR:", err, "on line number:", line_num)
+    print ("psycopg traceback:", traceback, "-- type:", err_type)
+
+    # print the pgcode and pgerror exceptions
+    print ("pgerror:", err.pgerror)
+    print ("pgcode:", err.pgcode, "\n")
+
+db = Db()
+```
+ 'backend-flask/services/create_activity.py'
+ 
+ ```py
+ from lib.db import db
+ 
+ else:
+      expires_at = (now + ttl_offset)
+      uuid = CreateActivity.create_activity(user_handle,message,expires_at)
+
+      object_json = CreateActivity.query_object_activity(uuid)
+      model['data'] = object_json
+    return model
+
+  def create_activity(handle, message, expires_at):
+    sql = db.template('activities','create')
+    uuid = db.query_commit(sql,{
+      'handle': handle,
+      'message': message,
+      'expires_at': expires_at
+    })
+    return uuid
+    
+  def query_object_activity(uuid):
+    sql = db.template('activities','object')
+    return db.query_object_json(sql,{
+      'uuid': uuid
+    })
+ ```   
+'backend-flask/services/home_activities.py'
+```py
+from lib.db import db
+
+sql = db.template('activities','home')
+results = db.query_array_json(sql)
+```
+'backend-flask/app.py'
+```py
+@app.route("/api/activities", methods=['POST','OPTIONS'])
+@cross_origin()
+def data_activities():
+  user_handle = request.json["user_handle"]
+  message = request.json['message']
+  ttl = request.json['ttl']
+  model = CreateActivity.run(message, user_handle, ttl)
+  if model['errors'] is not None:
+    return model['errors'], 422
+  else:
+    return model['data'], 200
+  return
+```  
+`frontend-react-js/src/pages/HomeFeedPage.js'
+```javascript
+ <DesktopNavigation user={user} active={'home'} setPopped={setPopped} />
+      <div className='content'>
+        <ActivityForm
+          user_handle={user}  
+          popped={popped}
+          setPopped={setPopped} 
+          setActivities={setActivities} 
+        />
+ ```
+ `frontend-react-js/src/components/ActivityForm.js'
+ ```js
+ const onsubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const backend_url = `${process.env.REACT_APP_BACKEND_URL}/api/activities`
+      console.log('onsubmit payload', message)
+      const res = await fetch(backend_url, {
+        method: "POST",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          user_handle: props.user_handle.handle,
+          message: message,
+          ttl: ttl
+        }),
+      });
+```
+![crud Activities post](https://user-images.githubusercontent.com/125069098/226466559-755f8863-065f-4c83-8ac2-23a6f87e018a.png)
+
+![select * from activities table](https://user-images.githubusercontent.com/125069098/226467147-9f50de24-bf0d-4eef-a4c1-e48fdd569f20.png)
+
+
+
 
 
 
