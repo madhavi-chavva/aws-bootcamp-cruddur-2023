@@ -16,7 +16,7 @@ if len(sys.argv) == 2:
 dynamodb = boto3.client('dynamodb',**attrs)
 table_name = 'cruddur-messages'
 
-message_group_uuid = "3c3b1279-8c77-468b-86e0-6fe3e9204998"
+message_group_uuid = "5ae290ed-55d1-47a0-bc6d-fe2bc2700399"
 
 #"5ae290ed-55d1-47a0-bc6d-fe2bc2700399"
 

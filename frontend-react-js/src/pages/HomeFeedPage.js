@@ -1,9 +1,6 @@
 import './HomeFeedPage.css';
 import React from "react";
 
-// cognito
-import { Auth } from 'aws-amplify';
-
 import DesktopNavigation  from '../components/DesktopNavigation';
 import DesktopSidebar     from '../components/DesktopSidebar';
 import ActivityFeed from '../components/ActivityFeed';
