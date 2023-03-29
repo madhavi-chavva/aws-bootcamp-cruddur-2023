@@ -266,13 +266,220 @@ print(json.dumps(response, sort_keys=True, indent=2))
 ##  Implement Conversations with DynamoDB
 ![image](https://user-images.githubusercontent.com/125069098/227278586-16e14d71-4f4b-4693-84a3-115eaf1f0074.png)
 ![image](https://user-images.githubusercontent.com/125069098/227280043-1e4edacc-47ba-46b7-8c0b-a406872f11e0.png)
-![image](https://user-images.githubusercontent.com/125069098/227282749-3d2d6b26-1dbd-48e7-a070-8d84536b212a.png)
 
 
-![image](https://user-images.githubusercontent.com/125069098/227404075-0150eb5b-5694-46ba-b29d-d9ef944b714d.png)
-![image](https://user-images.githubusercontent.com/125069098/227404586-4b6a687c-c8fb-4044-85fe-e99f2ca0cde7.png)
+===
+![db_setup](https://user-images.githubusercontent.com/125069098/228560214-1f87ff05-5811-4dc7-a47a-08621fc1ddf2.png)
+![ddb_schema-load](https://user-images.githubusercontent.com/125069098/228560751-c5169a31-9433-48c1-8e2e-4fc28e19f3dd.png)
+![ddb_seed](https://user-images.githubusercontent.com/125069098/228561249-d5dac021-8225-4b8c-9924-0846a6429dbb.png)
+![ddb_scan](https://user-images.githubusercontent.com/125069098/228562192-a6597bbd-d3f0-4920-bfe7-1d9161454ccf.png)
+![ddb_pattern_get-conversations](https://user-images.githubusercontent.com/125069098/228562601-d4836a03-86e7-4e00-bed7-242de1a96c1e.png)
+![ddb_pattern_get-conversations1](https://user-images.githubusercontent.com/125069098/228562853-aefc7a21-6df5-44d1-a385-7beb26cceb3f.png)
+![ddb_pattern_list-conversations](https://user-images.githubusercontent.com/125069098/228563849-5b113c7d-76b5-4e48-9389-eb480c8561a8.png)
+![ddb_pattern_list-conversations1](https://user-images.githubusercontent.com/125069098/228564102-d22979db-bb55-4fb2-80a2-b8bff53b4fec.png)
+![update bayko with cognito_user_id](https://user-images.githubusercontent.com/125069098/228564816-4a35d6ec-f790-41ae-8eb5-15ec1159f2f9.png)
+![users table](https://user-images.githubusercontent.com/125069098/228565153-405c492e-eefb-4ab3-98e5-84fd65bb5aa4.png)
 
-![update cognito_user_id](https://user-images.githubusercontent.com/125069098/227583290-28a5f3a9-63fa-404f-92fd-0571e90e3323.png)
+![message_5ae290ed-55d1-47a0-bc6d-fe2bc2700399](https://user-images.githubusercontent.com/125069098/228566214-47492b15-c74a-4f06-a975-3ac5d630f094.png)
+![Post message](https://user-images.githubusercontent.com/125069098/228593886-a5c75545-342f-41d0-9d6b-b73798c6cbbd.png)
+![posted message](https://user-images.githubusercontent.com/125069098/228594067-1ecc8050-61fd-4ba6-b0a3-56575da10e3b.png)
+
+![image](https://user-images.githubusercontent.com/125069098/228593606-8eec499b-0e9a-49c4-a05e-ce52eec855c0.png)
+![new_handler_londo](https://user-images.githubusercontent.com/125069098/228570145-e64602e6-77e1-4750-b168-a0ab0a938dfe.png)
+
+
+### DynamoDB Stream trigger to update message groups
+
+- create a VPC endpoint for dynamoDB service on your VPC
+- create a Python lambda function in your vpc
+- enable streams on the table with 'new image' attributes included
+- add your function as a trigger on the stream
+- grant the lambda IAM role permission to read the DynamoDB stream events
+
+`AWSLambdaInvocation-DynamoDB`
+
+- grant the lambda IAM role permission to update table items
+
+### Create dynamodb using the python script
+```py
+#!/usr/bin/env python3
+
+import boto3
+import sys
+
+attrs = {
+  'endpoint_url': 'http://localhost:8000'
+}
+
+if len(sys.argv) == 2:
+  if "prod" in sys.argv[1]:
+    attrs = {}
+
+ddb = boto3.client('dynamodb',**attrs)
+
+table_name = 'cruddur-messages'
+
+
+response = ddb.create_table(
+  TableName=table_name,
+  AttributeDefinitions=[
+    {
+      'AttributeName': 'message_group_uuid',
+      'AttributeType': 'S'
+    },
+    {
+      'AttributeName': 'pk',
+      'AttributeType': 'S'
+    },
+    {
+      'AttributeName': 'sk',
+      'AttributeType': 'S'
+    },
+  ],
+  KeySchema=[
+    {
+      'AttributeName': 'pk',
+      'KeyType': 'HASH'
+    },
+    {
+      'AttributeName': 'sk',
+      'KeyType': 'RANGE'
+    },
+  ],
+  GlobalSecondaryIndexes= [{
+    'IndexName':'message-group-sk-index',
+    'KeySchema':[{
+      'AttributeName': 'message_group_uuid',
+      'KeyType': 'HASH'
+    },{
+      'AttributeName': 'sk',
+      'KeyType': 'RANGE'
+    }],
+    'Projection': {
+      'ProjectionType': 'ALL'
+    },
+    'ProvisionedThroughput': {
+      'ReadCapacityUnits': 5,
+      'WriteCapacityUnits': 5
+    },
+  }],
+  BillingMode='PROVISIONED',
+  ProvisionedThroughput={
+      'ReadCapacityUnits': 5,
+      'WriteCapacityUnits': 5
+  }
+)
+
+print(response)
+```
+
+![ddb schema-load](https://user-images.githubusercontent.com/125069098/228620087-12bcea0a-d224-4ee6-a167-5bbdaf6a58a5.png)
+
+![Turn on Newimage](https://user-images.githubusercontent.com/125069098/228620933-7753bd22-963e-46fd-b15e-43ca8fc79a85.png)
+![image](https://user-images.githubusercontent.com/125069098/228621146-29889ae1-d6de-46c0-862d-70c7711ab460.png)
+
+### create a VPC ENDPOINT in aws
+
+![image](https://user-images.githubusercontent.com/125069098/228622937-3f9578b3-508c-496e-aa53-1ed6cae30d62.png)
+![image](https://user-images.githubusercontent.com/125069098/228623082-caf4d3e9-7f08-4f35-8f5b-1a96f37af635.png)
+![image](https://user-images.githubusercontent.com/125069098/228623204-50fd3c02-4425-4ee7-916d-42b5aa2f266f.png)
+![image](https://user-images.githubusercontent.com/125069098/228623269-da4b6ff7-5473-435c-ab41-7adea6527c77.png)
+
+**Create a Lambda funnction**
+
+![lambda function](https://user-images.githubusercontent.com/125069098/228625727-5072d635-bdc0-4c62-8b8e-bae7d4c70adc.png)
+![lambda function](https://user-images.githubusercontent.com/125069098/228626314-7ebbd4a2-c735-4af9-8c62-71969529b36e.png)
+![image](https://user-images.githubusercontent.com/125069098/228626806-1daa7282-1a89-4ee4-b866-275f9f525b24.png)
+
+**create a trigger in dynamodb**
+![image](https://user-images.githubusercontent.com/125069098/228629233-47ff4575-d02e-4318-9252-a539218d045e.png)
+
+**The Function**
+
+```.py
+import json
+import boto3
+from boto3.dynamodb.conditions import Key, Attr
+
+dynamodb = boto3.resource(
+ 'dynamodb',
+ region_name='us-east-1',
+ endpoint_url="http://dynamodb.us-east-1.amazonaws.com"
+)
+
+def lambda_handler(event, context):
+  print('event-data',event)
+
+  eventName = event['Records'][0]['eventName']
+  if (eventName == 'REMOVE'):
+    print("skip REMOVE event")
+    return
+  pk = event['Records'][0]['dynamodb']['Keys']['pk']['S']
+  sk = event['Records'][0]['dynamodb']['Keys']['sk']['S']
+  if pk.startswith('MSG#'):
+    group_uuid = pk.replace("MSG#","")
+    message = event['Records'][0]['dynamodb']['NewImage']['message']['S']
+    print("GRUP ===>",group_uuid,message)
+
+    table_name = 'cruddur-messages'
+    index_name = 'message-group-sk-index'
+    table = dynamodb.Table(table_name)
+    data = table.query(
+      IndexName=index_name,
+      KeyConditionExpression=Key('message_group_uuid').eq(group_uuid)
+    )
+    print("RESP ===>",data['Items'])
+
+    # recreate the message group rows with new SK value
+    for i in data['Items']:
+      delete_item = table.delete_item(Key={'pk': i['pk'], 'sk': i['sk']})
+      print("DELETE ===>",delete_item)
+
+      response = table.put_item(
+        Item={
+          'pk': i['pk'],
+          'sk': sk,
+          'message_group_uuid':i['message_group_uuid'],
+          'message':message,
+          'user_display_name': i['user_display_name'],
+          'user_handle': i['user_handle'],
+          'user_uuid': i['user_uuid']
+        }
+      )
+      print("CREATE ===>",response)
+```
+
+ Do the docker compose up and open the frontend app
+ ![image](https://user-images.githubusercontent.com/125069098/228629925-ec24dfa3-8c75-4b47-b1d0-be2a42333026.png)
+![image](https://user-images.githubusercontent.com/125069098/228630548-33507155-2c4d-4039-b06a-cbcc0b54e7f5.png)
+
+**Create inline policy for the Lambda function**
+![image](https://user-images.githubusercontent.com/125069098/228635683-3891b61a-617c-492c-8c2c-71e1bf5615a1.png)
+![image](https://user-images.githubusercontent.com/125069098/228635843-8de44059-0e30-4370-8c85-30481a56b74b.png)
+![image](https://user-images.githubusercontent.com/125069098/228635955-446992ff-19af-4882-a725-287fdf1eae6c.png)
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "dynamodb:PutItem",
+                "dynamodb:DeleteItem",
+                "dynamodb:Query"
+            ],
+            "Resource": [
+                "arn:aws:dynamodb:us-east-1:480134889878:table/cruddur-messages",
+                "arn:aws:dynamodb:us-east-1:480134889878:table/cruddur-messages/index/message-group-sk-index"
+            ]
+        }
+    ]
+}
+```
+![image](https://user-images.githubusercontent.com/125069098/228636926-8564eb92-d080-4138-afad-65c5835d60f1.png)
+![image](https://user-images.githubusercontent.com/125069098/228637954-b530c0ec-95e0-495d-933a-25eed535f4e4.png)
 
 
 
