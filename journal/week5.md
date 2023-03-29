@@ -264,6 +264,19 @@ print(json.dumps(response, sort_keys=True, indent=2))
 ![image](https://user-images.githubusercontent.com/125069098/226796564-c0ed5bf7-a043-4ad7-b4c2-12786b807878.png)
 
 ##  Implement Conversations with DynamoDB
+
+- Update your /backend-flask/db/seed.sql with records and change the users.handle = **your handler**.
+- Run the script file ./bin/db/setup It has to run without errors.
+- Run the script file  ./bin/db/update_cognito_user_ids. It has to update the cognito-user-id in the user table
+- Connect to your postgres and check the rows are updated with your cognito-user-id.
+- Run the script file ./bin/ddb/schema-load. It will create a dynamoDB table Cruddur-message
+- Run the script file ./bin/ddb/seed before you run change the my_handle =**your handler** and other_handle =**other handler** 
+- Run the script file ./bin/ddb/scan 
+- Run the script file  ./bin/ddb/patterns/get-conversation. It has to run without error and has to get the conversation in the my-user and other-user in the reverse order
+- Run the script file  ./bin/ddb/patterns/list-conversation. It has to run without error and has to give you the scannedcount=1
+
+  once the above steps are successful. implement the conversation code for dynamoDB.
+ 
 ![image](https://user-images.githubusercontent.com/125069098/227278586-16e14d71-4f4b-4693-84a3-115eaf1f0074.png)
 ![image](https://user-images.githubusercontent.com/125069098/227280043-1e4edacc-47ba-46b7-8c0b-a406872f11e0.png)
 
