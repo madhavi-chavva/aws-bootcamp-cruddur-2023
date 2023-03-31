@@ -82,3 +82,17 @@ docker tag python:3.10-slim-buster $ECR_PYTHON_URL:3.10-slim-buster
 ```sh
 docker push $ECR_PYTHON_URL:3.10-slim-buster
 ```
+## Create CloudWatch Log Group
+
+```sh
+aws logs create-log-group --log-group-name cruddur
+aws logs put-retention-policy --log-group-name cruddur --retention-in-days 1
+```
+
+## Create ECS Cluster
+
+```sh
+aws ecs create-cluster \
+--cluster-name cruddur \
+--service-connect-defaults namespace=cruddur
+```
