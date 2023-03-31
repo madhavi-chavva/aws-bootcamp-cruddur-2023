@@ -405,9 +405,13 @@ aws iam put-role-policy \
 aws iam attach-role-policy --policy-arn arn:aws:iam::aws:policy/CloudWatchFullAccess --role-name CruddurTaskRole
 aws iam attach-role-policy --policy-arn arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess --role-name CruddurTaskRole
 ```
+![CruddurTaskRole](https://user-images.githubusercontent.com/125069098/229221764-0d2f993e-a7d5-4882-af57-53501f30a0a0.png)
+![image](https://user-images.githubusercontent.com/125069098/229228900-0fcdfb72-9df0-4d2d-bbf1-8e85be20cacb.png)
+
 
 ### Create Json file
 Create a new folder called `aws/task-defintions` and place the following files in there:
+fill all the values with your account.
 
 `backend-flask.json`
 
@@ -461,6 +465,63 @@ Create a new folder called `aws/task-defintions` and place the following files i
   ]
 }
 ```
+### Register Task Defintion
+
+```sh
+aws ecs register-task-definition --cli-input-json file://aws/task-definitions/backend-flask.json
+```
+```sh
+aws ecs register-task-definition --cli-input-json file://aws/task-definitions/frontend-react-js.json
+```
+
+![execute task definition](https://user-images.githubusercontent.com/125069098/229232724-ad7d9afb-ec79-4c4d-92a6-132c47fa8867.png)
+
+![AWS task definition](https://user-images.githubusercontent.com/125069098/229233639-1eb5fe23-67f0-4c4b-85fd-3db011baeed1.png)
+![image](https://user-images.githubusercontent.com/125069098/229234003-92c55bd6-c3ca-435e-8e72-f007f7eded3a.png)
+![image](https://user-images.githubusercontent.com/125069098/229234213-baf606a5-2ab1-4ee7-aa5e-5d859b004b8f.png)
+
+## Defaults
+
+```sh
+export DEFAULT_VPC_ID=$(aws ec2 describe-vpcs \
+--filters "Name=isDefault, Values=true" \
+--query "Vpcs[0].VpcId" \
+--output text)
+echo $DEFAULT_VPC_ID
+```
+
+```sh
+export DEFAULT_SUBNET_IDS=$(aws ec2 describe-subnets  \
+ --filters Name=vpc-id,Values=$DEFAULT_VPC_ID \
+ --query 'Subnets[*].SubnetId' \
+ --output json | jq -r 'join(",")')
+echo $DEFAULT_SUBNET_IDS
+```
+
+### Create Security Group
+```sh
+export CRUD_SERVICE_SG=$(aws ec2 create-security-group \
+  --group-name "crud-srv-sg" \
+  --description "Security group for Cruddur services on ECS" \
+  --vpc-id $DEFAULT_VPC_ID \
+  --query "GroupId" --output text)
+echo $CRUD_SERVICE_SG
+```
+```sh
+aws ec2 authorize-security-group-ingress \
+  --group-id $CRUD_SERVICE_SG \
+  --protocol tcp \
+  --port 80 \
+  --cidr 0.0.0.0/0
+```
+
+
+Edit more permission to ECR to execute ECS
+
+![edit CruddurServiceExecutionPolicy](https://user-images.githubusercontent.com/125069098/229241613-8b184c9f-b2bc-4e48-9f64-ec5e6fea8e3d.png)
+
+
+
 
 
 
