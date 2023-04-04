@@ -819,6 +819,89 @@ aws ecs create-service --cli-input-json file://aws/json/service-frontend-react-j
 ```
 ![create-service](https://user-images.githubusercontent.com/125069098/229638842-f1bb2bbe-ab3e-4e3c-992b-ffc181fb948f.png)
 
+**Change the task definition to add the health-check for the frontend-react-js**
+```json
+{
+    "family": "frontend-react-js",
+    "executionRoleArn": "arn:aws:iam::480134889878:role/CruddurServiceExecutionRole",
+    "taskRoleArn": "arn:aws:iam::480134889878:role/CruddurTaskRole",
+    "networkMode": "awsvpc",
+    "cpu": "256",
+    "memory": "512",
+    "requiresCompatibilities": [ 
+      "FARGATE" 
+    ],
+    "containerDefinitions": [
+      {
+        "name": "frontend-react-js",
+        "image": "480134889878.dkr.ecr.us-east-1.amazonaws.com/frontend-react-js",
+        "essential": true,
+        "healthCheck": {
+          "command": [
+            "CMD-SHELL",
+            "curl -f http://localhost:3000 || exit 1"
+          ],
+          "interval": 30,
+          "timeout": 5,
+          "retries": 3
+        },
+        "portMappings": [
+          {
+            "name": "frontend-react-js",
+            "containerPort": 3000,
+            "protocol": "tcp", 
+            "appProtocol": "http"
+          }
+        ],
+
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+              "awslogs-group": "cruddur",
+              "awslogs-region": "us-east-1",
+              "awslogs-stream-prefix": "frontend-react-js"
+          }
+        }
+      }
+    ]
+  }
+```
+Rerun the task definition again
+```aws
+aws ecs register-task-definition --cli-input-json file://aws/task-definitions/frontend-react-js.json
+```
+**Edit the security group of sg-0a9faf8a5b6cebc28 - crud-srv-sg to include the frontend port**
+![image](https://user-images.githubusercontent.com/125069098/229855524-a3a5c115-99d4-4528-a1d5-74794290b867.png)
+
+**Create service**
+```aws
+aws ecs create-service --cli-input-json file://aws/json/service-frontend-react-js.json
+```
+![image](https://user-images.githubusercontent.com/125069098/229855020-7b07d65b-d3d2-4cce-8ddf-cf1f8404dcbf.png)
+![image](https://user-images.githubusercontent.com/125069098/229855700-2ea9873b-b53b-48f8-941d-5868aa893147.png)
+![targetgroup health check](https://user-images.githubusercontent.com/125069098/229857003-68aa504c-68d4-4952-a2cb-4f607f7d817c.png)
+
+Where view the frontend app on the browser it is not loading the data
+
+change the  docker build command with the ALB for the REACT_APP_BACKEND_URL:4567
+```docker
+docker build \
+--build-arg REACT_APP_BACKEND_URL="https://cruddur-alb-683537449.us-east-1.elb.amazonaws.com:4567" \
+--build-arg REACT_APP_AWS_PROJECT_REGION="$AWS_DEFAULT_REGION" \
+--build-arg REACT_APP_AWS_COGNITO_REGION="$AWS_DEFAULT_REGION" \
+--build-arg REACT_APP_AWS_USER_POOLS_ID="<us-east-1_xxxxxxxxR>" \
+--build-arg REACT_APP_CLIENT_ID="<324xxxxxxxxxxpuii>" \
+-t frontend-react-js \
+-f Dockerfile.prod \
+.
+```
+then create the ECS service 
+```aws
+aws ecs create-service --cli-input-json file://aws/json/service-frontend-react-js.json
+```
+
+
+
 
 
 
