@@ -899,6 +899,7 @@ then create the ECS service
 ```aws
 aws ecs create-service --cli-input-json file://aws/json/service-frontend-react-js.json
 ```
+**Make sure your RDS should be up and running(PROD-CONNECTION_URL)**
 
 
 
