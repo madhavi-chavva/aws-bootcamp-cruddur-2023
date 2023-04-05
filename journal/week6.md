@@ -901,6 +901,151 @@ aws ecs create-service --cli-input-json file://aws/json/service-frontend-react-j
 ```
 **Make sure your RDS should be up and running(PROD-CONNECTION_URL)**
 
+### Create a Hosted domain name for your domainname
+
+![hosted domainname](https://user-images.githubusercontent.com/125069098/230158556-0672bf15-c6d5-4057-a685-01e396c2652e.png)
+Update the nameserver in the website of the domainname you purchased. I have used godaddy.com 
+
+![godaddy](https://user-images.githubusercontent.com/125069098/230158903-1f2260f7-d0b9-4944-a4ac-77e5abe24c11.png)
+
+
+### Create a certficate manager to request for SSL certificate
+
+![certificate Manager](https://user-images.githubusercontent.com/125069098/230159375-d62c49d3-447e-4660-a39a-09383282122c.png)
+
+click on the create a record in Route53
+
+![image](https://user-images.githubusercontent.com/125069098/230160954-077f1682-1ca4-4beb-9f57-6e162f994bc4.png)
+
+![Record for ceritificate in route53](https://user-images.githubusercontent.com/125069098/230161280-02f9099a-b282-427f-ad6b-311b6b55a7a7.png)
+![image](https://user-images.githubusercontent.com/125069098/230161953-27f190b9-377b-4436-b146-690688a35e2c.png)
+**EDIT the ALB to manage the rules
+
+![ALB](https://user-images.githubusercontent.com/125069098/230162992-d863ab5e-1d0a-4cf5-a366-79f6ed052acb.png)
+**add a listener for redirecting to 443**
+![image](https://user-images.githubusercontent.com/125069098/230164275-cc7b1ece-8c82-4d9a-aa75-ab96bae74c20.png)
+
+![image](https://user-images.githubusercontent.com/125069098/230167709-83e8c8e3-8b2d-4148-9a55-b2403f1f1205.png)
+
+**Add a listener for 443 to forward to frontend-react-js app with certificate add
+
+![image](https://user-images.githubusercontent.com/125069098/230169287-be4e4eaa-adf2-4250-a812-8c19fe50b855.png)
+![image](https://user-images.githubusercontent.com/125069098/230169408-45c47016-3953-42d6-829d-af98e9f5634b.png)
+![image](https://user-images.githubusercontent.com/125069098/230169609-e8a37683-fc94-44ea-a36d-bcde5ee12b3c.png)
+remove the other listeners for port 4567 and 3000
+![image](https://user-images.githubusercontent.com/125069098/230179645-6e91d5d0-a555-4b48-ba41-b08d6f82d1bd.png)
+
+**Add Manage rule for HTTPS:443:**
+![image](https://user-images.githubusercontent.com/125069098/230180481-2407bb9b-d356-4093-8a43-d486692b7dc5.png)
+![image](https://user-images.githubusercontent.com/125069098/230180692-ccf5dcc6-36c5-4275-a950-11a1806f58a9.png)
+
+**Create a record in the Route53 for a ALB**
+
+![image](https://user-images.githubusercontent.com/125069098/230181765-b88a8e18-5059-4ccf-a9a9-819e775703e7.png)
+Create a record for api.domainname for the ALB
+![image](https://user-images.githubusercontent.com/125069098/230182394-a7f84b1e-2ec2-4720-b1cf-419a0a7a6761.png)
+
+**curl the dns and see whether it is working or not**
+
+![image](https://user-images.githubusercontent.com/125069098/230183350-8598223e-13ae-4a61-a5ad-94494571723d.png)
+
+**Test in the edge browser**
+
+![image](https://user-images.githubusercontent.com/125069098/230183829-6e1c2d08-9884-4afc-b562-892f1da02920.png)
+
+**Edit the task definition for backend-flask with dns names
+```json
+"environment": [
+          {"name": "OTEL_SERVICE_NAME", "value": "backend-flask"},
+          {"name": "OTEL_EXPORTER_OTLP_ENDPOINT", "value": "https://api.honeycomb.io"},
+          {"name": "AWS_COGNITO_USER_POOL_ID", "value": "us-east-1_eMMMwKxYR"},
+          {"name": "AWS_COGNITO_USER_POOL_CLIENT_ID", "value": "324mfino7qkho2jbqis665puii"},
+          {"name": "FRONTEND_URL", "value": "madhavi27.xyz"},
+          {"name": "BACKEND_URL", "value": "api.madhavi27.xyz"},
+          {"name": "AWS_DEFAULT_REGION", "value": "us-east-1"}
+        ],
+```
+![image](https://user-images.githubusercontent.com/125069098/230188083-9deafb3b-ca4b-42ff-b71a-1cb71d72a14f.png)
+
+### Login to ECR to push the new frontend image
+```aws
+aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com"
+```
+### Set URL
+```sh
+export ECR_FRONTEND_REACT_URL="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/frontend-react-js"
+echo $ECR_FRONTEND_REACT_URL
+```
+![image](https://user-images.githubusercontent.com/125069098/230191364-2cded522-64de-4f9c-847e-365d98fc4e09.png)
+
+### Build the Image for frontend
+```docker
+docker build \
+--build-arg REACT_APP_BACKEND_URL="https://api.madhavi27.xyz" \
+--build-arg REACT_APP_AWS_PROJECT_REGION="$AWS_DEFAULT_REGION" \
+--build-arg REACT_APP_AWS_COGNITO_REGION="$AWS_DEFAULT_REGION" \
+--build-arg REACT_APP_AWS_USER_POOLS_ID="us-east-1_eMMMwKxYR" \
+--build-arg REACT_APP_CLIENT_ID="324mfino7qkho2jbqis665puii" \
+-t frontend-react-js \
+-f Dockerfile.prod \
+.
+```
+#### Tag Image
+
+```sh
+docker tag frontend-react-js:latest $ECR_FRONTEND_REACT_URL:latest
+```
+
+#### Push Image
+
+```sh
+docker push $ECR_FRONTEND_REACT_URL:latest
+```
+
+
+If you want to run and test it
+
+```sh
+docker run --rm -p 3000:3000 -it frontend-react-js 
+```
+Do the force deploy services
+
+Test it on the edge browser with https://api.madhavi27.xyz/api/health-check
+
+![image](https://user-images.githubusercontent.com/125069098/230199238-6586e0ec-b5ff-4390-903d-b513ca5080a0.png)
+
+Test the https://madhavi27.xyz
+
+![image](https://user-images.githubusercontent.com/125069098/230199799-783fbcce-114b-4c18-aab5-ce52fcca0faa.png)
+
+Update the environment variable in task-definition in backend-flask.json
+```json
+"environment": [
+          {"name": "OTEL_SERVICE_NAME", "value": "backend-flask"},
+          {"name": "OTEL_EXPORTER_OTLP_ENDPOINT", "value": "https://api.honeycomb.io"},
+          {"name": "AWS_COGNITO_USER_POOL_ID", "value": "us-east-1_eMMMwKxYR"},
+          {"name": "AWS_COGNITO_USER_POOL_CLIENT_ID", "value": "324mfino7qkho2jbqis665puii"},
+          {"name": "FRONTEND_URL", "value": "https://madhavi27.xyz"},
+          {"name": "BACKEND_URL", "value": "https://api.madhavi27.xyz"},
+          {"name": "AWS_DEFAULT_REGION", "value": "us-east-1"}
+        ],
+```
+Do force deploy the ecs service for the backend-flask
+
+Test the cruddur app again in the browser https://madhavi27.xyz
+
+![image](https://user-images.githubusercontent.com/125069098/230208423-62a9eb4f-d3f0-40e6-bbf6-b64ca92a5933.png)
+
+
+
+
+
+
+
+
+
+
+
 
 
 
