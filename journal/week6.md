@@ -27,7 +27,7 @@ finally:
 ## Task Flask Script
 
 We'll add the following endpoint for our flask app:
-backend-flask/app.py
+/app.py
 
 ```py
 @app.route('/api/health-check')
@@ -596,7 +596,7 @@ Update the security group for the backend-flask for port 4567
 ![image](https://user-images.githubusercontent.com/125069098/229594144-8d608db2-5344-4e44-a5ce-5bb46f399db3.png)
 ![test connection](https://user-images.githubusercontent.com/125069098/229594600-50b5bb59-5a94-441f-a75d-5290bd852fdf.png)
 
-![backend-flask(https://user-images.githubusercontent.com/125069098/229596647-ccbf909e-4acc-4584-9ffc-1169ef39b5f0.png)
+![backend-flask](https://user-images.githubusercontent.com/125069098/229596647-ccbf909e-4acc-4584-9ffc-1169ef39b5f0.png)
 
 Create a backend-flask service in ECS service with service connection using aws console
 ![aws console with service connection](https://user-images.githubusercontent.com/125069098/229603568-f7222f7a-f718-48ec-b529-4ca7706dad21.png)
@@ -919,7 +919,7 @@ click on the create a record in Route53
 
 ![Record for ceritificate in route53](https://user-images.githubusercontent.com/125069098/230161280-02f9099a-b282-427f-ad6b-311b6b55a7a7.png)
 ![image](https://user-images.githubusercontent.com/125069098/230161953-27f190b9-377b-4436-b146-690688a35e2c.png)
-**EDIT the ALB to manage the rules
+**EDIT the ALB to manage the rules**
 
 ![ALB](https://user-images.githubusercontent.com/125069098/230162992-d863ab5e-1d0a-4cf5-a366-79f6ed052acb.png)
 **add a listener for redirecting to 443**
@@ -927,7 +927,7 @@ click on the create a record in Route53
 
 ![image](https://user-images.githubusercontent.com/125069098/230167709-83e8c8e3-8b2d-4148-9a55-b2403f1f1205.png)
 
-**Add a listener for 443 to forward to frontend-react-js app with certificate add
+**Add a listener for 443 to forward to frontend-react-js app with certificate add**
 
 ![image](https://user-images.githubusercontent.com/125069098/230169287-be4e4eaa-adf2-4250-a812-8c19fe50b855.png)
 ![image](https://user-images.githubusercontent.com/125069098/230169408-45c47016-3953-42d6-829d-af98e9f5634b.png)
