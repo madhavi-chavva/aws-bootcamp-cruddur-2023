@@ -1,5 +1,5 @@
 # Week 6 — Deploying Containers
-## Test RDS Connecetion
+## Test RDS Connection
 
 Add this `test` script into `db` so we can easily check our connection from our container.
 
@@ -1199,6 +1199,13 @@ Test the frontend app using the [image](https://madhavi27.xyz/messages/new/bayko
 
 But unable to enter the message into the db.
 ![image](https://user-images.githubusercontent.com/125069098/230659023-f021057b-d613-4c93-b35f-0e7735f980a1.png)
+
+**so to overcome this issue we need to Correctly Implementing Timezones for ISO 8601
+with local db it is working fine.**
+
+![image](https://user-images.githubusercontent.com/125069098/230685529-efc4dbb4-2050-404b-a141-838f0357d01f.png)
+
+
 
 
 
