@@ -1126,6 +1126,84 @@ Messagefeed.js,Homefeedpage.js,messagegroupsPage.js, messagegrouppage.js, messag
 
 Then test the frontend App is able to refresh the token properly.
 
+# Fix Messaging In Production
+Restructure the script file in the bin directory for the frontend and backend
+
+Connect to the postgres production(rds)
+
+![image](https://user-images.githubusercontent.com/125069098/230635877-82b71a60-7023-4336-9a3a-6cfd4720ad02.png)
+
+### Create the Kill-all-connection.sql
+```sql
+SELECT pg_terminate_backend(pid) 
+FROM pg_stat_activity 
+WHERE 
+-- don't kill my own connection!
+pid <> pg_backend_pid()
+-- don't kill the connections to other databases
+AND datname = 'cruddur';
+```
+#### create a kill-all bash script
+```bash
+#! /usr/bin/bash
+
+CYAN='\033[1;36m'
+NO_COLOR='\033[0m'
+LABEL="db-kill-all"
+printf "${CYAN}== ${LABEL}${NO_COLOR}\n"
+
+ABS_PATH=$(readlink -f "$0")
+DB_PATH=$(dirname $ABS_PATH)
+BIN_PATH=$(dirname $DB_PATH)
+PROJECT_PATH=$(dirname $BIN_PATH)
+BACKEND_FLASK_PATH="$PROJECT_PATH/backend-flask"
+kill_path="$BACKEND_FLASK_PATH/db/kill-all-connections.sql"
+echo $kill_path
+
+psql $CONNECTION_URL cruddur < $kill_path
+```
+
+![image](https://user-images.githubusercontent.com/125069098/230649176-1b15900a-184a-459c-af0e-9f132c100a80.png)
+
+check the path of the files in the bin scripts which are in db and ddb as we have restructured the script files from backend-flask to bin directory.
+
+Run the Prostgres ./bin/db/setup
+![image](https://user-images.githubusercontent.com/125069098/230648954-e85fdfee-c8be-4ca7-bf67-0219de3dde2c.png)
+Run the dynamodb script ./bin/ddb/schema-load
+![image](https://user-images.githubusercontent.com/125069098/230649054-eb71ad28-661f-407e-bf99-2d5388b3c889.png)
+
+Run the dynamodb seed script file ./bin/db/seed
+![image](https://user-images.githubusercontent.com/125069098/230649920-d530a895-5c06-4fcd-833d-02113e413aec.png)
+
+Docker build the backend-flask with Dockerfile.prod
+
+![image](https://user-images.githubusercontent.com/125069098/230653594-88d248db-16fc-4b9b-bee9-5757f9f69aa1.png)
+
+Push the backend image to ECR using the script ./bin/backend/push
+![image](https://user-images.githubusercontent.com/125069098/230654005-0fc3c7a4-b2af-435f-9f5b-b7c83a4a8c7f.png)
+
+Deploy the backend service with force-deployment using the script ./bin/backend/deploy 
+![image](https://user-images.githubusercontent.com/125069098/230654412-c5b3dbec-9bfc-46b8-9546-3d57a131eafe.png)
+
+Connect to your postgresdb(rds) prod using the script ./bin/db/connect prod
+![image](https://user-images.githubusercontent.com/125069098/230654668-86ccda59-311e-4b4e-8003-1c7149ea96a1.png)
+manually Insert new record into the postgresdb(rds) prod
+```sql
+INSERT INTO public.users (display_name, email, handle, cognito_user_id) VALUES ('Andrew Bayko', 'bayko@exampro.co', 'bayko' ,'MOCK');
+```
+![image](https://user-images.githubusercontent.com/125069098/230655339-0d09419e-1b1d-49fb-994f-f6e8a17c7cdc.png)
+
+Test the frontend app using the [image](https://madhavi27.xyz/messages/new/bayko)
+
+![image](https://user-images.githubusercontent.com/125069098/230655188-e1425556-5721-4585-a6ed-fc36b78b195b.png)
+
+But unable to enter the message into the db.
+![image](https://user-images.githubusercontent.com/125069098/230659023-f021057b-d613-4c93-b35f-0e7735f980a1.png)
+
+
+
+
+
 
 
 
