@@ -1099,7 +1099,7 @@ Test the app is working fine
 ![image](https://user-images.githubusercontent.com/125069098/230455637-7c0a68dc-aaf1-49c1-9d45-bd4aad09f51d.png)
 
 modify the code in the CheckAuth.js in frontend-react-js 
-'''javascript
+```js
 export async function getAccessToken () {
   Auth.currentSession() 
   .then((cognito_user_session) => {
