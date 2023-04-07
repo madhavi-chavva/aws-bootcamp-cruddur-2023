@@ -1036,6 +1036,101 @@ Test the cruddur app again in the browser https://madhavi27.xyz
 
 ![image](https://user-images.githubusercontent.com/125069098/230208423-62a9eb4f-d3f0-40e6-bbf6-b64ca92a5933.png)
 
+# Securing Flask
+Remove the inbound rules for the sg-0c7290dbbfb33ed8d - cruddur-alb-sg for ports 3000 and 4567
+
+change the ports 443 and 80 to access only my ip
+
+![image](https://user-images.githubusercontent.com/125069098/230420171-65d0b96d-ef64-4ef1-9b33-b43080e01a04.png)
+
+### Create script file for the ECR Login
+'backend-flask/bin/ecr/login'
+```sh
+#! /usr/bin/bash
+
+aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com"
+```
+![image](https://user-images.githubusercontent.com/125069098/230427963-2a898174-eb8b-4954-bce3-51a910483b00.png)
+
+### Build docker build for the backend with Dockerfile.prod
+```sh
+docker build -f Dockerfile.prod -t backend-flask-prod .
+```
+![image](https://user-images.githubusercontent.com/125069098/230428755-79910eb4-3a40-4a49-9f28-c8a4c921f22c.png)
+
+ ```sh
+docker run --rm \
+-p 4567:4567 \
+-e AWS_ENDPOINT_URL="http://dynamodb-local:8000" \
+-e CONNECTION_URL="postgresql://postgres:password@db:5432/cruddur" \
+-e FRONTEND_URL="https://3000-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}" \
+-e BACKEND_URL="https://4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}" \
+-e OTEL_SERVICE_NAME='backend-flask' \
+-e OTEL_EXPORTER_OTLP_ENDPOINT="https://api.honeycomb.io" \
+-e OTEL_EXPORTER_OTLP_HEADERS="x-honeycomb-team=${HONEYCOMB_API_KEY}" \
+-e AWS_XRAY_URL="*4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}*" \
+-e AWS_XRAY_DAEMON_ADDRESS="xray-daemon:2000" \
+-e AWS_DEFAULT_REGION="${AWS_DEFAULT_REGION}" \
+-e AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}" \
+-e AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}" \
+-e ROLLBAR_ACCESS_TOKEN="${ROLLBAR_ACCESS_TOKEN}" \
+-e AWS_COGNITO_USER_POOL_ID="${AWS_COGNITO_USER_POOL_ID}" \
+-e AWS_COGNITO_USER_POOL_CLIENT_ID="324mfino7qkho2jbqis665puii" \   
+-it backend-flask-prod
+ ```
+# Implement Refresh Token Cognito
+
+First Login into the ecr by running ./bin/ecr/login
+![image](https://user-images.githubusercontent.com/125069098/230454311-63092731-b506-40c7-b1f3-39163973781f.png)
+
+Do the docker compose up
+![image](https://user-images.githubusercontent.com/125069098/230454446-b2a725b4-61a6-4e3c-9710-cbfc839c705b.png)
+
+setup postgres by running ./bin/db/setup file
+![image](https://user-images.githubusercontent.com/125069098/230454714-678c87f1-8f45-41bb-9a83-661e814cd92d.png)
+
+Run dynamodb schema-load ./bin/ddb/schema-load
+![image](https://user-images.githubusercontent.com/125069098/230454876-797e129e-5f6b-4ab5-a2e1-d6d925a60697.png)
+
+Run the dynamodb seed file ./bin/ddb/seed
+![image](https://user-images.githubusercontent.com/125069098/230455818-f5f21808-6a6f-43eb-8a85-2b01f1deddd4.png)
+
+Test the app is working fine
+![image](https://user-images.githubusercontent.com/125069098/230455637-7c0a68dc-aaf1-49c1-9d45-bd4aad09f51d.png)
+
+modify the code in the CheckAuth.js in frontend-react-js 
+'''js
+export async function getAccessToken () {
+  Auth.currentSession() 
+  .then((cognito_user_session) => {
+    const access_token = cognito_user_session.accessToken.jwtToken
+    localStorage.setItem("access_token", access_token)
+  })
+  .catch((err) => console.log(err)); 
+}
+export async function checkAuth (setUser) {
+.then((cognito_user) => {
+    console.log('cognito_user',cognito_user);
+    setUser({
+      display_name: cognito_user.attributes.name,
+      handle: cognito_user.attributes.preferred_username
+    })
+    return Auth.currentSession()
+  }).then((cognito_user_session) => {
+    console.log('cognito_user_session',cognito_user_session);
+    localStorage.setItem("access_token", cognito_user_session.accessToken.jwtToken)  
+  })
+```  
+Modify the code in other files where the CheckAuth.js library is imported.
+Messagefeed.js,Homefeedpage.js,messagegroupsPage.js, messagegrouppage.js, messagegroupsNewPage.js
+
+Then test the frontend App is able to refresh the token properly.
+
+
+
+
+
+
 
 
 
