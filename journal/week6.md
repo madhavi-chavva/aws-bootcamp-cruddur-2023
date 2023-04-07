@@ -75,7 +75,7 @@ aws logs put-retention-policy --log-group-name cruddur --retention-in-days 1
 aws ecs create-cluster \
 --cluster-name cruddur \
 --service-connect-defaults namespace=cruddur
-
+```
 ![aws cli ecs creation](https://user-images.githubusercontent.com/125069098/229165475-8862ff64-d0a1-4c58-8916-a99cd4a706e1.png)
 ![aws console](https://user-images.githubusercontent.com/125069098/229165691-96f031aa-ddf8-4a01-a923-c674e96bd9cb.png)
 ![image](https://user-images.githubusercontent.com/125069098/229165931-532bc0a4-e45a-4fd2-8837-f8c9f75ddb81.png)
