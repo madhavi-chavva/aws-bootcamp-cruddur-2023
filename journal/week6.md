@@ -624,19 +624,23 @@ update the json file with serviceConnectConfiguration
 
 **Create a LOAD BALANCER on the AWS console**
 
- Create Application Load Balancer
+ Create Application Load Balancer cruddur-alb, Internet-facing, IPv4 address type
  ![image](https://user-images.githubusercontent.com/125069098/229609142-62fca93c-e8b6-44ac-ac04-ded17bbb420a.png)
 ![image](https://user-images.githubusercontent.com/125069098/229609241-a8ee1388-b02b-4e23-8063-bd2ae5e676d1.png)
 
-create a new security group
+create a new security group `cruddur-alb-sg`, set inbound rules of HTTP and HTTPS from anywhere, 
+and Custom TCP of 4567 and 3000 from anywhere (set description as TMP1 and TMP2); 
+In addition, edit inbound rules of security group `crud-srv-sg`, instead of anywhere, 
+set port source from `cruddur-alb-sg`, set description of port 4567 as ALBbackend, and port 3000 as ALBfrontend
 ![image](https://user-images.githubusercontent.com/125069098/229609925-8620c437-b5c9-4d45-a79b-e498ea434ba2.png)
 
-create a target group for ALB one for backend-flask and one for frontend-react-js
+create a target group for ALB one for backend-flask `cruddur-backend-flask-tg` and one for frontend-react-js `cruddur-frontend-react-js`
+select type as IP addresses, set HTTP:4567, set health check as `/api/health-check` with 3 healthy threshold.
 ![image](https://user-images.githubusercontent.com/125069098/229611444-60d073ef-7759-4217-a433-1340f6b9ebfa.png)
 ![image](https://user-images.githubusercontent.com/125069098/229611711-12e62e90-7cbb-4a2e-9aa9-d0a20897d0b2.png)
 ![image](https://user-images.githubusercontent.com/125069098/229611948-8a55e744-844f-4ee3-8e77-7bcf9f06e8cf.png)
 
-frontend
+frontend don't care about health check, set 3 healthy threshold.
 ![image](https://user-images.githubusercontent.com/125069098/229613040-d2c26925-b301-451b-954f-e780cfb9c1cb.png)
 ![image](https://user-images.githubusercontent.com/125069098/229613139-0d10b8d8-ff6f-4dbd-8d79-b2d7a5ba3c9c.png)
 
