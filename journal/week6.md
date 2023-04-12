@@ -1209,6 +1209,87 @@ with local db it is working fine.**
 
 ![image](https://user-images.githubusercontent.com/125069098/230685529-efc4dbb4-2050-404b-a141-838f0357d01f.png)
 
+`**Test 1**` Docker compose up with `AWS_ENDPOINT_URL: "http://dynamodb-local:8000"`
+
+Run ./bin/db/setup
+Run ./bin/ddb/schema-load
+Run ./bin/ddb/seed
+
+Open the frontend app Working fine with no issues in the posting the messages
+
+`**Test 2:**` comment #AWS_ENDPOINT_URL: "http://dynamodb-local:8000"
+
+Do the docker compose down and do again up to pick the changes in the compose file
+
+Able to post the messages without any issues with dynamodb prod. With local rds.
+
+`**Test 3:**` 
+Container backend and frontend.
+
+- Run ./bin/backend/build
+- Run ./bin/backend/push
+- Run ./bin/backend/register
+- Run ./bin/backend/deploy
+
+Do the same with frontend.
+
+ Able to post the messages with prod rds and prod dynamodb.
+ `Here It was getting 500 error`
+ ![image](https://user-images.githubusercontent.com/125069098/231567378-462dfad4-9c55-4083-85e5-69fd439b1246.png)
+
+ `**Resolution:**` I had a older cognito_userid in the prod rds and my create_message.py was returning null to the my_userid of app.py. so When I checked the records in the prod rds I found that cognito_userid is different from the current_user_id. I updated the record with the correct cognito_user_id and it worked.
+ 
+ ![post messages to dynamodb](https://user-images.githubusercontent.com/125069098/231573266-4e0979e8-e17a-4ce3-b54f-94585cd39734.png)
+
+ 
+ ### Fargate - Configuring for Container Insights
+ 
+ Update the Task-definition of the backend and frontend flask to include the x-ray instrumentation in task-definition.
+
+ `aws/task-definitions/backend-flask.json'  and 'aws/task-definitions/frontend-react-js.json'  
+ 
+ ```json
+ "containerDefinitions": [
+ {
+        "name": "xray",
+        "image": "public.ecr.aws/xray/aws-xray-daemon" ,
+        "essential": true,
+        "user": "1337",
+        "portMappings": [
+          {
+            "name": "xray",
+            "containerPort": 2000,
+            "protocol": "udp"
+          }
+        ]
+      },
+  ```    
+ 
+ - Run ./bin/backend/register
+ - Run ./bin/backend/deploy
+ - Run ./bin/frontend/register
+ - Run ./bin/frontend/deploy
+ 
+ ![backend x-ray](https://user-images.githubusercontent.com/125069098/231572835-632ddee8-81b1-4720-9af2-d01ca28c2ab9.png)
+
+![frontend x-ray](https://user-images.githubusercontent.com/125069098/231570969-ea0f43d9-959e-4981-8d87-82352bc5784c.png)
+
+`Enable container insights'
+
+ - Open the CloudWatch console in your AWS account.
+ - select the container cluster(cruddur) which you want to enable the container insights
+ - click on the  `update cluster' button to enable the container insights.
+ - Select the monitor and 'Enable container insights'.
+ - click on the update to apply the changes.
+
+![container insights](https://user-images.githubusercontent.com/125069098/231572261-2dede9ba-206a-4c6a-acbb-1202c9bebe79.png)
+
+![container insights](https://user-images.githubusercontent.com/125069098/231571330-560e3682-496d-4e9b-b8f6-d0547459600c.png)
+
+
+
+
+
 
 
 
