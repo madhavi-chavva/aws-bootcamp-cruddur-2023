@@ -10,6 +10,18 @@
     ],
     "containerDefinitions": [
       {
+        "name": "xray",
+        "image": "amazon/aws-xray-daemon" ,
+        "essential": true,
+        "portMappings": [
+          {
+            "name": "xray",
+            "containerPort": 2000,
+            "protocol": "udp"
+          }
+        ]
+      },
+      {
         "name": "frontend-react-js",
         "image": "480134889878.dkr.ecr.us-east-1.amazonaws.com/frontend-react-js",
         "essential": true,
