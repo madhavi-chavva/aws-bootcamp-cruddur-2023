@@ -1286,6 +1286,27 @@ Do the same with frontend.
 
 ![container insights](https://user-images.githubusercontent.com/125069098/231571330-560e3682-496d-4e9b-b8f6-d0547459600c.png)
 
+### Generate out env vars into a file in the docker compose file and improve the docker networking
+using a ruby script to generate-env file and use this file in the docker compose file.
+
+```ruby
+#!/usr/bin/env ruby
+
+require 'erb'
+
+template = File.read 'erb/backend-flask.env.erb'
+content = ERB.new(template).result(binding)
+filename = "backend-flask.env"
+File.write(filename, content)
+```
+output the backend-flask.env file with env variables used as a file in the docker compose file for backend service. similarly we use frontend-react-js.env for 
+frontend service.
+
+Run the docker compose up and see the app is working as expected.
+
+
+
+
 
 
 
