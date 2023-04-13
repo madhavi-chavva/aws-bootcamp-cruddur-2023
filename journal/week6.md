@@ -1243,6 +1243,7 @@ Do the same with frontend.
 
  
  ### Fargate - Configuring for Container Insights
+ The reference link [aws offical document](https://docs.aws.amazon.com/xray/latest/devguide/xray-daemon-ecs.html)
  
  Update the Task-definition of the backend and frontend flask to include the x-ray instrumentation in task-definition.
 
@@ -1251,10 +1252,10 @@ Do the same with frontend.
  ```json
  "containerDefinitions": [
  {
+       {
         "name": "xray",
-        "image": "public.ecr.aws/xray/aws-xray-daemon" ,
+        "image": "amazon/aws-xray-daemon" ,
         "essential": true,
-        "user": "1337",
         "portMappings": [
           {
             "name": "xray",
@@ -1270,9 +1271,10 @@ Do the same with frontend.
  - Run ./bin/frontend/register
  - Run ./bin/frontend/deploy
  
- ![backend x-ray](https://user-images.githubusercontent.com/125069098/231572835-632ddee8-81b1-4720-9af2-d01ca28c2ab9.png)
+ ![backend x-ray](https://user-images.githubusercontent.com/125069098/231796515-05b382ac-0a4d-4787-b8bc-12df2681d436.png)
 
-![frontend x-ray](https://user-images.githubusercontent.com/125069098/231570969-ea0f43d9-959e-4981-8d87-82352bc5784c.png)
+ ![frontend x-ray](https://user-images.githubusercontent.com/125069098/231796908-1eb9752f-74e6-46dd-b1ce-efb5b30e8182.png)
+
 
 `Enable container insights'
 
@@ -1281,10 +1283,19 @@ Do the same with frontend.
  - click on the  `update cluster' button to enable the container insights.
  - Select the monitor and 'Enable container insights'.
  - click on the update to apply the changes.
-
 ![container insights](https://user-images.githubusercontent.com/125069098/231572261-2dede9ba-206a-4c6a-acbb-1202c9bebe79.png)
 
 ![container insights](https://user-images.githubusercontent.com/125069098/231571330-560e3682-496d-4e9b-b8f6-d0547459600c.png)
+
+### Check the container insights in cloudwatch
+
+![cloudwatch container insight map view](https://user-images.githubusercontent.com/125069098/231798175-90b8e543-067a-4ab1-b79c-872c7ae93bae.png)
+![cloudwatch container insight list view](https://user-images.githubusercontent.com/125069098/231798376-6a141be7-91a1-4c61-b910-3919a39e5392.png)
+
+![backend task performance monitoring](https://user-images.githubusercontent.com/125069098/231799770-f08d6f36-fe60-4293-9c3e-cc3aedeb5702.png)
+
+![frontend task performance monitoring](https://user-images.githubusercontent.com/125069098/231800583-e2976ea7-44fa-4be2-9051-3ea9e6772ddc.png)
+
 
 ### Generate out env vars into a file in the docker compose file and improve the docker networking
 using a ruby script to generate-env file and use this file in the docker compose file.
