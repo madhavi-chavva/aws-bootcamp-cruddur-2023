@@ -116,3 +116,27 @@ cdk ls
 
 ## Create Lambda
 
+```ts
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+const functionPath: string = process.env.THUMBING_FUNCTION_PATH as string;
+const folderInput: string = process.env.THUMBING_S3_FOLDER_INPUT as string;
+const folderOutput: string = process.env.THUMBING_S3_FOLDER_OUTPUT as string;
+
+const lambda = this.createLambda(functionPath, bucketName, folderInput, folderOutput);
+createLambda(functionPath: string, bucketName: string, folderInput: string, folderOutput: string): lambda.IFunction{
+    const lambdaFunction = new lambda.Function(this, 'ThumbLambda', {
+     runtime: lambda.Runtime.NODEJS_18_X,
+     handler: 'index.handler',
+     code: lambda.Code.fromAsset(functionPath),
+     environment: {
+      DEST_BUCKET_NAME: bucketName,
+      FOLDER_INPUT: folderInput,
+      FOLDER_OUTPUT: folderOutput,
+      PROCESS_WIDTH: '512',
+      PROCESS_HEIGHT: '512'
+    }
+    });
+    return lambdaFunction;
+   }
+```   
+    
