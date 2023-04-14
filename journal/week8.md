@@ -33,8 +33,14 @@ We'll initialize a new cdk project within the folder we created:
 ```sh
 cdk init app --language typescript
 ```
+![image](https://user-images.githubusercontent.com/125069098/232148093-42e92829-4048-4dd9-96c6-99b35be0c23b.png)
+
 ![image](https://user-images.githubusercontent.com/125069098/231881884-76546050-896e-42eb-aab2-9baa063deb9c.png)
 
+## Create Environment Variables
+You can create your own environment variable right in the Node REPL by appending a variable to the `process.env` object directly.
+
+To use DotEnv, first install it using the command: `npm i dotenv`. 
 
 ## Add an S3 Bucket
 
@@ -114,6 +120,23 @@ cdk ls
 ```
 ![image](https://user-images.githubusercontent.com/125069098/231886743-75d7891c-dd0c-4c99-8b81-63024e623594.png)
 
+## Deploy
+
+```sh
+cdk destroy
+```
+To destroy cdk stack destroy.
+
+## Create .env file for the environment variables
+```sh
+THUMBING_BUCKET_NAME="assets.madhavi27.xyz"
+THUMBING_S3_FOLDER_INPUT="avatars/original"
+THUMBING_S3_FOLDER_OUTPUT="avatars/processed"
+THUMBING_WEBHOOK_URL="https://api.madhavi27.xyz/webhooks/avatar"
+THUMBING_TOPIC_NAME="cruddur-assets"
+THUMBING_FUNCTION_PATH="/workspace/aws-bootcamp-cruddur-2023/aws/lambda/process-images"
+```
+
 ## Create Lambda
 
 ```ts
@@ -139,4 +162,190 @@ createLambda(functionPath: string, bucketName: string, folderInput: string, fold
     return lambdaFunction;
    }
 ```   
-    
+![image](https://user-images.githubusercontent.com/125069098/232153031-b8c61c66-ec79-4078-a01a-316038ad5caa.png)
+![image](https://user-images.githubusercontent.com/125069098/232153122-4a2ab5da-083d-466e-a54c-842dd170ccdb.png)
+![lambda](https://user-images.githubusercontent.com/125069098/232153679-f818d789-a7af-4144-a1a6-7a2cc61df3e3.png)
+
+## create bash script
+`bin/serverless/build
+```sh
+#! /usr/bin/bash
+
+ABS_PATH=$(readlink -f "$0")
+SERVERLESS_PATH=$(dirname $ABS_PATH)
+BIN_PATH=$(dirname $SERVERLESS_PATH)
+PROJECT_PATH=$(dirname $BIN_PATH)
+SERVERLESS_PROJECT_PATH="$PROJECT_PATH/thumbing-serverless-cdk"
+
+cd $SERVERLESS_PROJECT_PATH
+
+npm install
+rm -rf node_modules/sharp
+SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm install --arch=x64 --platform=linux --libc=glibc sharp
+```
+![image](https://user-images.githubusercontent.com/125069098/232156799-a543348a-0f78-4028-9d08-02f0c44175b6.png)
+
+## Create S3 Event Notification to Lambda
+
+```ts
+import * as s3n from 'aws-cdk-lib/aws-s3-notifications';
+this.createS3NotifyToLambda(folderInput,laombda,bucket)
+
+createS3NotifyToLambda(prefix: string, lambda: lambda.IFunction, bucket: s3.IBucket): void {
+  const destination = new s3n.LambdaDestination(lambda);
+    bucket.addEventNotification(s3.EventType.OBJECT_CREATED_PUT,
+    destination,
+    {prefix: prefix}
+  )
+}
+```
+![image](https://user-images.githubusercontent.com/125069098/232156758-64912447-3da1-4b24-acc3-f5f388a95c19.png)
+
+![image](https://user-images.githubusercontent.com/125069098/232159412-1f5937c3-afae-46db-8c5a-3141e7be82a9.png)
+
+
+`cdk deploy` to deploy the changeset
+## create a bucket manually in aws console with bucket name `assets.madhavi27.xyz`. import the bucket into the cdk stack.
+```js
+const bucket = this.importBucket(bucketName);
+
+importBucket(bucketName: string): s3.IBucket {
+    const bucket = s3.Bucket.fromBucketName(this,"AssetsBucket",bucketName);
+    return bucket;
+  }
+```  
+![image](https://user-images.githubusercontent.com/125069098/232159028-41d4f247-a807-4976-b771-a3c8b3018f99.png)
+![image](https://user-images.githubusercontent.com/125069098/232159485-d69a7859-4133-4383-a496-a314f5ecee63.png)
+
+## create a bash script for upload and clear
+```sh
+#! /usr/bin/bash
+
+ABS_PATH=$(readlink -f "$0")
+SERVERLESS_PATH=$(dirname $ABS_PATH)
+DATA_FILE_PATH="$SERVERLESS_PATH/files/data.jpg"
+
+aws s3 cp "$DATA_FILE_PATH" "s3://assets.$DOMAIN_NAME/avatars/original/data.jpg"
+```
+```sh
+#! /usr/bin/bash
+
+ABS_PATH=$(readlink -f "$0")
+SERVERLESS_PATH=$(dirname $ABS_PATH)
+DATA_FILE_PATH="$SERVERLESS_PATH/files/data.jpg"
+
+aws s3 rm "s3://assets.$DOMAIN_NAME/avatars/original/data.jpg"
+aws s3 rm "s3://assets.$DOMAIN_NAME/avatars/processed/data.jpg"
+```
+## export the env var of domain name
+```sh
+export DOMAIN_NAME="madhavi27.com"
+gp env DOMAIN_NAME="madhavi27.com"
+```
+![image](https://user-images.githubusercontent.com/125069098/232162869-6a194924-d2b9-4061-8e1a-634198809bb7.png)
+![image](https://user-images.githubusercontent.com/125069098/232162964-bd7e0858-eb82-4faa-8d8c-edf16acead2a.png)
+![image](https://user-images.githubusercontent.com/125069098/232163100-0eb1079f-8f53-451c-b0a5-9f12eb8af81d.png)
+
+delete the Image
+![image](https://user-images.githubusercontent.com/125069098/232163227-81886b40-75cb-49b7-8989-249c1abaefdc.png)
+
+![image](https://user-images.githubusercontent.com/125069098/232163198-cd0b632a-14f8-4ab7-9d8c-c4134c251578.png)
+![image](https://user-images.githubusercontent.com/125069098/232163688-812f6767-121e-445c-a715-06a8871db66b.png)
+
+![s3 notification](https://user-images.githubusercontent.com/125069098/232163621-76e4b210-8ee1-4359-b942-72f2a953b32c.png)
+
+![lambda](https://user-images.githubusercontent.com/125069098/232163756-1f463d88-0893-4e40-8265-34477feddcb8.png)
+
+## Create Policy for Bucket Access
+
+```ts
+import * as iam from 'aws-cdk-lib/aws-iam';
+const s3ReadWritePolicy = this.createPolicyBucketAccess(bucket.bucketArn)
+// attach policies for permissions
+lambda.addToRolePolicy(s3ReadWritePolicy);
+createPolicyBucketAccess(bucketArn: string){
+    const s3ReadWritePolicy = new iam.PolicyStatement({
+      actions: [
+        's3:GetObject',
+        's3:PutObject',
+      ],
+      resources: [
+        `${bucketArn}/*`,
+      ]
+    });
+    return s3ReadWritePolicy;
+  }
+```
+`cdk deploy`
+![image](https://user-images.githubusercontent.com/125069098/232165513-59037b37-6959-43ce-a25c-7444c04bcd89.png)
+![image](https://user-images.githubusercontent.com/125069098/232165553-84aed64f-666e-4e82-82a9-64ed483cd7b9.png)
+![image](https://user-images.githubusercontent.com/125069098/232165450-e5d94b8d-8911-4c8e-85cf-43d8c98bdf68.png)
+![cloudlogs](https://user-images.githubusercontent.com/125069098/232166865-04685356-6f6b-4bcd-9210-6460204f82ab.png)
+
+![image](https://user-images.githubusercontent.com/125069098/232167568-41c95f7d-54c1-43fe-9e6f-fd30d3f7f4af.png)
+
+## Create SNS Topic
+
+```ts
+import * as sns from 'aws-cdk-lib/aws-sns';
+
+const snsTopic = this.createSnsTopic(topicName)
+
+createSnsTopic(topicName: string): sns.ITopic{
+  const logicalName = "Topic";
+  const snsTopic = new sns.Topic(this, logicalName, {
+    topicName: topicName
+  });
+  return snsTopic;
+}
+```
+
+## Create an SNS Subscription
+
+```ts
+import * as s3n from 'aws-cdk-lib/aws-s3-notifications';
+
+this.createSnsSubscription(snsTopic,webhookUrl)
+
+createSnsSubscription(snsTopic: sns.ITopic, webhookUrl: string): sns.Subscription {
+  const snsSubscription = snsTopic.addSubscription(
+    new subscriptions.UrlSubscription(webhookUrl)
+  )
+  return snsSubscription;
+}
+```
+
+## Create S3 Event Notification to SNS
+
+```ts
+this.createS3NotifyToSns(folderOutput,snsTopic,bucket)
+
+createS3NotifyToSns(prefix: string, snsTopic: sns.ITopic, bucket: s3.IBucket): void {
+  const destination = new s3n.SnsDestination(snsTopic)
+  bucket.addEventNotification(
+    s3.EventType.OBJECT_CREATED_PUT, 
+    destination,
+    {prefix: prefix}
+  );
+}
+```
+![image](https://user-images.githubusercontent.com/125069098/232168746-5a56a74c-2edd-4283-9910-a77283b5fab0.png)
+![image](https://user-images.githubusercontent.com/125069098/232168780-e7b0eaba-effb-4e19-a044-7d344e46cb13.png)
+
+![image](https://user-images.githubusercontent.com/125069098/232168898-d2abb1d6-edbf-46b4-b007-b7c6dc6c23ba.png)
+![image](https://user-images.githubusercontent.com/125069098/232168942-64c49109-960e-487f-837a-470c6596a3cc.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
