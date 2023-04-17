@@ -335,6 +335,59 @@ createS3NotifyToSns(prefix: string, snsTopic: sns.ITopic, bucket: s3.IBucket): v
 ![image](https://user-images.githubusercontent.com/125069098/232168898-d2abb1d6-edbf-46b4-b007-b7c6dc6c23ba.png)
 ![image](https://user-images.githubusercontent.com/125069098/232168942-64c49109-960e-487f-837a-470c6596a3cc.png)
 
+## Setting up the cloudfront for Serving Avatars.
+
+- Goto cloudfront on aws console
+- click on create a cloudfront distribution
+- select the origin domain name from drop down list, origin access to origin access control setting 
+![image](https://user-images.githubusercontent.com/125069098/232503033-d8e26f0f-c00e-4ee9-89f3-ee91268d3cc5.png)
+- create control settings
+![image](https://user-images.githubusercontent.com/125069098/232503418-45682dd6-7421-4aa0-8a27-9fdad2a7eebc.png)
+click create
+![image](https://user-images.githubusercontent.com/125069098/232503731-6ec53aa5-9c40-4e5d-8c33-aa33f3e84c76.png)
+![image](https://user-images.githubusercontent.com/125069098/232504243-a6240649-06b2-4bfb-a9c6-00a445a4443b.png)
+![image](https://user-images.githubusercontent.com/125069098/232505836-dee38c79-8c90-4a61-af67-8ee65c57f0e0.png)
+![image](https://user-images.githubusercontent.com/125069098/232506560-5658f151-ec73-4ac7-a4ec-b836796a9a27.png)
+![image](https://user-images.githubusercontent.com/125069098/232507663-bae17479-3230-4bfc-bcb8-11b879efa917.png)
+![image](https://user-images.githubusercontent.com/125069098/232508103-aa1bcb63-34f6-4980-9b71-563c73bd9378.png)
+click on create distrbution
+![image](https://user-images.githubusercontent.com/125069098/232508565-abab09fc-9e18-44cb-a0b8-fb1031dfd154.png)
+- Create a new record for the cloudfront in the Route 53 hostedzone.
+![image](https://user-images.githubusercontent.com/125069098/232513696-118fa0b3-0742-4cd2-ab47-09ff5867c2db.png)
+![image](https://user-images.githubusercontent.com/125069098/232513878-7c81c753-d850-433a-870d-fda6e8c4cfa3.png)
+-Test cloudfront is working in the bowser
+![image](https://user-images.githubusercontent.com/125069098/232514770-b4f8e991-d562-4d15-974d-88684fc9fd29.png)
+- Add a bucket policy to the s3 bucket (assets.madhavi27.xyz)
+```json
+{
+        "Version": "2008-10-17",
+        "Id": "PolicyForCloudFrontPrivateContent",
+        "Statement": [
+            {
+                "Sid": "AllowCloudFrontServicePrincipal",
+                "Effect": "Allow",
+                "Principal": {
+                    "Service": "cloudfront.amazonaws.com"
+                },
+                "Action": "s3:GetObject",
+                "Resource": "arn:aws:s3:::assets.madhavi27.xyz/*",
+                "Condition": {
+                    "StringEquals": {
+                      "AWS:SourceArn": "arn:aws:cloudfront::480134889878:distribution/E2ISHVF5HNPBX7"
+                    }
+                }
+            }
+        ]
+      }
+ ```     
+![image](https://user-images.githubusercontent.com/125069098/232517608-4c3d1606-990d-4e17-941a-c8b6ded35e96.png)
+
+-Test it in the browser.
+![image](https://user-images.githubusercontent.com/125069098/232518463-e5b16097-fcd7-4ffe-9865-5c77751b4d28.png)
+
+
+
+
 
 
 
