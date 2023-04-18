@@ -385,6 +385,15 @@ click on create distrbution
 -Test it in the browser.
 ![image](https://user-images.githubusercontent.com/125069098/232518463-e5b16097-fcd7-4ffe-9865-5c77751b4d28.png)
 
+Modify the the cdk stack to create a bucket to uploaded-avartars and it has to upload the image into uploaded-avatar and assets bucket.
+
+## Things to remember:
+when you open the gitpod workspace first run the script./bin/avatar/build to install the sharp. Then perform cdk deploy then upload the image to the uploaded bucket then it has be copied into assets bucket. Otherwise you will get an error
+![image](https://user-images.githubusercontent.com/125069098/232793877-5a2b0049-a73e-4e32-8919-7de46f36c3b8.png)
+
+
+
+
 
 
 
