@@ -391,6 +391,14 @@ Modify the the cdk stack to create a bucket to uploaded-avartars and it has to u
 when you open the gitpod workspace first run the script./bin/avatar/build to install the sharp. Then perform cdk deploy then upload the image to the uploaded bucket then it has be copied into assets bucket. Otherwise you will get an error
 ![image](https://user-images.githubusercontent.com/125069098/232793877-5a2b0049-a73e-4e32-8919-7de46f36c3b8.png)
 
+##  Implement Users Profile Page
+Implement a user profile page to show the avatar, banner, user displayname and number of cruds and edit button.
+we need to modify some files ActivityFeed.js, CrudButton.js,HomeFeedPage.js,NotificationsFeedPage.js,UserFeedPage.js 
+Add some new files EditProfileButton.css, EditProfileButton.js,ProfileHeading.css,ProfileHeading.js
+create show.sql to get the handler from users
+
+![Users Profile Page](https://user-images.githubusercontent.com/125069098/232868291-9705347e-4816-4247-8833-ce2e0734eebe.png)
+
 
 
 
