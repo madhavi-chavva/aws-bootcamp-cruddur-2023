@@ -11,7 +11,7 @@ SELECT
        WHERE
         activities.user_uuid = users.uuid
        ) as cruds_count
-  ) object_row) as profile,
+  ) object_row) as profile, 
   (SELECT COALESCE(array_to_json(array_agg(row_to_json(array_row))),'[]'::json) FROM (
     SELECT
       activities.uuid,
