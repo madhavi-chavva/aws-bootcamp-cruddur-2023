@@ -423,6 +423,21 @@ Unable to update the profile it is throwing an error 400
 
 ![image](https://user-images.githubusercontent.com/125069098/233166409-00f47aa6-b9d7-44f7-8448-73bd8d89a582.png)
 
+`Able to resolve the issue above 404 handle.' This issue was occuring because of the hardcoded value of andrewbrown in the DesktopNavigation.js file for the
+handler unable to process the handler properly. I have replace the handler with my_handler then it is resolved and able to update the bio column in the postgres db.
+![image](https://user-images.githubusercontent.com/125069098/233195505-d260b8df-233a-44e2-80b6-be76796bff73.png)
+
+![image](https://user-images.githubusercontent.com/125069098/233195933-81d74a08-681a-492d-bc0e-435b117ff2a2.png)
+
+![image](https://user-images.githubusercontent.com/125069098/233196388-d8a12cdf-8b27-4dfa-83d2-185c499863fb.png)
+![image](https://user-images.githubusercontent.com/125069098/233196570-e1064894-873c-4cca-bcb8-274300d5848e.png)
+![image](https://user-images.githubusercontent.com/125069098/233197016-16ff8ec4-c2f5-4151-98bf-96ad429a5869.png)
+
+
+
+
+
+
 
 
 
