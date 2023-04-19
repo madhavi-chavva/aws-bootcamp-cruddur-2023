@@ -399,6 +399,36 @@ create show.sql to get the handler from users
 
 ![Users Profile Page](https://user-images.githubusercontent.com/125069098/232868291-9705347e-4816-4247-8833-ce2e0734eebe.png)
 
+## Implement Migrations Backend Endpoint and Profile Form
+
+![image](https://user-images.githubusercontent.com/125069098/233137017-22f14503-e6bf-4fb3-8a29-6d7bfb119d53.png)
+
+![generate add_bio_column file](https://user-images.githubusercontent.com/125069098/233137301-7a1ebbf6-a41c-4446-a210-abd3bbba6e60.png)
+
+`Create a table for schema_information'
+
+![image](https://user-images.githubusercontent.com/125069098/233140328-eca90d31-3582-4c10-a975-a591062166a7.png)
+
+![image](https://user-images.githubusercontent.com/125069098/233147264-3053a47e-3ae4-4298-a079-4a63577de332.png)
+
+![image](https://user-images.githubusercontent.com/125069098/233147461-a727aba3-17b4-468c-8ab4-09f9f5f55037.png)
+
+![image](https://user-images.githubusercontent.com/125069098/233149649-70f079ae-6444-49e1-bbfc-1b26473268dc.png)
+
+![image](https://user-images.githubusercontent.com/125069098/233162648-8f3600a3-12dc-4c73-8eb9-eeb7dc147540.png)
+
+Unable to update the profile it is throwing an error 400
+
+![image](https://user-images.githubusercontent.com/125069098/233166365-a4ffa889-1455-417f-86d3-178e8ff19c30.png)
+
+![image](https://user-images.githubusercontent.com/125069098/233166409-00f47aa6-b9d7-44f7-8448-73bd8d89a582.png)
+
+
+
+
+
+
+
 
 
 
