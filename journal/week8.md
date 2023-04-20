@@ -433,6 +433,48 @@ handler unable to process the handler properly. I have replace the handler with 
 ![image](https://user-images.githubusercontent.com/125069098/233196570-e1064894-873c-4cca-bcb8-274300d5848e.png)
 ![image](https://user-images.githubusercontent.com/125069098/233197016-16ff8ec4-c2f5-4151-98bf-96ad429a5869.png)
 
+### Implement Avatar Uploading 
+- create a API Gateway endpoint with Http API in AWS console (To create a this we need a lambda function. So we create one lambda function)
+  `create Lambda Function Name `cruddurAvatarUpload` Runtime ruby 2.7 and create a role for the lambda`
+![image](https://user-images.githubusercontent.com/125069098/233452943-15ca4366-2737-4e7e-a180-79bd083cd1fa.png)
+![image](https://user-images.githubusercontent.com/125069098/233453918-b52d23d0-d64a-4e5d-b89b-49341aba4a53.png)
+![lambda](https://user-images.githubusercontent.com/125069098/233454179-ca731ddf-a83f-4732-b75e-b80f24aa421a.png)
+
+- Create a Gemfile to libraries for ruby
+![image](https://user-images.githubusercontent.com/125069098/233456101-8cecf4aa-fe34-499b-b577-85eaf0b86deb.png)
+- install gem "aws-sdk-s3" and gem "ox"
+
+![image](https://user-images.githubusercontent.com/125069098/233456582-9dad864a-21f2-4a32-980a-6d7b8fcfb404.png)
+
+![image](https://user-images.githubusercontent.com/125069098/233457856-09ec27cc-4d1d-420f-a651-0c63d62d553b.png)
+
+Execute the ruby function to generate presignedUrl
+![image](https://user-images.githubusercontent.com/125069098/233459312-9819eb12-4c0f-4220-bb4f-3df7f70d1726.png)
+
+Install the extension for vs code thunder client
+![image](https://user-images.githubusercontent.com/125069098/233460398-d6a014d2-de36-4fc2-a8cd-7458fe92276e.png)
+
+upload a image and test it in the thunder client
+![image](https://user-images.githubusercontent.com/125069098/233461806-0918863e-95e2-45ac-9e5f-7a914743e2f1.png)
+
+![s3bucket](https://user-images.githubusercontent.com/125069098/233462002-7e2cbf5e-721e-48d0-b3eb-9919da219d1e.png)
+
+Copy and paste the lambda function to into the lambda function(function.rb) and add permissions and environments variables to it.
+
+![image](https://user-images.githubusercontent.com/125069098/233465520-a1f642d8-09af-4bd0-bfba-05efcf6e208a.png)
+
+![image](https://user-images.githubusercontent.com/125069098/233465285-470840af-9afc-4fd9-85ff-0b267d0f1b51.png)
+![image](https://user-images.githubusercontent.com/125069098/233465744-e722c781-513e-468a-88c4-17bef3e5b518.png)
+![image](https://user-images.githubusercontent.com/125069098/233467622-788082ff-8400-42be-90a7-e7fceaa57697.png)
+
+![image](https://user-images.githubusercontent.com/125069098/233468764-1058a891-40e3-42f9-b3f1-d79257e777bf.png)
+
+
+
+
+
+
+
 
 
 
