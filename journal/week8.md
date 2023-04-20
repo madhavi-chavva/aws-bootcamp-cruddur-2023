@@ -448,18 +448,55 @@ handler unable to process the handler properly. I have replace the handler with 
 
 ![image](https://user-images.githubusercontent.com/125069098/233457856-09ec27cc-4d1d-420f-a651-0c63d62d553b.png)
 
-Execute the ruby function to generate presignedUrl
+`Set environment variable bucketname in the gitpod`
+```sh
+export UPLOADS_BUCKET_NAME="madhavi27-uploaded-avatars"
+gp env UPLOADS_BUCKET_NAME="madhavi27-uploaded-avatars"
+```
+
+```ruby
+require 'aws-sdk-s3'
+require 'json'
+
+def handler(event:, context:)
+  puts event
+  s3 = Aws::S3::Resource.new
+  bucket_name = ENV["UPLOADS_BUCKET_NAME"]
+  object_key = 'mock.jpg'
+
+  obj = s3.bucket(bucket_name).object(object_key)
+  url = obj.presigned_url(:put, expires_in: 60 * 5)
+  url # this is the data that will be returned
+  body = {url: url}.to_json
+  { statusCode: 200, body: body }
+end
+``` 
+- Execute the ruby function to generate presignedUrl
 ![image](https://user-images.githubusercontent.com/125069098/233459312-9819eb12-4c0f-4220-bb4f-3df7f70d1726.png)
 
-Install the extension for vs code thunder client
+- Install the extension for vs code thunder client
 ![image](https://user-images.githubusercontent.com/125069098/233460398-d6a014d2-de36-4fc2-a8cd-7458fe92276e.png)
 
-upload a image and test it in the thunder client
+- upload a image and test it in the thunder client select PUT instead of get
 ![image](https://user-images.githubusercontent.com/125069098/233461806-0918863e-95e2-45ac-9e5f-7a914743e2f1.png)
 
 ![s3bucket](https://user-images.githubusercontent.com/125069098/233462002-7e2cbf5e-721e-48d0-b3eb-9919da219d1e.png)
 
 Copy and paste the lambda function to into the lambda function(function.rb) and add permissions and environments variables to it.
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": "s3:PutObject",
+            "Resource": "arn:aws:s3:::madhavi27-uploaded-avatars/*"
+        }
+    ]
+}
+```
 
 ![image](https://user-images.githubusercontent.com/125069098/233465520-a1f642d8-09af-4bd0-bfba-05efcf6e208a.png)
 
@@ -468,6 +505,60 @@ Copy and paste the lambda function to into the lambda function(function.rb) and 
 ![image](https://user-images.githubusercontent.com/125069098/233467622-788082ff-8400-42be-90a7-e7fceaa57697.png)
 
 ![image](https://user-images.githubusercontent.com/125069098/233468764-1058a891-40e3-42f9-b3f1-d79257e777bf.png)
+
+### Verify the JWTs signed by Amazon Cognito
+
+JavaScript library for verifying JWTs signed by Amazon Cognito, and any OIDC-compatible IDP that signs JWTs
+
+- install the 
+```json
+npm install aws-jwt-verify
+```
+![image](https://user-images.githubusercontent.com/125069098/233481853-19f90c77-e492-42a3-a706-2a60070a6455.png)
+![image](https://user-images.githubusercontent.com/125069098/233481952-5d8a543b-213a-47c1-b034-52509675e9dc.png)
+
+This library can be used with Node.js 14 or higher. If used with TypeScript, TypeScript 4 or higher is required.
+This library can also be used in Web browsers.
+
+Download the node modules folder,index.js,package-lock.json,package.json from the gitpod and zip all the files. create a new lambda and upload the zip file.
+
+- Create a new lambda function called CrudderApiGatewayLambdaAuthorizer with runtime Node.js.18x
+![image](https://user-images.githubusercontent.com/125069098/233484499-f034a7e3-d08f-4985-b8c3-d3bbd9632faf.png)
+![image](https://user-images.githubusercontent.com/125069098/233484695-b564f698-8135-42cb-8d27-15e06233c03f.png)
+
+![image](https://user-images.githubusercontent.com/125069098/233484882-d84fb681-3d9c-430f-8d7a-080d33569666.png)
+![image](https://user-images.githubusercontent.com/125069098/233485437-45554e63-a18a-459a-adea-a7878223bbe5.png)
+
+Create API Gateway using HTTP API
+![image](https://user-images.githubusercontent.com/125069098/233486111-d9523ae0-bce3-4d94-bd1a-c63de25cedc4.png)
+![image](https://user-images.githubusercontent.com/125069098/233486739-e4a1b2ad-fee5-4db9-b018-edc6315162e5.png)
+![image](https://user-images.githubusercontent.com/125069098/233487048-9069b22d-cbe5-47b1-96a2-c753543a8d6a.png)
+![image](https://user-images.githubusercontent.com/125069098/233487115-b75e5a33-f43c-4864-85c1-077530eb4f2e.png)
+![image](https://user-images.githubusercontent.com/125069098/233487216-55e38247-70fd-45e6-8c1c-1df049626864.png)
+![image](https://user-images.githubusercontent.com/125069098/233488025-54a7f502-9f73-4e54-b4af-acead7fd9fbe.png)
+
+set Authorization in the API Gateway
+![image](https://user-images.githubusercontent.com/125069098/233488687-126dd56a-fc06-4628-9e35-922e50cc0820.png)
+![image](https://user-images.githubusercontent.com/125069098/233488999-e39f9c33-da5a-4209-96a0-801ec64d8e80.png)
+![image](https://user-images.githubusercontent.com/125069098/233489105-587b994b-4e52-4e8f-8e79-546f22d6750e.png)
+![image](https://user-images.githubusercontent.com/125069098/233489306-483722f7-7243-4347-8ba1-df70a4a507c3.png)
+![image](https://user-images.githubusercontent.com/125069098/233489405-5672439c-f291-48ee-8c17-98aa2db850db.png)
+![image](https://user-images.githubusercontent.com/125069098/233489692-cdd61344-98ea-4b44-8ee5-2bfd05422341.png)
+
+use the API gateway https://xikvwz17th.execute-api.us-east-1.amazonaws.com/avatars/key_upload in the browser
+
+![image](https://user-images.githubusercontent.com/125069098/233490140-ef294a5e-4d71-4599-bbeb-6a1039b3c56f.png)
+
+Add the code to profileform.js and profileForm.css 
+![image](https://user-images.githubusercontent.com/125069098/233494918-da94667b-7e31-4335-898d-81d2a1acea34.png)
+
+add the CORS to the API Gateway.
+![image](https://user-images.githubusercontent.com/125069098/233495461-e89efd5f-df1b-4dcb-a9ee-bb2e67b37b2e.png)
+![image](https://user-images.githubusercontent.com/125069098/233495759-c7e7009a-05fa-46d2-a1f2-831386990ce9.png)
+
+
+
+
 
 
 
