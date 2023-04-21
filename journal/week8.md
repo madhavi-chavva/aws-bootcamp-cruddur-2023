@@ -556,6 +556,33 @@ add the CORS to the API Gateway.
 ![image](https://user-images.githubusercontent.com/125069098/233495461-e89efd5f-df1b-4dcb-a9ee-bb2e67b37b2e.png)
 ![image](https://user-images.githubusercontent.com/125069098/233495759-c7e7009a-05fa-46d2-a1f2-831386990ce9.png)
 
+## Fix CORS for API Gateway
+
+![image](https://user-images.githubusercontent.com/125069098/233535003-3c209dbe-2e8f-48ff-a210-f09a20006710.png)
+![image](https://user-images.githubusercontent.com/125069098/233535062-21a730ab-75de-4b0e-9338-85381ebdba3c.png)
+
+
+## Fix CORS Final AWS Lambda Layers
+Edit the bucket policy for 
+
+```json
+[
+    {
+        "AllowedHeaders": ["*"],
+        "AllowedMethods": ["PUT"],
+        "AllowedOrigins": [
+            "https://*.gitpod.io"
+        ],
+        "ExposeHeaders": [
+            "x-amz-server-side-encryption",
+            "x-amz-request-id",
+            "x-amz-id-2"
+        ],  
+        "MaxAgeSeconds": 30000
+    }
+]
+```
+
 
 
 
