@@ -557,6 +557,14 @@ add the CORS to the API Gateway.
 ![image](https://user-images.githubusercontent.com/125069098/233495759-c7e7009a-05fa-46d2-a1f2-831386990ce9.png)
 
 ## Fix CORS for API Gateway
+`Create a {proxy+} with method option and attach a lambda to it`
+
+![image](https://user-images.githubusercontent.com/125069098/233537220-931d8374-c739-4053-a384-806b7127fb17.png)
+![image](https://user-images.githubusercontent.com/125069098/233536935-27b41e0a-b050-48c7-8552-133a1f2c2d89.png)
+![image](https://user-images.githubusercontent.com/125069098/233537144-17a1e879-8dee-4eff-8eac-183d59e56021.png)
+
+
+`Create  custom domain name`
 
 ![image](https://user-images.githubusercontent.com/125069098/233535003-3c209dbe-2e8f-48ff-a210-f09a20006710.png)
 ![image](https://user-images.githubusercontent.com/125069098/233535062-21a730ab-75de-4b0e-9338-85381ebdba3c.png)
