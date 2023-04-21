@@ -7,6 +7,7 @@ import DesktopSidebar     from '../components/DesktopSidebar';
 import ActivityFeed from '../components/ActivityFeed';
 import ActivityForm from '../components/ActivityForm';
 import ProfileHeading from '../components/ProfileHeading';
+import ProfileForm from '../components/ProfileForm';
 
 // [TODO] Authenication
 import {checkAuth, getAccessToken} from '../lib/CheckAuth';
@@ -59,6 +60,13 @@ export default function UserFeedPage() {
       <DesktopNavigation user={user} active={'profile'} setPopped={setPopped} />
       <div className='content'>
         <ActivityForm popped={popped} setActivities={setActivities} />
+
+        <ProfileForm 
+          profile={profile}
+          popped={poppedProfile} 
+          setPopped={setPoppedProfile} 
+        />
+
         <div className='activity_feed'>
           <ProfileHeading setPopped={setPoppedProfile} profile={profile} />
           <ActivityFeed activities={activities} />
