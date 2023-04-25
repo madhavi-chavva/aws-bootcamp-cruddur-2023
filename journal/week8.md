@@ -625,6 +625,73 @@ Edit the bucket policy for
 ]
 ```
 
+### Create a lambda layer to function cruddurAvatarUpload
+
+Create a bash script file to generate a zip file for the JWT to add to the lambda layer.
+
+![image](https://user-images.githubusercontent.com/125069098/234408534-b31b7fac-d899-4892-8889-82b8d5338aa8.png)
+
+![image](https://user-images.githubusercontent.com/125069098/234408158-1fa60c4c-753b-444e-8c58-6b5dabb07d20.png)
+
+![image](https://user-images.githubusercontent.com/125069098/234408394-3aaac22b-9126-457e-8dd9-ce11cdb1b2db.png)
+
+Modify the code in the function.rb to get the access token, extension and cognito_user_uuid
+
+```ruby
+require 'aws-sdk-s3'
+require 'json'
+require 'jwt'
+
+def handler(event:, context:)
+  puts event
+  if event['routeKey'] == "OPTIONS /{proxy+}"
+    puts({step: 'preflight', message: 'preflight CORS check'}.to_json)
+    { 
+      headers: {
+        "Access-Control-Allow-Headers": "*, Authorization",
+        "Access-Control-Allow-Origin": "https://3000-madhavichav-awsbootcamp-csefsb1geah.ws-us95.gitpod.io",
+        "Access-Control-Allow-Methods": "OPTIONS,GET,POST"
+      },
+      statusCode: 200
+    }
+  else
+    token = event['headers']['authorization'].split(' ')[1]
+    puts({step: 'presignedurl', access_token: token}.to_json)
+    body_hash = JSON.parse(event["body"])
+    extension = body_hash["extension"]
+
+    decoded_token = JWT.decode token, nil, false
+    cognito_user_uuid = decoded_token[0]['sub']
+
+    s3 = Aws::S3::Resource.new
+    bucket_name = ENV["UPLOADS_BUCKET_NAME"]
+    object_key = "#{cognito_user_uuid}.#{extension}"
+
+    puts({object_key: object_key}.to_json)
+ 
+    obj = s3.bucket(bucket_name).object(object_key)
+    url = obj.presigned_url(:put, expires_in: 60 * 5)
+    url # this is the data that will be returned
+    body = {url: url}.to_json
+    { 
+      headers: {
+        "Access-Control-Allow-Headers": "*, Authorization",
+        "Access-Control-Allow-Origin": "https://3000-madhavichav-awsbootcamp-csefsb1geah.ws-us95.gitpod.io",
+        "Access-Control-Allow-Methods": "OPTIONS,GET,POST"
+      },
+      statusCode: 200, 
+      body: body 
+    }
+  end # if 
+end # def handler
+```
+Test the lambda function is triggered when you load a image into upload avatar in the frontend app
+
+![image](https://user-images.githubusercontent.com/125069098/234409724-0f4f01eb-eedb-4697-bdad-491e712565cc.png)
+
+This throwing an error of 404.
+
+
 
 
 
