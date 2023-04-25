@@ -336,6 +336,18 @@ createS3NotifyToSns(prefix: string, snsTopic: sns.ITopic, bucket: s3.IBucket): v
 ![image](https://user-images.githubusercontent.com/125069098/232168942-64c49109-960e-487f-837a-470c6596a3cc.png)
 
 ## Setting up the cloudfront for Serving Avatars.
+Amazon CloudFront is designed to work seamlessly with S3 to serve your S3 content in a faster way. Also, using CloudFront to serve s3 content 
+gives you a lot more flexibility and control. To create a CloudFront distribution, a certificate in the us-east-1 zone for *.<your_domain_name> is required.
+If you don't have one yet, create one via AWS Certificate Manager, and click "Create records in Route 53" after the certificate is issued.
+
+Create a distribution by:
+
+- set the Origin domain to point to assets.<your_domain_name>
+- choose Origin access control settings (recommended) and create a control setting
+- select Redirect HTTP to HTTPS for the viewer protocol policy
+- choose CachingOptimized, CORS-CustomOrigin as the optional Origin request policy, and SimpleCORS as the response headers policy
+- set Alternate domain name (CNAME) as assets.<your_domain_name>
+- choose the previously created ACM for the Custom SSL certificate.
 
 - Goto cloudfront on aws console
 - click on create a cloudfront distribution
