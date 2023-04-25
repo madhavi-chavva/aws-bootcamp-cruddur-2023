@@ -413,6 +413,20 @@ create show.sql to get the handler from users
 
 ## Implement Migrations Backend Endpoint and Profile Form
 
+### DB Migration
+Since our previous postgres database didn't have the column for saving bio, migration is required. We also need to update some backend scripts 
+in order to let users edit bio and save the updated bio in the database.
+
+Create an empty `backend-flask/db/migrations/.keep`, and an executable script `bin/generate/migration.
+Run ./bin/generate/migration add_bio_column, a python script such as backend-flask/db/migrations/1681742424_add_bio_column.py will be generated. 
+Edit the generated python script with SQL commands ALTER TABLE public.users to add column bio to the table and ALTER TABLE public.users to drop column bio 
+From the table.
+
+Update `backend-flask/db/schema.sql`, and update `backend-flask/lib/db.py` with verbose option.
+
+Create executable scripts `bin/db/migrate` and `bin/db/rollback`. If we run `./bin/db/migrate`, a new column called bio will be created in the db table of users.
+
+
 ![image](https://user-images.githubusercontent.com/125069098/233137017-22f14503-e6bf-4fb3-8a29-6d7bfb119d53.png)
 
 ![generate add_bio_column file](https://user-images.githubusercontent.com/125069098/233137301-7a1ebbf6-a41c-4446-a210-abd3bbba6e60.png)
