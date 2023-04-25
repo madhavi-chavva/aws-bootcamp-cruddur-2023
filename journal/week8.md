@@ -434,6 +434,10 @@ handler unable to process the handler properly. I have replace the handler with 
 ![image](https://user-images.githubusercontent.com/125069098/233197016-16ff8ec4-c2f5-4151-98bf-96ad429a5869.png)
 
 ### Implement Avatar Uploading 
+Firstly we need to create an API endpoint, which invoke a presigned URL like https://<API_ID>.execute-api.<AWS_REGION>.amazonaws.com. This presigned URL can give access to the S3 bucket (madhavi27-uploaded-avatars), and can deliver the uploaded image to the bucket.
+
+We will call https://<API_ID>.execute-api.<AWS_REGION>.amazonaws.com/avatars/key_upload to do the upload, where the /avatars/key_upload resource is manipulated by the POST method. We will also create a Lambda function named CruddurAvatarUpload to decode the URL and the request. In addition, we need to implement authorization with another Lambda function named CruddurApiGatewayLambdaAuthorizer, which is important to control the data that is allowed to be transmitted from our gitpod workspace using the APIs.
+
 - create a API Gateway endpoint with Http API in AWS console (To create a this we need a lambda function. So we create one lambda function)
   `create Lambda Function Name `cruddurAvatarUpload` Runtime ruby 2.7 and create a role for the lambda`
 ![image](https://user-images.githubusercontent.com/125069098/233452943-15ca4366-2737-4e7e-a180-79bd083cd1fa.png)
@@ -481,6 +485,20 @@ end
 ![image](https://user-images.githubusercontent.com/125069098/233461806-0918863e-95e2-45ac-9e5f-7a914743e2f1.png)
 
 ![s3bucket](https://user-images.githubusercontent.com/125069098/233462002-7e2cbf5e-721e-48d0-b3eb-9919da219d1e.png)
+
+### At AWS Lambda, create the corresponding two functions:
+
+`CruddurAvatarUpload`
+
+code source as seen in aws/lambdas/cruddur-upload-avatar/function.rb with your own gitpod frontend URL as Access-Control-Allow-Origin
+rename Handler as function.handler
+add environment variable UPLOADS_BUCKET_NAME
+create a new policy PresignedUrlAvatarPolicy as seen in aws/policies/s3-upload-avatar-presigned-url-policy.json (code), and then attach this policy to the role of this Lambda
+
+`CruddurApiGatewayLambdaAuthorizer`
+
+upload lambda_authorizer.zip into the code source
+add environment variables USER_POOL_ID and CLIENT_ID
 
 Copy and paste the lambda function to into the lambda function(function.rb) and add permissions and environments variables to it.
 
@@ -557,6 +575,10 @@ add the CORS to the API Gateway.
 ![image](https://user-images.githubusercontent.com/125069098/233495759-c7e7009a-05fa-46d2-a1f2-831386990ce9.png)
 
 ## Fix CORS for API Gateway
+- Lambda CruddurAvatarUpload: code source as seen in ./aws/lambdas/cruddur-upload-avatar/function.rb with my gitpod frontend url as Access-Control-Allow-Origin; renamed Handler as function.handler; environment variable UPLOADS_BUCKET_NAME has value <my_name>-cruddur-uploaded-avatars; its role attached the policy PresignedUrlAvatarPolicy.
+- Lambda CruddurApiGatewayLambdaAuthorizer: code source as seen in zipped ./aws/lambdas/lambda-authorizer; add environment variables USER_POOL_ID and CLIENT_ID.
+- API Gateway api.<my_domain>: route POST /avatars/key_upload with authorizer CruddurJWTAuthorizer which invoke Lambda CruddurApiGatewayLambdaAuthorizer, also with integration CruddurAvatarUpload; route OPTIONS /{proxy+} with no authorizer, and with integration CruddurAvatarUpload; No configuration for CORS.
+
 `Create a {proxy+} with method option and attach a lambda to it`
 
 ![image](https://user-images.githubusercontent.com/125069098/233537220-931d8374-c739-4053-a384-806b7127fb17.png)
@@ -690,6 +712,15 @@ Test the lambda function is triggered when you load a image into upload avatar i
 ![image](https://user-images.githubusercontent.com/125069098/234409724-0f4f01eb-eedb-4697-bdad-491e712565cc.png)
 
 This throwing an error of 404.
+### Double Check Environment Variables
+There are some environment variables and setups worth double checking:
+
+- function.rb in CruddurAvatarUpload: set Access-Control-Allow-Origin as your own frontend URL.
+- index.js in CruddurApiGatewayLambdaAuthorizer: make sure that token can be correctly extracted from the authorization header.
+- Environment variables in the above two Lambdas were added.
+- erb/frontend-react-js.env.erb: REACT_APP_API_GATEWAY_ENDPOINT_URL equals to the Invoke URL shown in the API Gateway.
+- frontend-react-js/src/components/ProfileForm.js: gateway_url and backend_url are correctly set.
+- Pay attention to variable name inconsistency in some scripts, e.g., cognito_user_uuid vs. cognito_user_id.
 
 
 
