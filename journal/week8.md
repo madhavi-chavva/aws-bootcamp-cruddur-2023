@@ -611,6 +611,8 @@ add the CORS to the API Gateway.
 ![image](https://user-images.githubusercontent.com/125069098/233536935-27b41e0a-b050-48c7-8552-133a1f2c2d89.png)
 ![image](https://user-images.githubusercontent.com/125069098/233537144-17a1e879-8dee-4eff-8eac-183d59e56021.png)
 
+![image](https://user-images.githubusercontent.com/125069098/234720226-137339f7-5139-4a88-8dbd-e2d44ec1df9f.png)
+
 
 `Create  custom domain name`
 
@@ -737,7 +739,14 @@ Test the lambda function is triggered when you load a image into upload avatar i
 
 ![image](https://user-images.githubusercontent.com/125069098/234409724-0f4f01eb-eedb-4697-bdad-491e712565cc.png)
 
-This throwing an error of 404.
+This throwing an error of 404. I did a minor mistake in routes of API Gateway  (/avatar/key_upload/post) instead of /  mistypeed .
+It was giving error. I have changed in the API Gateway 
+
+![image](https://user-images.githubusercontent.com/125069098/234720799-58d5a614-2f93-4e5e-9e09-672c3540747b.png)
+ 
+ After that I am able to generate logs for the `CrudderApiGatewayLambdaAuthorizer` lambda function but I still have some issues 404 and 500
+ ![image](https://user-images.githubusercontent.com/125069098/234721015-f35e5b40-d7fa-41e3-9572-f1d4847a7738.png)
+
 ### Double Check Environment Variables
 There are some environment variables and setups worth double checking:
 
