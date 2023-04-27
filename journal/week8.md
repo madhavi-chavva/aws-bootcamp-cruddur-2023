@@ -757,6 +757,17 @@ There are some environment variables and setups worth double checking:
 - frontend-react-js/src/components/ProfileForm.js: gateway_url and backend_url are correctly set.
 - Pay attention to variable name inconsistency in some scripts, e.g., cognito_user_uuid vs. cognito_user_id.
 
+![image](https://user-images.githubusercontent.com/125069098/234917596-df2b8330-d6f6-4ba3-9cc8-273d6cedd6b2.png)
+![image](https://user-images.githubusercontent.com/125069098/234918386-89f760b7-d9f5-4ee2-8558-99ae08796f21.png)
+
+![madhavi27-uploaded-avatars](https://user-images.githubusercontent.com/125069098/234918212-e2d6d5df-046e-4d17-852f-7adfddd68930.png)
+
+![assets.madhavi27.xyz](https://user-images.githubusercontent.com/125069098/234919429-654c1351-efcf-48e4-9863-4f0a44e4205f.png)
+
+
+
+
+
 
 
 
