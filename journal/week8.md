@@ -771,14 +771,14 @@ in the s3 buckets `assets.madhavi27.xyz` and `madhavi27-uploaded-avatars`
 ## Render Avatar from CloudFront
 create a file for profileAvatar.js to get the avatar from the s3 bucket via cloudfront. modify the in the following files.
 
-backend-flask/db/sql/users/show.sql
-frontend-react-js/src/components/ProfileAvatar.css
-frontend-react-js/src/components/ProfileAvatar.js
-frontend-react-js/src/components/ProfileHeading.css
-frontend-react-js/src/components/ProfileHeading.js
-frontend-react-js/src/components/ProfileInfo.js
-frontend-react-js/src/lib/CheckAuth.js
-frontend-react-js/src/pages/UserFeedPage.js
+- backend-flask/db/sql/users/show.sql
+- frontend-react-js/src/components/ProfileAvatar.css
+- frontend-react-js/src/components/ProfileAvatar.js
+- frontend-react-js/src/components/ProfileHeading.css
+- frontend-react-js/src/components/ProfileHeading.js
+- frontend-react-js/src/components/ProfileInfo.js
+- frontend-react-js/src/lib/CheckAuth.js
+- frontend-react-js/src/pages/UserFeedPage.js
 
 ![image](https://user-images.githubusercontent.com/125069098/234930871-b6f6c4cc-3f45-4a27-abd2-f41bc8516c74.png)
 
