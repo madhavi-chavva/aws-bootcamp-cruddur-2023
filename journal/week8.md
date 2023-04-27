@@ -757,12 +757,31 @@ There are some environment variables and setups worth double checking:
 - frontend-react-js/src/components/ProfileForm.js: gateway_url and backend_url are correctly set.
 - Pay attention to variable name inconsistency in some scripts, e.g., cognito_user_uuid vs. cognito_user_id.
 
+**RESOLUTION:** I have deleted the API GATEWAY and recreated it and change the Api gateway in the frontend-react-js.env.erb file and changed the frontend url 
+of the gitpod in the lambda function `cruddurAvatarUpload`. Test it whether it is working or not this time it worked as excepted and able to upload the avatar 
+in the s3 buckets `assets.madhavi27.xyz` and `madhavi27-uploaded-avatars`  
+
 ![image](https://user-images.githubusercontent.com/125069098/234917596-df2b8330-d6f6-4ba3-9cc8-273d6cedd6b2.png)
 ![image](https://user-images.githubusercontent.com/125069098/234918386-89f760b7-d9f5-4ee2-8558-99ae08796f21.png)
 
 ![madhavi27-uploaded-avatars](https://user-images.githubusercontent.com/125069098/234918212-e2d6d5df-046e-4d17-852f-7adfddd68930.png)
 
 ![assets.madhavi27.xyz](https://user-images.githubusercontent.com/125069098/234919429-654c1351-efcf-48e4-9863-4f0a44e4205f.png)
+
+## Render Avatar from CloudFront
+create a file for profileAvatar.js to get the avatar from the s3 bucket via cloudfront. modify the in the following files.
+
+backend-flask/db/sql/users/show.sql
+frontend-react-js/src/components/ProfileAvatar.css
+frontend-react-js/src/components/ProfileAvatar.js
+frontend-react-js/src/components/ProfileHeading.css
+frontend-react-js/src/components/ProfileHeading.js
+frontend-react-js/src/components/ProfileInfo.js
+frontend-react-js/src/lib/CheckAuth.js
+frontend-react-js/src/pages/UserFeedPage.js
+
+![image](https://user-images.githubusercontent.com/125069098/234930871-b6f6c4cc-3f45-4a27-abd2-f41bc8516c74.png)
+
 
 
 
