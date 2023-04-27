@@ -761,6 +761,8 @@ There are some environment variables and setups worth double checking:
 of the gitpod in the lambda function `cruddurAvatarUpload`. Test it whether it is working or not this time it worked as excepted and able to upload the avatar 
 in the s3 buckets `assets.madhavi27.xyz` and `madhavi27-uploaded-avatars`  
 
+![triggers in lambda](https://user-images.githubusercontent.com/125069098/234939188-7fdd279d-12dd-4e1b-8fb1-6d77c90bc027.png)
+
 ![image](https://user-images.githubusercontent.com/125069098/234917596-df2b8330-d6f6-4ba3-9cc8-273d6cedd6b2.png)
 ![image](https://user-images.githubusercontent.com/125069098/234918386-89f760b7-d9f5-4ee2-8558-99ae08796f21.png)
 
