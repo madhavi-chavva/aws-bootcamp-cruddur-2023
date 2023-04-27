@@ -773,7 +773,9 @@ in the s3 buckets `assets.madhavi27.xyz` and `madhavi27-uploaded-avatars`
 ## Render Avatar from CloudFront
 create a cloudfront invalidation for the Object paths to avatars(like /avatars/*)
 
-![image](https://user-images.githubusercontent.com/125069098/234950761-e1502e7f-5a64-4d35-8298-47f5cf99b17e.png)
+![invalidation](https://user-images.githubusercontent.com/125069098/234950761-e1502e7f-5a64-4d35-8298-47f5cf99b17e.png)
+![invalidation object path](https://user-images.githubusercontent.com/125069098/234951474-3e7bca98-3f54-4d60-a79a-65e3f5541904.png)
+
 
 create a file for profileAvatar.js to get the avatar from the s3 bucket via cloudfront. modify the in the following files.
 
