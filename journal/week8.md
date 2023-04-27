@@ -771,6 +771,10 @@ in the s3 buckets `assets.madhavi27.xyz` and `madhavi27-uploaded-avatars`
 ![assets.madhavi27.xyz](https://user-images.githubusercontent.com/125069098/234919429-654c1351-efcf-48e4-9863-4f0a44e4205f.png)
 
 ## Render Avatar from CloudFront
+create a cloudfront invalidation for the Object paths to avatars(like /avatars/*)
+
+![image](https://user-images.githubusercontent.com/125069098/234950761-e1502e7f-5a64-4d35-8298-47f5cf99b17e.png)
+
 create a file for profileAvatar.js to get the avatar from the s3 bucket via cloudfront. modify the in the following files.
 
 - backend-flask/db/sql/users/show.sql
