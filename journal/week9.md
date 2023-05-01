@@ -169,6 +169,26 @@ Now merge this week-9 branch to the prod branch. This will trigger the pipeline 
 
 Go to https://api.<domain_name>/api/health-check, it will show {"success":true,"ver":1}.
 
+- create a `new pull request`.
+![image](https://user-images.githubusercontent.com/125069098/235508971-da905951-532d-45db-9525-d23473b8f783.png)
+![image](https://user-images.githubusercontent.com/125069098/235509118-f2c560d8-d6ce-4d12-9fef-99cee0550518.png)
+![image](https://user-images.githubusercontent.com/125069098/235509172-646a8ed3-1818-4d4c-aa83-77aa01d5fac6.png)
+![image](https://user-images.githubusercontent.com/125069098/235509232-7e83f757-33d8-4c4a-8fd7-4eb9839c03aa.png)
+- check a trigger is made in codebuild.
+![image](https://user-images.githubusercontent.com/125069098/235509364-d328a186-7503-49b3-ad4d-e9e8a2ad0d47.png)
+-check a trigger is made in codepipeline
+![image](https://user-images.githubusercontent.com/125069098/235509667-2f517d02-fda3-4f82-a06d-85792fb1a08f.png)
+![image](https://user-images.githubusercontent.com/125069098/235509742-efb70823-6ed6-4dee-b6a1-a4a6f9fbae70.png)
+-Check in the ECS a new backend flask is deployed 
+![image](https://user-images.githubusercontent.com/125069098/235510037-63103eb4-6ff4-443c-a16e-97a2125a7176.png)
+![image](https://user-images.githubusercontent.com/125069098/235510214-3af455d4-cb8c-41f2-b473-3e8533d7a63a.png)
+- Check bakcend health-check in the browser
+![image](https://user-images.githubusercontent.com/125069098/235511236-062a57af-94d8-4683-b6b0-36ae1f5bcb4e.png)
+![image](https://user-images.githubusercontent.com/125069098/235511547-bc33a69c-b8c6-4784-99bc-126370d92ef5.png)
+ 
+
+
+
 
 
 
