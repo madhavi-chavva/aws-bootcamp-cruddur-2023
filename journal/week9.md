@@ -157,6 +157,8 @@ In edit action give the name as 'bake`,`action provider` as AWS codebuild,`Regio
 ![image](https://user-images.githubusercontent.com/125069098/235503630-3ead5715-dcce-47f1-a692-869a1cbeafa4.png)
 - click on the `Release changes` in pipeline
 ![image](https://user-images.githubusercontent.com/125069098/235503835-ec725aad-8efb-4d71-ab4e-8bc291a8aabf.png)
+![image](https://user-images.githubusercontent.com/125069098/235506059-34db02e9-8aeb-49ea-b1c9-0529dcdb4fc9.png)
+
 
 
 
