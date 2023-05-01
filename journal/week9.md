@@ -128,6 +128,17 @@ Create a pipeline:
 
 For the newly created service role, attach a policy as shown in aws/policies/ecr-codebuild-backend-role.json in order to grant more permissions. 
 Then click "Start build" (or triggered by a merge to the prod branch). If succeeded, you can check the build history for details.
-![image](https://user-images.githubusercontent.com/125069098/235481843-df85b4f8-0d29-4f97-aabc-c8e9dd356084.png)
+- create a new pull request from bas:prod compare:week-9 of main merge pull request and confirm merge then it will trigger a new codebuild.
+![image](https://user-images.githubusercontent.com/125069098/235495639-b750e684-db1f-42ef-a9af-258ef5eb290f.png)
+![image](https://user-images.githubusercontent.com/125069098/235495964-48a6edae-1732-4b8a-8d6c-cd4f6c08de80.png)
+![image](https://user-images.githubusercontent.com/125069098/235496679-c20f763a-23c8-45f3-8d28-6fb47e9096f7.png)
+
+**Need to add permission to ecr**
+![image](https://user-images.githubusercontent.com/125069098/235494470-7688144f-8070-4abb-9900-4fd3d6d0779b.png)
+![image](https://user-images.githubusercontent.com/125069098/235494537-0506d9dd-26fe-4300-8b3d-43f78953ad4b.png)
+![image](https://user-images.githubusercontent.com/125069098/235495382-a39592b6-93a0-4bf3-b540-4fe29def114b.png)
+
+
+
 
 
