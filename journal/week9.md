@@ -128,7 +128,6 @@ Create a pipeline:
 
 For the newly created service role, attach a policy as shown in aws/policies/ecr-codebuild-backend-role.json in order to grant more permissions. 
 Then click "Start build" (or triggered by a merge to the prod branch). If succeeded, you can check the build history for details.
+![image](https://user-images.githubusercontent.com/125069098/235481843-df85b4f8-0d29-4f97-aabc-c8e9dd356084.png)
 
- 
- 
 
