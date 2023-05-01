@@ -159,6 +159,17 @@ In edit action give the name as 'bake`,`action provider` as AWS codebuild,`Regio
 ![image](https://user-images.githubusercontent.com/125069098/235503835-ec725aad-8efb-4d71-ab4e-8bc291a8aabf.png)
 ![image](https://user-images.githubusercontent.com/125069098/235506059-34db02e9-8aeb-49ea-b1c9-0529dcdb4fc9.png)
 
+![image](https://user-images.githubusercontent.com/125069098/235506804-cd4fa0bc-9681-4902-be3a-9ab403875369.png)
+
+
+## Test Pipeline
+Update backend-flask/app.py by changing the return in health_check function from return {"success": True}, 200 to return {"success": True, "ver": 1}, 200
+
+Now merge this week-9 branch to the prod branch. This will trigger the pipeline we created.
+
+Go to https://api.<domain_name>/api/health-check, it will show {"success":true,"ver":1}.
+
+
 
 
 
