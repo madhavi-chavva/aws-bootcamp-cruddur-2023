@@ -86,7 +86,9 @@ Create a pipeline:
  - Add the Source stage. Select the source provider as `GitHub(Version 2.0)` from the up-down list. click on `Connect to Github`set connection name as cruddur, 
    install a new app, select the cruddur repo, in the end finish "Connect to GitHub" and back to the pipeline page.
    select the cruddur repo and select branch `prod`, select `start the pipeline on source code change` and default output artifact format as `Codepipeline default` 
+   
  ![image](https://user-images.githubusercontent.com/125069098/235213716-b5fdb71d-f27a-4485-977a-8691721b0f22.png)
+ I have created a codepipeline with select the cruddur repo and select branch `prod`. but didn't take a screenshot.
  ### Step3: Skip this step for now we will build it later.
  ### Step4: 
  - For deploy stage, select deploy provide as `Amazon ECS`, choose cluster name as `cruddur`,service name as `backend-flask`
