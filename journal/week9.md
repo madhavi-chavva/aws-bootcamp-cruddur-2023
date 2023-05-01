@@ -138,6 +138,33 @@ Then click "Start build" (or triggered by a merge to the prod branch). If succee
 ![image](https://user-images.githubusercontent.com/125069098/235494537-0506d9dd-26fe-4300-8b3d-43f78953ad4b.png)
 ![image](https://user-images.githubusercontent.com/125069098/235495382-a39592b6-93a0-4bf3-b540-4fe29def114b.png)
 
+### Add the build stage to the codepipeline
+- `Edit` the pipeline(cruddur-backend-fargate)
+![image](https://user-images.githubusercontent.com/125069098/235499454-50c67f53-31c5-4559-a28a-06efec5f1030.png)
+-click on `Add stage`. A stage will be added to the pipeline.
+![image](https://user-images.githubusercontent.com/125069098/235499747-9511b3d5-a852-410f-8ad0-50f3a35211e3.png)
+-click on `Add Action group`
+In edit action give the name as 'bake`,`action provider` as AWS codebuild,`Region` as us-east-1, `Input artifacts` as SourceArtifact,`Project name` as cruddur-backend-flask-bake-image, `Build type` as single build, `OutputArtifact` as ImageDefinition
+![image](https://user-images.githubusercontent.com/125069098/235502244-f544802c-992f-4842-84bf-a2bc4700d7fa.png)
+-Click on `Done` to add the action group to the build.
+![image](https://user-images.githubusercontent.com/125069098/235502480-c1a144fa-756e-4b76-95bf-828a33efaa1a.png)
+- Edit the `deploy`stage in pipeline and edit the `Edit action` in deploy then change the `Input artifacts` to ImageDefinition.
+![image](https://user-images.githubusercontent.com/125069098/235502883-ac3adc70-0e2c-42b5-bd08-0de4383c0b31.png)
+![image](https://user-images.githubusercontent.com/125069098/235503274-fe0b7a8b-659b-424d-a1f0-4815f73102e4.png)
+- To save the changes click on the `Save` button to pipeline.
+![image](https://user-images.githubusercontent.com/125069098/235503502-b8838595-d27b-4d38-8b97-fa1949880c50.png)
+![image](https://user-images.githubusercontent.com/125069098/235503562-bd4bd4d5-f18c-40b1-8b87-9845faf0d952.png)
+![image](https://user-images.githubusercontent.com/125069098/235503630-3ead5715-dcce-47f1-a692-869a1cbeafa4.png)
+- click on the `Release changes` in pipeline
+![image](https://user-images.githubusercontent.com/125069098/235503835-ec725aad-8efb-4d71-ab4e-8bc291a8aabf.png)
+
+
+
+
+
+
+
+
 
 
 
