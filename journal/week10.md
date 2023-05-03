@@ -150,6 +150,33 @@ Run the `./bin/cfn/deploy`
 
 ![image](https://user-images.githubusercontent.com/125069098/235796081-3e26233b-a249-454d-8c17-b851855efbd6.png)
 
+## CFN For Networking Layer
+Set the environment variable s3 bucket artifacts in the gitpod.
+```sh
+export CFN_BUCKET="cfn-artifacts-m"
+gp env CFN_BUCKET="cfn-artifacts-m"
+```
+Modify the bash script file bin/cfn/networking-deploy to use CFN_BUCKET
+
+- create a folder aws/cfn/networking
+create a cloudformation YAML template to create VPC, IGW, AttachIGW, RouteTable, RouteToIGW, public and private Subnets, SubnetRTAssociation and outputs.
+
+- Run `./bin/cfn/networking-deploy`
+![image](https://user-images.githubusercontent.com/125069098/236048122-9d27f99c-544b-471a-ba12-0b4118f37a40.png)
+- Review the resources it is going to create and click on `execute changeset`
+![image](https://user-images.githubusercontent.com/125069098/236047305-50f18795-b5fc-4643-ae7d-9872b23a28eb.png)
+![image](https://user-images.githubusercontent.com/125069098/236047397-beea5d9a-59a8-43a6-b00c-5ef93b83cb0d.png)
+Outputs after the execution of the changeset.
+![image](https://user-images.githubusercontent.com/125069098/236047646-8b2d7ca6-03a8-4cdd-9bc0-a4f79c8aa79a.png)
+![image](https://user-images.githubusercontent.com/125069098/236047763-c261c178-d567-4a58-8155-5c54c29d9bf9.png)
+![image](https://user-images.githubusercontent.com/125069098/236047823-7ef543ed-bbf5-4b85-8b46-eec1ed740911.png)
+![image](https://user-images.githubusercontent.com/125069098/236047903-d1edeef2-a6cb-480c-99ca-96bfb0c02840.png)
+
+
+
+
+
+
  
  
 
