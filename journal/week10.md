@@ -176,6 +176,48 @@ Outputs after the execution of the changeset.
 
 ![CFN Diagramming the Network Layer](https://user-images.githubusercontent.com/125069098/236074797-45d7a797-8f79-4283-b0b7-88654cc57810.png)
 
+## Week 10 11 - CFN Cluster Layer
+ Create a cloudformation for 
+ -ECS Fargate Cluster
+ -ALB(Application LoadBalancer)
+   - ipv4 only
+   - internet facing
+   - certificate attached from ACM(Amazon certificate Manager)
+   - ALB Security Group
+ - HTTPS Listerner
+    - send naked domain to frontend Target Group
+    - send api. subdomain to backend Target Group
+ - HTTP Listerner
+    - redirects to HTTPS Listerner
+  - Backend Target Group
+  - Frontend Target Group
+
+- Delete the cluster's services frontend-react-js and backend which we have already created in week 6
+- Delete the ALB and target group which we created already.
+![image](https://user-images.githubusercontent.com/125069098/236561649-a9396262-e5fb-4a3a-a98d-c4eb6c9ba5ac.png)
+![image](https://user-images.githubusercontent.com/125069098/236561908-600744ee-22f0-4e1e-8091-54728eca9254.png)
+![image](https://user-images.githubusercontent.com/125069098/236562157-ad5abbd4-2900-4ca8-bace-bef708164a47.png)
+
+![image](https://user-images.githubusercontent.com/125069098/236562027-54b86547-314c-438d-83d1-4a3d7d97aff3.png)
+![image](https://user-images.githubusercontent.com/125069098/236562100-fa3e03b8-60a5-4aab-bfcf-3f229d7ce5fd.png)
+
+![image](https://user-images.githubusercontent.com/125069098/236559953-74f97e05-846d-495b-b1ad-655dc61e0730.png)
+![image](https://user-images.githubusercontent.com/125069098/236562265-6f4d49de-6ee2-4a59-bd75-bdca2cbc0c10.png)
+![image](https://user-images.githubusercontent.com/125069098/236562385-57fc31a3-8fa1-449b-a76e-7828843c67ff.png)
+![image](https://user-images.githubusercontent.com/125069098/236562461-3302140f-2ab6-445b-ac2e-f10f01d8a544.png)
+![image](https://user-images.githubusercontent.com/125069098/236562995-d5446f17-8a4c-42c2-a775-09ef715a1a47.png)
+![image](https://user-images.githubusercontent.com/125069098/236563095-eb0b2036-1176-441b-bd51-5689b363d07b.png)
+![image](https://user-images.githubusercontent.com/125069098/236563176-fbc05a8c-6809-4b60-ad31-09406b3e894e.png)
+
+Delete the namespace.(so to delete the namespace we need to go to cloudmap)
+
+![image](https://user-images.githubusercontent.com/125069098/236563615-03db5f19-7f17-457a-93f1-af9849e4fe2b.png)
+![image](https://user-images.githubusercontent.com/125069098/236563706-8f0b16ec-94a8-46c8-b110-1c0e833ea93a.png)
+![image](https://user-images.githubusercontent.com/125069098/236563775-e319ea72-2935-4d82-b8e7-c3127cf03ddf.png)
+![image](https://user-images.githubusercontent.com/125069098/236563879-63302fc5-e5ec-4fb2-86d9-68393c4eab71.png)
+
+ 
+
 
 
 
