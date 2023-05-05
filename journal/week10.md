@@ -176,7 +176,7 @@ Outputs after the execution of the changeset.
 
 ![CFN Diagramming the Network Layer](https://user-images.githubusercontent.com/125069098/236074797-45d7a797-8f79-4283-b0b7-88654cc57810.png)
 
-## Week 10 11 - CFN Cluster Layer
+## CFN Cluster Layer
  Create a cloudformation for 
  -ECS Fargate Cluster
  -ALB(Application LoadBalancer)
@@ -216,7 +216,92 @@ Delete the namespace.(so to delete the namespace we need to go to cloudmap)
 ![image](https://user-images.githubusercontent.com/125069098/236563775-e319ea72-2935-4d82-b8e7-c3127cf03ddf.png)
 ![image](https://user-images.githubusercontent.com/125069098/236563879-63302fc5-e5ec-4fb2-86d9-68393c4eab71.png)
 
- 
+Execute the bash script file `bin/cfn/cluster-deploy` 
+It gives an error for CertificateArn is not defined.
+
+## CFN Toml 
+To populate the Parameter value for CertificateArn install the cfn-timl
+`gem install cfn-toml`
+
+Create a new file `aws/cfn/cluster/config.toml`
+```cfn
+[deploy]
+bucket = 'cfn-artifacts-m'
+region = 'us-east-1'
+stack_name = 'CrdCluster'
+
+[parameters]
+CertificateArn = 'arn:aws:acm:us-east-1:480134889878:certificate/8a62223d-469e-4094-8c9d-bbecb01bba5d'
+NetworkingStack = 'CrdNet'
+```
+Pass the parameters in the `aws/cfn/cluster/config.toml` to bash script file `bin/cfn/cluster-deploy`
+
+```sh
+#! /usr/bin/env bash
+set -e # stop the execution of the script if it fails
+
+CFN_PATH="/workspace/aws-bootcamp-cruddur-2023/aws/cfn/cluster/template.yaml"
+CFN_PATH="/workspace/awsbootcampcruddur-2023/aws/cfn/cluster/template.yaml"
+CONFIG_PATH="/workspace/awsbootcampcruddur-2023/aws/cfn/cluster/config.toml"
+echo $CFN_PATH
+
+cfn-lint $CFN_PATH
+
+BUCKET=$(cfn-toml key deploy.bucket -t $CONFIG_PATH)
+REGION=$(cfn-toml key deploy.region -t $CONFIG_PATH)
+STACK_NAME=$(cfn-toml key deploy.stack_name -t $CONFIG_PATH)
+PARAMETERS=$(cfn-toml params v2 -t $CONFIG_PATH)
+
+
+aws cloudformation deploy \
+  --stack-name $STACK_NAME \
+  --s3-bucket $BUCKET \
+  --region $REGION \
+  --template-file "$CFN_PATH" \
+  --no-execute-changeset \
+  --tags group=cruddur-cluster \
+  --parameter-overrides $PARAMETERS \
+  --capabilities CAPABILITY_NAMED_IAM
+```
+Run the bash script file `./bin/cfn/cluster-deploy` Now it should pick the parameter CertificateArn.
+
+In the same way create new file for networking `aws/cfn/networking/config.toml`
+
+```cfn-toml
+[deploy]
+bucket = 'cfn-artifacts-m'
+region = 'us-east-1'
+stack_name = 'CrdNet'
+```
+Pass the values of bucket, region and stack-name in the `aws/cfn/networking/config.toml` to bash script file `bin/cfn/networking-deploy`
+
+```sh
+#! /usr/bin/env bash
+set -e # stop the execution of the script if it fails
+
+CFN_PATH="/workspace/awsbootcampcruddur-2023/aws/cfn/networking/template.yaml"
+CONFIG_PATH="/workspace/awsbootcampcruddur-2023/aws/cfn/networking/config.toml"
+echo $CFN_PATH
+
+cfn-lint $CFN_PATH
+
+BUCKET=$(cfn-toml key deploy.bucket -t $CONFIG_PATH)
+REGION=$(cfn-toml key deploy.region -t $CONFIG_PATH)
+STACK_NAME=$(cfn-toml key deploy.stack_name -t $CONFIG_PATH)
+# PARAMETERS=$(cfn-toml params v2 -t $CONFIG_PATH)
+
+aws cloudformation deploy \
+  --stack-name $STACK_NAME \
+  --s3-bucket $BUCKET \
+  --region $REGION \
+  --template-file "$CFN_PATH" \
+  --no-execute-changeset \
+  --tags group=cruddur-networking \
+```
+Run the bash script file `./bin/cfn/networking-deploy`
+
+
+
 
 
 
