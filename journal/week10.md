@@ -27,17 +27,17 @@ aws cloudformation deploy \
   --no-execute-changeset \
   --capabilities CAPABILITY_NAMED_IAM
 ```
-Run the script file to deploy the cloudformation template `./bin/cfn/template.yaml`
+Run the script file to deploy the cloudformation template `./bin/cfn/deploy`
 
-![image](https://user-images.githubusercontent.com/125069098/235773982-57211385-2fb9-466a-811f-c4684f468e61.png)
+![image](https://user-images.githubusercontent.com/125069098/236894205-fb5d4c5b-b621-4c32-ba2e-3d80a33e9359.png)
 
 copy and paste the command which is generated in the above statement. It give you the details of the changeset what it is going to deploy in aws.
-eg: aws cloudformation describe-change-set --change-set-name arn:aws:cloudformation:us-east-1:480134889878:changeSet/awscli-cloudformation-package-deploy-1683057881/0db5fe46-e124-422f-99af-04174ebea89d
-![image](https://user-images.githubusercontent.com/125069098/235774523-9442192a-f984-42f3-870f-c7b3598ee040.png)
+eg: aws cloudformation describe-change-set --change-set-name arn:aws:cloudformation:us-east-1:480134889878:changeSet/awscli-cloudformation-package-deploy-1683567791/f666848f-f80a-4b46-bd1f-e5c4ab1aff90
+![image](https://user-images.githubusercontent.com/125069098/236893833-18bc2af0-9f01-4d20-8b3e-6579ceea6f5c.png)
 ![image](https://user-images.githubusercontent.com/125069098/235775363-9f5b7307-2e50-4c8e-ae2c-d70de01908b0.png)
 
 Also output in `table format`
-![image](https://user-images.githubusercontent.com/125069098/235775834-6e84601a-5397-4487-97de-720b0600c5a6.png)
+![image](https://user-images.githubusercontent.com/125069098/236894820-3277734f-af63-44f6-96e9-3b251230e79b.png)
 
 In AWS console `Cloudformation` you will see the changeset which you need to review the changes made to the resources you add or update to changeset before you `execute changeset`.
 ![image](https://user-images.githubusercontent.com/125069098/235777467-0d6f49e5-e369-41ec-89ca-d79ca76470e6.png)
