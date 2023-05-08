@@ -220,7 +220,7 @@ Execute the bash script file `bin/cfn/cluster-deploy`
 It gives an error for CertificateArn is not defined.
 
 ## CFN Toml 
-To populate the Parameter value for CertificateArn install the cfn-timl
+To populate the Parameter value for CertificateArn install the cfn-toml
 `gem install cfn-toml`
 
 Create a new file `aws/cfn/cluster/config.toml`
