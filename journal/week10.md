@@ -325,6 +325,10 @@ Run the bash script file `./bin/cfn/networking-deploy`
 ![image](https://user-images.githubusercontent.com/125069098/236932212-c125055d-7f6d-4b50-8681-d4d5306f9424.png)
 ![image](https://user-images.githubusercontent.com/125069098/236932276-ad039544-5786-4657-9d79-47da451e05b5.png)
 
+## CFN Diagram Cluster
+
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/6315ce47-8293-4155-b873-a186c3d03f65)
+
 
 
 
