@@ -329,6 +329,27 @@ Run the bash script file `./bin/cfn/networking-deploy`
 
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/6315ce47-8293-4155-b873-a186c3d03f65)
 
+## CFN Service Layer
+Create outputs for the cloudformation stack `CrdCluster`
+ - ClusterName
+ - ALBSecurityGroupId
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/a4a526cf-e9db-4fff-b141-5d47b764a327)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/7b8e136b-e624-45ed-8253-fb8557558b15)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/2f40f84f-6a0b-45ab-a9ef-5ebdc9df8661)
+
+Create a cloudformation stack for 
+  - Task Definition
+  - Fargate Service
+  - Execution Role
+  - Task Role
+and use the outputs for the cloudformation stack `CrdCluster` and outputs for the cloudformation stack `CrdNet`
+
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/5c5c7eb6-f95e-4f13-a6ba-38b01165d412)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/330a1774-72ad-45f2-801c-38e8807010cb)
+Stack created the following resources but failed to create `FargateService` because ALB is not attached to the service.
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/5a145135-5799-471b-8b96-cdba2763903b)
+
+
 
 
 
