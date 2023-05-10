@@ -373,19 +373,81 @@ Change the TargetgroupArn and subnets for the `aws/json/service-backend-flask.js
 Run the `./bin/backend/deploy`
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/f111f49d-c408-4887-b9f2-b493c760af24)
 
+Export the outputs for the  cloudformation stack `CrdSrvBackendFlask`
+- ServiceSecurityGroupId
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/a44a086a-f684-40db-b383-91886d55bda7)
 
+`service fails to deploy with unhealthy because the rds we deployed is in default VPC but our service is setup is setup in different vpc`. 
+So we have to do database before we do service.
 
-
-
-
-
-
-
-
-
-
+## CFN RDS
+Create a cloudformation stack to create RDS.
+The primary Postgres RDS Database for the application
+  - RDS Instance
+  - Database Security Group
+  - DBSubnetGroup
  
- 
+ create a `config.toml`
+ ```cfn
+ [deploy]
+bucket = 'cfn-artifacts-m'
+region = 'us-east-1'
+stack_name = 'CrdDb'
+
+[parameters]
+NetworkingStack = 'CrdNet'
+ClusterStack = 'CrdCluster'
+MasterUsername = 'cruddurroot'
+```
+create bash script to deploy the cfn `bin/cfn/db-deploy`
+```sh
+#! /usr/bin/env bash
+set -e # stop the execution of the script if it fails
+
+CFN_PATH="/workspace/aws-bootcamp-cruddur-2023/aws/cfn/db/template.yaml"
+CONFIG_PATH="/workspace/aws-bootcamp-cruddur-2023/aws/cfn/db/config.toml"
+echo $CFN_PATH
+
+cfn-lint $CFN_PATH
+
+BUCKET=$(cfn-toml key deploy.bucket -t $CONFIG_PATH)
+REGION=$(cfn-toml key deploy.region -t $CONFIG_PATH)
+STACK_NAME=$(cfn-toml key deploy.stack_name -t $CONFIG_PATH)
+PARAMETERS=$(cfn-toml params v2 -t $CONFIG_PATH)
+
+aws cloudformation deploy \
+  --stack-name $STACK_NAME \
+  --s3-bucket $BUCKET \
+  --region $REGION \
+  --template-file "$CFN_PATH" \
+  --no-execute-changeset \
+  --tags group=cruddur-cluster \
+  --parameter-overrides $PARAMETERS MasterUserPassword=$DB_PASSWORD \
+  --capabilities CAPABILITY_NAMED_IAM
+```  
+
+
+set the env var for MasterUserPassword in gitpod
+
+```sh
+export DB_PASSWORD=<"">
+gp env DB_PASSWORD=<"">
+```
+Redeploy the `bin/cfn/cluster-deploy` 
+To add the resouce `ServiceSG`
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/143385a8-ac50-4044-91ec-6daf4dc522ac)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/1a3fb2f6-595e-44b1-b86e-d93018f13847)
+
+Deploy the rds postgres `bin/cfn/db-deploy`
+
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/f3bce8ac-ce40-4a94-9c86-3be3fca5e23c)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/e6c88501-8933-4076-96a9-b15687c13737)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/715a7ace-29f5-43a5-96ce-67e5eb6ddc8b)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/2f27ecdd-2c0a-41c0-8582-fb217e25e4f0)
+
+
+**Change the Endpoint url of the postgres with newly created db in the `parameter store`**.
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/4d70b6a1-2c65-4ec6-8748-f10791489b44)
 
 
 
