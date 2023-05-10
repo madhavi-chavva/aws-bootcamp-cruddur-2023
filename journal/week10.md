@@ -349,6 +349,33 @@ and use the outputs for the cloudformation stack `CrdCluster` and outputs for th
 Stack created the following resources but failed to create `FargateService` because ALB is not attached to the service.
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/5a145135-5799-471b-8b96-cdba2763903b)
 
+## CFN ECS Fargate Service Debugging
+Create outputs for the cloudformation stack `CrdCluster` 
+ - FrontendTGArn
+ - BackendTGArn
+modify the FrontendTG and BackendTG to add as  `TargetType: ip` and add the `Tags`
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/34f70306-f280-47b3-9c62-ba5dd1a70a4f)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/9b1ecbbc-2a73-47a3-95a7-27c7d38c8f5d)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/d3ea78dc-e48f-4252-92e9-442b5d9247b9)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/20a9f4a6-0fbb-4ed4-99f3-f81ce7ee049d)
+
+Modify cloudformation stack for `CrdSrvBackendFlask`
+Add properties `ServiceConnectConfiguration` and import `TargetGroupArn` BackendTGArn
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/6c031bcc-6279-4057-a529-2b6bd1bc9765)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/c372597f-d374-4336-9f49-f9f679612239)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/666d67a2-f27d-403c-8acb-5ea5fde6fe3a)
+![securitygroupinbound ALB](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/97c05ed8-8ae2-46e1-8f6e-2a113b8d5dac)
+![securitygroupoutbound ALB](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/1ba8f345-7ae1-46a7-81ae-5e6aac15f53e)
+![backend-flask service](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/9677cc56-55f9-4b2f-a866-2eb958f58bb0)
+![health check](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/ad113e1f-a825-46c7-afac-03b578fe2765)
+
+Change the TargetgroupArn and subnets for the `aws/json/service-backend-flask.json`
+Run the `./bin/backend/deploy`
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/f111f49d-c408-4887-b9f2-b493c760af24)
+
+
+
+
 
 
 
