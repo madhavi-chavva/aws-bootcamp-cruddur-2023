@@ -329,6 +329,10 @@ Run the bash script file `./bin/cfn/networking-deploy`
 
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/6315ce47-8293-4155-b873-a186c3d03f65)
 
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/b8c0b824-6d8e-4118-a960-6fbe365e082a)
+
+
+
 ## CFN Service Layer
 Create outputs for the cloudformation stack `CrdCluster`
  - ClusterName
