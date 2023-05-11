@@ -449,6 +449,49 @@ Deploy the rds postgres `bin/cfn/db-deploy`
 **Change the Endpoint url of the postgres with newly created db in the `parameter store`**.
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/4d70b6a1-2c65-4ec6-8748-f10791489b44)
 
+## CFN Service Fixed
+Change the targetgroup `CrdClu-Backe-AQLES3UBDF7B` health-check port to 4567
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/17d89838-bfa5-47d1-887a-d5617fc6bf43)
+
+Modify the cloudformation stack `aws/cfn/cluster/template.yaml` file to change security group `ServiceSG` of `SecurityGroupIngress` 
+to 4567 for both `FromPort and ToPort`
+
+- Deploy the `bin/cfn/cluster-deploy`  to pick the changes.
+
+- Deploy the `bin/cfn/service-deploy`
+Check the ECS `CrdClusterFargateCluster` and check the health-check
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/df01be06-f2f5-475b-a023-462a5b613c14)
+
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/e6444277-f6de-4853-ac5c-88e5608cc636)
+
+- Change `Route53` to pick the newly created ALB(dualstack.CrdClusterALB-1312429613.us-east-1.elb.amazonaws.com) for the api.madhavi27.xyz record.
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/7fadbc85-b5c8-4eca-ac7e-679842a857ea)
+
+- Do the same thing for the record main(madhavi27.xyz)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/19ecbd46-9dad-43bd-8c44-2451818af91f)
+- Open the browser and open the api.madhavi27.xyz/api/health-check
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/4654852a-6fb3-4468-aff2-d286dbbe4b0e)
+- Test it in gitpod by pinging
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/ab2b93e4-450b-43ab-9bd9-5b7f2c0c8e87)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/62cd6aaa-c445-4d52-b8f8-afa0f7ec3275)
+
+- Shell into the `backend-flask` with `TaskID` using the bash script `./bin/backend/connect taskID` before that change the
+name of the cluster to `CrdClusterFargateCluster`
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/77a1387f-68f8-423d-9192-1eeed40b32cd)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/e2b253f7-6d31-4398-8015-3b096bbc6ee3)
+
+
+
+
+
+
+
+
+
+`
+
+
+
 
 
 
