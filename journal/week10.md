@@ -462,9 +462,9 @@ to 4567 for both `FromPort and ToPort`
 Check the ECS `CrdClusterFargateCluster` and check the health-check
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/df01be06-f2f5-475b-a023-462a5b613c14)
 
-![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/e6444277-f6de-4853-ac5c-88e5608cc636)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/d559013f-779f-4030-8eac-dba797ccd5a0)
 
-- Change `Route53` to pick the newly created ALB(dualstack.CrdClusterALB-1312429613.us-east-1.elb.amazonaws.com) for the api.madhavi27.xyz record.
+- Change `Route53` to pick the newly created ALB(dualstack.CrdClusterALB-1312429613.u-east-1.elb.amazonaws.com) for the api.madhavi27.xyz record.
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/7fadbc85-b5c8-4eca-ac7e-679842a857ea)
 
 - Do the same thing for the record main(madhavi27.xyz)
