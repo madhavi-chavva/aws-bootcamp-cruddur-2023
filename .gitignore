@@ -3,3 +3,5 @@ frontend-react-js/build/*
 *.env
 *plugin.deb
 node_modules
+.aws-sam
+build.toml
