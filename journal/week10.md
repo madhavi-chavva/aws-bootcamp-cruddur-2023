@@ -485,6 +485,11 @@ name of the cluster to `CrdClusterFargateCluster`
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/77a1387f-68f8-423d-9192-1eeed40b32cd)
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/e2b253f7-6d31-4398-8015-3b096bbc6ee3)
 
+## CFN - Diagramming Service and RDS
+
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/533f803b-ecaf-463e-8e9a-21bc1d743d71)
+
+
 
 
 
