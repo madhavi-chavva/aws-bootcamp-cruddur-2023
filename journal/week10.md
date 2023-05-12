@@ -489,7 +489,67 @@ name of the cluster to `CrdClusterFargateCluster`
 
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/533f803b-ecaf-463e-8e9a-21bc1d743d71)
 
+## SAM CFN for Dynamodb DynamoDB Streams Lambda
+- Create a cloudformation stack to create dynamodb.
+  - DynamoDB Table
+  - DynamoDB Stream
+  - LambdaLogGroup
+  - ExecutionRole for lambda
+ - Install sam in the gitpod and also in the gitpod.yml
+ ```sh
+ wget https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip
+ unzip aws-sam-cli-linux-x86_64.zip -d sam-installation
+ sudo ./sam-installation/install
+ ```
+ ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/2b27aed2-5328-496e-ac8b-55939523009f)
+-SAM stands for "Serverless Application Model." It is an open-source framework that allows you to define and deploy serverless applications on AWS.   SAM simplifies the process of building serverless applications by providing a simplified syntax for defining serverless resources such as       functions, APIs, and event sources.
+- SAM uses a CloudFormation template syntax extension, which provides a shorthand notation for defining serverless resources. It makes it easier to express serverless application architectures and reduces the amount of code you need to write.
+- SAM enables you to test and debug your serverless applications locally before deploying them to AWS. It provides a local development environment that mimics the AWS Lambda execution environment, allowing you to iterate quickly and catch issues early in the development process.
+-  SAM simplifies the deployment process by providing commands to package and deploy your serverless applications. It handles the creation of necessary AWS resources, such as Lambda functions, API Gateway APIs, and event sources, based on the definitions in your SAM template.
+-  SAM integrates with various AWS services to provide a comprehensive serverless application development experience. It supports easy configuration and integration with services like AWS Lambda, Amazon API Gateway, Amazon DynamoDB, Amazon S3, and more.
+ - create a bash script file to sam build, sam package and sam deploy .
+ ```sh
+ #! /usr/bin/env bash
+set -e # stop the execution of the script if it fails
 
+FUNC_DIR="/workspace/aws-bootcamp-cruddur-2023/aws/lambdas/cruddur-messaging-stream/"
+TEMPLATE_PATH="/workspace/aws-bootcamp-cruddur-2023/aws/cfn/ddb/template.yaml"
+CONFIG_PATH="/workspace/aws-bootcamp-cruddur-2023/aws/cfn/ddb/config.toml"
+ARTIFACT_BUCKET="cfn-artifacts-m"
+
+# https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-build.html
+sam build \
+--config-file $CONFIG_PATH \
+--template-file  $TEMPLATE_PATH \
+--base-dir $FUNC_DIR
+#--parameter-overrides
+
+TEMPLATE_PATH="/workspace/aws-bootcamp-cruddur-2023/.aws-sam/build/template.yaml"
+OUTPUT_TEMPLATE_PATH="/workspace/aws-bootcamp-cruddur-2023/.aws-sam/build/packaged.yaml"
+
+# https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-package.html
+sam package \
+  --s3-bucket $ARTIFACT_BUCKET \
+  --config-file $CONFIG_PATH \
+  --output-template-file $OUTPUT_TEMPLATE_PATH \
+  --template-file $TEMPLATE_PATH \
+  --s3-prefix "ddb"
+
+PACKAGED_TEMPLATE_PATH="/workspace/aws-bootcamp-cruddur-2023/.aws-sam/build/packaged.yaml"
+
+# https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-deploy.html
+sam deploy \
+  --template-file $PACKAGED_TEMPLATE_PATH  \
+  --config-file $CONFIG_PATH \
+  --stack-name "CrdDdb" \
+  --tags group=cruddur-ddb \
+  --capabilities "CAPABILITY_IAM"
+```
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/ddca83c7-de60-488a-aa9e-57f35d8a40b2)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/9e360fb3-b649-4dfa-8fcc-13dfe44797f0)
+
+ 
+ 
 
 
 
