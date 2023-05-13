@@ -548,6 +548,44 @@ sam deploy \
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/ddca83c7-de60-488a-aa9e-57f35d8a40b2)
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/9e360fb3-b649-4dfa-8fcc-13dfe44797f0)
 
+To fix the above issue in the local gitpod we have python 3.11 and lambda function is using python3.9. so we need to use the `--use-container` for
+sam build to pick the runtime of different version.
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/6c61872c-5753-4831-960c-e1b760a07205)
+
+Now the sam build is hanging on mounting. To resolve the mounting issue remove the `Architectures: - arm64` from `aws/cfn/ddb/template.yaml`
+```yaml
+ProcessDynamoDBStream:
+    # https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html
+    Type: AWS::Serverless::Function
+    Properties:
+      Architectures: 
+        - arm64
+```
+Run the bash script file `./bin/sam/ddb/deploy
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/558f7960-09b6-4038-b7b6-cbd09af4f140)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/2b166446-a780-400a-a781-fdff79715698)
+It is saying that the s3 upload zip file is empty.
+Restructure the ddb folder and run the following files
+- `./ddb/build`
+- `./ddb/package`
+- `./ddb/deploy`
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/923b3832-4297-44bb-924e-7ee60462b696)
+when you run sam bash script file `./ddb/build` it will generate a zip with ProcessDynamoDBStream as shown below.
+ ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/6eac25ee-dbe8-4acf-a0dd-d7960892bc97)
+ 
+-  Run the bash script file `./ddb/build`
+ ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/a9c9f413-7cb2-4f9a-a8c4-f5fa668fcf8a)
+-  Run the bash script file `./ddb/package`
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/c1921075-4cf9-44eb-b716-8dee8eadc458)
+-  Run the bash script file `./ddb/deploy`
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/3b907518-be53-497d-a826-5c3945ed689f)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/bd2716b8-5ac6-49d9-b445-833436cd043e)
+
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/6e47ee0c-0c22-4ff3-a6ac-2c5c9315084b)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/0add22bb-adbc-403e-bdcd-d9a78ecdbf78)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/5f6de707-36ae-4906-b626-750ef190eb3d)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/b4610664-4a3e-45a0-bb46-766ce29bcb1f)
+
  
  
 
