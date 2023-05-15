@@ -600,7 +600,7 @@ when you run sam bash script file `./ddb/build` it will generate a zip with Proc
 
 ## Diagramming DynamoDB
 
-![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/caa22cc2-8e12-4e85-bc34-826016e59c8b)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/331fe50a-f1d0-464f-b16b-34dc689bd97a)
 
 
  
