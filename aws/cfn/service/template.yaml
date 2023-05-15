@@ -51,7 +51,7 @@ Parameters:
     Default: "*"
   EnvBackendUrl:
     Type: String
-    Default: "https://api.madhavi27.xyz"
+    Default: "*"
   SecretsAWSAccessKeyId:
     Type: String
     Default: 'arn:aws:ssm:us-east-1:480134889878:parameter/cruddur/backend-flask/AWS_ACCESS_KEY_ID'

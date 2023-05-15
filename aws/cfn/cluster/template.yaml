@@ -157,7 +157,7 @@ Resources:
         - Field: host-header
           HostHeaderConfig: 
             Values: 
-              - api.cruddur.com
+              - api.madhavi27.xyz
       Actions: 
         - Type: forward
           TargetGroupArn:  !Ref BackendTG
