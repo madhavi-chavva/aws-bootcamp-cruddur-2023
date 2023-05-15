@@ -738,7 +738,9 @@ It failed for the first time because codestar connection(`CrdCicd-connection`) i
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/0c03e676-6752-47fc-9080-0aa97f4e78ae)
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/45d3d3ee-ac71-44ca-86b8-bd7b09c3a4ab)
 
+## CFN Diagramming CICD
 
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/68f6f1f7-1e1e-4d03-ad3b-b2777344df93)
 
 
 
