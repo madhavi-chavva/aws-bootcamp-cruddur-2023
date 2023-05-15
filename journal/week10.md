@@ -602,6 +602,145 @@ when you run sam bash script file `./ddb/build` it will generate a zip with Proc
 
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/331fe50a-f1d0-464f-b16b-34dc689bd97a)
 
+## CFN CICD 
+- Create a cloudformation stack to create CICD.
+  - CodeStar Connection V2 Github
+  - CodePipeline
+  - Codebuild
+- create a nested cloudformation stack to create Codebuild Project.
+  - Codebuild used for baking container images
+  - Codebuild Project
+  - Codebuild Project Role
+- Modify the cloudformation stack `service aws/cfn/service/template.yaml` to generate the outputs for the ServiceName 
+```yaml
+Outputs:
+  ServiceName:
+    Value: !GetAtt FargateService.Name
+    Export:
+      Name: !Sub "${AWS::StackName}ServiceName"
+```
+- Run the bash script file './bin/cfn/service-deploy`
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/e0e7a0cf-6f60-4cb2-b8b8-8b54064b306c)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/91c0334d-a1d9-49dd-a82c-5bb162f3424c)
+- Run the bash script file ` ./bin/cfn/cicd-deploy`
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/a83b7f47-d240-483b-87c1-98498a3941e8)
+
+To resolve the above errors create a artifacts s3 bucket and include Property ConnectionName in Resources/CodeStarConnection/Properties
+- include Property ConnectionName in Resources/CodeStarConnection/Properties
+```yaml
+CodeStarConnection:
+    # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-codestarconnections-connection.html
+    Type: AWS::CodeStarConnections::Connection
+    Properties:
+      ConnectionName: !Sub ${AWS::StackName}-connection
+      ProviderType: GitHub 
+```      
+- create a new bucket manually in aws console with 'codepipeline-cruddur-artifacts-m` to store the artifacts.
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/ef887b99-0021-43d7-b3a4-b9d0d3055a1b)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/e221b183-3974-48e3-9129-1ac773155c34)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/f1f2eff5-b689-4f15-a1ac-7025ab93937e)
+
+- specify the bucket name in the `aws/cfn/cicd/template.yaml` under the `resource pipeline`
+```yaml
+parameters:
+  ArtifactBucketName:
+    Type: String   
+Pipeline:
+    # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-codepipeline-pipeline.html
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      ArtifactStore:
+        Location: !Ref ArtifactBucketName
+          Type: S3
+      RoleArn: !GetAtt CodePipelineRole.Arn
+      Stages:
+```
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/d9e94488-a428-46c0-8334-62af1195bea9)
+
+- In the bash script file you need to do cloudformation package before you deploy the cloudformation template. and output it to a tmp folder
+(create a new temp folder) and output the package to that folder.
+```sh
+#! /usr/bin/env bash
+#set -e # stop the execution of the script if it fails
+
+CFN_PATH="/workspace/aws-bootcamp-cruddur-2023/aws/cfn/cicd/template.yaml"
+CONFIG_PATH="/workspace/aws-bootcamp-cruddur-2023/aws/cfn/cicd/config.toml"
+PACKAGED_PATH="/workspace/aws-bootcamp-cruddur-2023/tmp/packaged-template.yaml"
+PARAMETERS=$(cfn-toml params v2 -t $CONFIG_PATH)
+echo $CFN_PATH
+
+cfn-lint $CFN_PATH
+
+BUCKET=$(cfn-toml key deploy.bucket -t $CONFIG_PATH)
+REGION=$(cfn-toml key deploy.region -t $CONFIG_PATH)
+STACK_NAME=$(cfn-toml key deploy.stack_name -t $CONFIG_PATH)
+
+# package
+# -----------------
+echo "== packaging CFN to S3..."
+aws cloudformation package \
+  --template-file $CFN_PATH \
+  --s3-bucket $BUCKET \
+  --s3-prefix cicd-package \
+  --region $REGION \
+  --output-template-file "$PACKAGED_PATH"
+
+aws cloudformation deploy \
+  --stack-name $STACK_NAME \
+  --s3-bucket $BUCKET \
+  --s3-prefix cicd \
+  --region $REGION \
+  --template-file "$PACKAGED_PATH" \
+  --no-execute-changeset \
+  --tags group=cruddur-cicd \
+  --parameter-overrides $PARAMETERS \
+  --capabilities CAPABILITY_NAMED_IAM
+```
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/2d374600-4191-4a78-af39-341e0800c4b3)
+-  Review the change sets in the cloudformation stack in aws and click on `execute changeset`
+ 
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/120e4f96-aa73-45e2-8130-df1b6ab66ead)
+
+- change the version 2 to version 1 in `resource pipeline` in `CodeStarSourceConnection` in `ActionTypeId`
+```yaml
+Pipeline:
+    # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-codepipeline-pipeline.html
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      ArtifactStore:
+        Location: !Ref ArtifactBucketName
+        Type: S3
+      RoleArn: !GetAtt CodePipelineRole.Arn
+      Stages:
+        - Name: Source
+          Actions:
+            - Name: ApplicationSource
+              RunOrder: 1
+              ActionTypeId:
+                Category: Source
+                Provider: CodeStarSourceConnection
+                Owner: AWS
+                Version: '1'
+              OutputArtifacts:
+                - Name: Source
+
+  ```
+  ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/2dc7ddb9-65e9-4ad0-830b-52bdf7860a4a)
+Navigate to codepipeline and check
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/197f2eb2-dcc2-4b48-9016-2b98d2fd3ede)
+It failed for the first time because codestar connection(`CrdCicd-connection`) is in pending status.
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/fa555942-2205-49ff-b51a-79e4a2193d5a)
+
+- navigate to aws and click on pending connection status and click on `Update pending connections`
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/3c3d4326-b6c3-4cf5-a8eb-4d741174ad45)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/585c7592-08db-4029-a6f1-ef239407d4fe)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/1d6879c4-f834-476d-b36b-11e9765b1453)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/0c03e676-6752-47fc-9080-0aa97f4e78ae)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/45d3d3ee-ac71-44ca-86b8-bd7b09c3a4ab)
+
+
+
+
 
  
  
