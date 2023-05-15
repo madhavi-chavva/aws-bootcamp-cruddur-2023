@@ -598,6 +598,11 @@ when you run sam bash script file `./ddb/build` it will generate a zip with Proc
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/5f6de707-36ae-4906-b626-750ef190eb3d)
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/b4610664-4a3e-45a0-bb46-766ce29bcb1f)
 
+## Diagramming DynamoDB
+
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/caa22cc2-8e12-4e85-bc34-826016e59c8b)
+
+
  
  
 
