@@ -86,7 +86,9 @@ Create a pipeline:
  - Add the Source stage. Select the source provider as `GitHub(Version 2.0)` from the up-down list. click on `Connect to Github`set connection name as cruddur, 
    install a new app, select the cruddur repo, in the end finish "Connect to GitHub" and back to the pipeline page.
    select the cruddur repo and select branch `prod`, select `start the pipeline on source code change` and default output artifact format as `Codepipeline default` 
+   
  ![image](https://user-images.githubusercontent.com/125069098/235213716-b5fdb71d-f27a-4485-977a-8691721b0f22.png)
+ I have created a codepipeline with select the cruddur repo and select branch `prod`. but didn't take a screenshot.
  ### Step3: Skip this step for now we will build it later.
  ### Step4: 
  - For deploy stage, select deploy provide as `Amazon ECS`, choose cluster name as `cruddur`,service name as `backend-flask`
@@ -128,6 +130,77 @@ Create a pipeline:
 
 For the newly created service role, attach a policy as shown in aws/policies/ecr-codebuild-backend-role.json in order to grant more permissions. 
 Then click "Start build" (or triggered by a merge to the prod branch). If succeeded, you can check the build history for details.
-![image](https://user-images.githubusercontent.com/125069098/235481843-df85b4f8-0d29-4f97-aabc-c8e9dd356084.png)
+- create a new pull request from bas:prod compare:week-9 of main merge pull request and confirm merge then it will trigger a new codebuild.
+![image](https://user-images.githubusercontent.com/125069098/235495639-b750e684-db1f-42ef-a9af-258ef5eb290f.png)
+![image](https://user-images.githubusercontent.com/125069098/235495964-48a6edae-1732-4b8a-8d6c-cd4f6c08de80.png)
+![image](https://user-images.githubusercontent.com/125069098/235496679-c20f763a-23c8-45f3-8d28-6fb47e9096f7.png)
+
+**Need to add permission to ecr**
+![image](https://user-images.githubusercontent.com/125069098/235494470-7688144f-8070-4abb-9900-4fd3d6d0779b.png)
+![image](https://user-images.githubusercontent.com/125069098/235494537-0506d9dd-26fe-4300-8b3d-43f78953ad4b.png)
+![image](https://user-images.githubusercontent.com/125069098/235495382-a39592b6-93a0-4bf3-b540-4fe29def114b.png)
+
+### Add the build stage to the codepipeline
+- `Edit` the pipeline(cruddur-backend-fargate)
+![image](https://user-images.githubusercontent.com/125069098/235499454-50c67f53-31c5-4559-a28a-06efec5f1030.png)
+-click on `Add stage`. A stage will be added to the pipeline.
+![image](https://user-images.githubusercontent.com/125069098/235499747-9511b3d5-a852-410f-8ad0-50f3a35211e3.png)
+-click on `Add Action group`
+In edit action give the name as 'bake`,`action provider` as AWS codebuild,`Region` as us-east-1, `Input artifacts` as SourceArtifact,`Project name` as cruddur-backend-flask-bake-image, `Build type` as single build, `OutputArtifact` as ImageDefinition
+![image](https://user-images.githubusercontent.com/125069098/235502244-f544802c-992f-4842-84bf-a2bc4700d7fa.png)
+-Click on `Done` to add the action group to the build.
+![image](https://user-images.githubusercontent.com/125069098/235502480-c1a144fa-756e-4b76-95bf-828a33efaa1a.png)
+- Edit the `deploy`stage in pipeline and edit the `Edit action` in deploy then change the `Input artifacts` to ImageDefinition.
+![image](https://user-images.githubusercontent.com/125069098/235502883-ac3adc70-0e2c-42b5-bd08-0de4383c0b31.png)
+![image](https://user-images.githubusercontent.com/125069098/235503274-fe0b7a8b-659b-424d-a1f0-4815f73102e4.png)
+- To save the changes click on the `Save` button to pipeline.
+![image](https://user-images.githubusercontent.com/125069098/235503502-b8838595-d27b-4d38-8b97-fa1949880c50.png)
+![image](https://user-images.githubusercontent.com/125069098/235503562-bd4bd4d5-f18c-40b1-8b87-9845faf0d952.png)
+![image](https://user-images.githubusercontent.com/125069098/235503630-3ead5715-dcce-47f1-a692-869a1cbeafa4.png)
+- click on the `Release changes` in pipeline
+![image](https://user-images.githubusercontent.com/125069098/235503835-ec725aad-8efb-4d71-ab4e-8bc291a8aabf.png)
+![image](https://user-images.githubusercontent.com/125069098/235506059-34db02e9-8aeb-49ea-b1c9-0529dcdb4fc9.png)
+
+![image](https://user-images.githubusercontent.com/125069098/235506804-cd4fa0bc-9681-4902-be3a-9ab403875369.png)
+
+
+## Test Pipeline
+Update backend-flask/app.py by changing the return in health_check function from return {"success": True}, 200 to return {"success": True, "ver": 1}, 200
+
+Now merge this week-9 branch to the prod branch. This will trigger the pipeline we created.
+
+Go to https://api.<domain_name>/api/health-check, it will show {"success":true,"ver":1}.
+
+- create a `new pull request`.
+![image](https://user-images.githubusercontent.com/125069098/235508971-da905951-532d-45db-9525-d23473b8f783.png)
+![image](https://user-images.githubusercontent.com/125069098/235509118-f2c560d8-d6ce-4d12-9fef-99cee0550518.png)
+![image](https://user-images.githubusercontent.com/125069098/235509172-646a8ed3-1818-4d4c-aa83-77aa01d5fac6.png)
+![image](https://user-images.githubusercontent.com/125069098/235509232-7e83f757-33d8-4c4a-8fd7-4eb9839c03aa.png)
+- check a trigger is made in codebuild.
+![image](https://user-images.githubusercontent.com/125069098/235509364-d328a186-7503-49b3-ad4d-e9e8a2ad0d47.png)
+-check a trigger is made in codepipeline
+![image](https://user-images.githubusercontent.com/125069098/235509667-2f517d02-fda3-4f82-a06d-85792fb1a08f.png)
+![image](https://user-images.githubusercontent.com/125069098/235509742-efb70823-6ed6-4dee-b6a1-a4a6f9fbae70.png)
+-Check in the ECS a new backend flask is deployed 
+![image](https://user-images.githubusercontent.com/125069098/235510037-63103eb4-6ff4-443c-a16e-97a2125a7176.png)
+![image](https://user-images.githubusercontent.com/125069098/235510214-3af455d4-cb8c-41f2-b473-3e8533d7a63a.png)
+- Check bakcend health-check in the browser
+![image](https://user-images.githubusercontent.com/125069098/235511236-062a57af-94d8-4683-b6b0-36ae1f5bcb4e.png)
+![image](https://user-images.githubusercontent.com/125069098/235511547-bc33a69c-b8c6-4784-99bc-126370d92ef5.png)
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
