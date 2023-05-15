@@ -476,6 +476,16 @@ Check the ECS `CrdClusterFargateCluster` and check the health-check
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/19ecbd46-9dad-43bd-8c44-2451818af91f)
 - Open the browser and open the api.madhavi27.xyz/api/health-check
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/4654852a-6fb3-4468-aff2-d286dbbe4b0e)
+
+**Resolution** for 503 service Temporarily  unavailable.
+I haven't  changed the domain name for the `host-header` in cluster `ApiALBListernerRule` `aws/cfn/cluster/template.yaml` 
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/3afa59a3-5f5c-4433-a2de-6be09f5badb1)
+changed the domain name
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/dc21a8e7-1256-4207-98f7-02f0f0aad667)
+
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/11f137af-63dd-4e80-9e81-b77b3c927310)
+
+
 - Test it in gitpod by pinging
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/ab2b93e4-450b-43ab-9bd9-5b7f2c0c8e87)
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/62cd6aaa-c445-4d52-b8f8-afa0f7ec3275)
@@ -484,6 +494,8 @@ Check the ECS `CrdClusterFargateCluster` and check the health-check
 name of the cluster to `CrdClusterFargateCluster`
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/77a1387f-68f8-423d-9192-1eeed40b32cd)
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/e2b253f7-6d31-4398-8015-3b096bbc6ee3)
+
+
 
 ## CFN - Diagramming Service and RDS
 
