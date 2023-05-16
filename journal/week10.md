@@ -744,7 +744,39 @@ It failed for the first time because codestar connection(`CrdCicd-connection`) i
 
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/fa7257b1-d718-4775-8cdf-5b78b4c93c76)
 
+## CFN Static Website Hosting Frontend
+Create a cloudformation stack to create frontend
+  - CloudFront Distribution
+  - S3 Bucket for www.
+  - S3 Bucket for naked domain
+  - Bucket Policy
+-create a config.toml 
+```toml
+[deploy]
+bucket = 'cfn-artifacts-m'
+region = 'us-east-1'
+stack_name = 'CrdFrontend'
 
+[parameters]
+CertificateArn = 'arn:aws:acm:us-east-1:480134889878:certificate/8a62223d-469e-4094-8c9d-bbecb01bba5d'
+WwwBucketName = 'www.madhavi27.xyz'
+RootBucketName = 'madhavi27.xyz'
+HostedZoneId = 'Z06037502PLIZIZKMQMI1'
+```
+- Run to provision the CFN stack resources `./bin/cfn/frontend `
+- Remove the Type A record from the Route53 for the rootdomainname.
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/f00d90bc-cd2e-4cad-9f49-0f969a7f6ac8)
+
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/d5c2553b-7eca-4f6e-88c8-1802792f405d)
+For this we have to block public access for the 
+```yaml
+Reource:
+RootBucket:
+      PublicAccessBlockConfiguration:
+        BlockPublicPolicy: false
+ ```       
+ ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/c9aeed4f-bc18-46d4-bbed-c8fc2f398486)
+       
  
  
 
