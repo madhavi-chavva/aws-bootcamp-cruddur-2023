@@ -74,8 +74,8 @@ Resources:
     Properties:
       DistributionConfig:
         Aliases:
-          - cruddur.com
-          - www.cruddur.com
+          - madhavi27.xyz
+          - www.madhavi27.xyz
         Comment: Frontend React Js for Cruddur
         Enabled: true
         HttpVersion: http2and3 

@@ -4,6 +4,6 @@ region = 'us-east-1'
 stack_name = 'CrdFrontend'
 
 [parameters]
-CertificateArn = 'arn:aws:acm:us-east-1:480134889878:certificate/e3c0672a-3150-4007-a8a5-ad0dfe7a2f8d'
+CertificateArn = 'arn:aws:acm:us-east-1:480134889878:certificate/8a62223d-469e-4094-8c9d-bbecb01bba5d'
 WwwBucketName = 'www.madhavi27.xyz'
 RootBucketName = 'madhavi27.xyz'
