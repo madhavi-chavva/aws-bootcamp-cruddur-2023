@@ -1,0 +1,9 @@
+[deploy]
+bucket = 'cfn-artifacts-m'
+region = 'us-east-1'
+stack_name = 'CrdFrontend'
+
+[parameters]
+CertificateArn = 'arn:aws:acm:us-east-1:480134889878:certificate/e3c0672a-3150-4007-a8a5-ad0dfe7a2f8d'
+WwwBucketName = 'www.madhavi27.xyz'
+RootBucketName = 'madhavi27.xyz'
