@@ -776,6 +776,12 @@ RootBucket:
         BlockPublicPolicy: false
  ```       
  ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/c9aeed4f-bc18-46d4-bbed-c8fc2f398486)
+ 
+ I forgot to change the cruddur.com , www.cruddur.com in the  Distribution: resource of frontend
+/template.yaml I changed and reprovision again this time I got different error.
+
+ ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/bc7c5419-2a6d-445b-a124-fa5098fdaa88)
+
        
  
  
