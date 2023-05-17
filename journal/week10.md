@@ -794,7 +794,8 @@ RootBucket:
  ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/2a4bd025-d66d-4700-827e-13d35dc66140)
  
  ## CFN Diagramming Static Frontend
- ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/eb322bea-36de-491f-a296-8c29aedabce9)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/089f966b-d7f7-4c70-aa7e-1828c20dfa8a)
+
 
 
 
