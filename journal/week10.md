@@ -785,6 +785,15 @@ RootBucket:
 /template.yaml I changed and reprovision again this time I got different error.
 
  ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/bc7c5419-2a6d-445b-a124-fa5098fdaa88)
+ 
+ To resolve this issue we have to edit the `HostedZoneId: Z2FDTNDATAQYW2` for both the WwwBucketDomain and RootBucketDomain
+ 
+ ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/b6cdea3f-4997-4bbb-9e6b-ddafe1c69b99)
+
+ ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/51d7a3bb-049e-48af-a904-af5f78066ee1)
+
+ ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/2a4bd025-d66d-4700-827e-13d35dc66140)
+
 
        
  
