@@ -869,6 +869,160 @@ File.write(filename, content)
 - Test the frontend app has picked up the changes in the browser madhavi27.xyz
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/a8087f29-1579-48d3-bbf3-4906925237f8)
 
+**Github actions to build and deploy the sync**
+- Create a new folder under the root .github/workflows and create a new file sync.yml(`.github/workflows/sync.yaml`)
+```yaml
+name: Sync-Prod-Frontend
+
+on:
+  push:
+    branches: [ prod ]
+  pull_request:
+    branches: [ prod ]
+
+jobs:
+  build:
+    name: Statically Build Files
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ 18.x]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: cd frontend-react-js
+      - run: npm ci
+      - run: npm run build
+  deploy:
+    name: Sync Static Build to S3 Bucket
+    runs-on: ubuntu-latest
+    # These permissions are needed to interact with GitHub's OIDC Token endpoint.
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Configure AWS credentials from Test account
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::387543059434:role/CrdSyncRole-Role-1N0SLA7KGVS8E
+          aws-region: ca-central-1
+      - uses: actions/checkout@v3
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@ec02537da5712d66d4d50a0f33b7eb52773b5ed1
+        with:
+          ruby-version: '3.1'
+      - name: Install dependencies
+        run: bundle install
+      - name: Run tests
+        run: bundle exec rake sync
+```
+- Create a gemfile under `.github`  to install the dependencies like aws_s3_website_sync,dotenv,rake using the command `bundle update --bundler`
+```gem
+source 'https://rubygems.org'
+
+git_source(:github) do |repo_name|
+  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
+  "https://github.com/#{repo_name}.git"
+end
+
+gem 'rake'
+gem 'aws_s3_website_sync', tag: '1.0.1'
+gem 'dotenv', groups: [:development, :test]
+```
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/ddb7c757-6838-4185-bcf6-1a5e8f869534)
+it will generate the gemfile.lock file
+- Create a rake file under the '.github' folder to sync the frontend-react-js files changes into the s3 bucket.
+```ruby
+require 'aws_s3_website_sync'
+require 'dotenv'
+
+task :sync do
+  puts "sync =="
+  AwsS3WebsiteSync::Runner.run(
+    aws_access_key_id:     ENV["AWS_ACCESS_KEY_ID"],
+    aws_secret_access_key: ENV["AWS_SECRET_ACCESS_KEY"],
+    aws_default_region:    ENV["AWS_DEFAULT_REGION"],
+    s3_bucket:             ENV["S3_BUCKET"],
+    distribution_id:       ENV["CLOUDFRONT_DISTRUBTION_ID"],
+    build_dir:             ENV["BUILD_DIR"],
+    output_changset_path:  ENV["OUTPUT_CHANGESET_PATH"],
+    auto_approve:          ENV["AUTO_APPROVE"],
+    silent: "ignore,no_change",
+    ignore_files: [
+      'stylesheets/index',
+      'android-chrome-192x192.png',
+      'android-chrome-256x256.png',
+      'apple-touch-icon-precomposed.png',
+      'apple-touch-icon.png',
+      'site.webmanifest',
+      'error.html',
+      'favicon-16x16.png',
+      'favicon-32x32.png',
+      'favicon.ico',
+      'robots.txt',
+      'safari-pinned-tab.svg'
+    ]
+  )
+end
+```
+- Create a cloudformation stack to create resources IAM role, OIDCProvider in the aws.
+- create a file for the config.toml to pass the parameters.
+- Create a bash script file to provision the changeset stack `aws/cfn/sync/template.yaml`.
+- Run the bash script file `./bin/cfn/sync`
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/0592416f-1dc6-4231-8e0d-dba32ba91719)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/3c76508d-5cd1-439f-a841-6f40b7e2dda0)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/c1162158-9734-474d-aa69-ac38a929b534)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/b1478598-fab7-4c63-b021-658644a0a5aa)
+- In aws console after the role is created add the inline permissions -getobject,putobject,listbucket,deleteobject
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/6ffe5bbe-4230-482b-9dd0-5b7fdda97dbc)
+- Click on `Add Permissions`
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/62d29c09-171c-4633-b45a-582f4ccc9f75)
+-Select `Create inline Policy`
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/3dc05a12-f7ac-41e9-af8c-940be7e952e0)
+  - In service choose s3
+  - In Actions select `GetObject,PutObject,ListBucket,DeleteObject
+  ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/b0533b64-7fbe-4d8f-9fca-de05d066a7d8)
+  - In Resources add the bucket ARN and objects
+  ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/8d4df270-ec3b-4310-8345-11646eb359a0)
+  ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/c70ea30d-3c3a-4885-aa99-c0d260980e13)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/69c6f11a-ed90-4039-b6df-c22944e0eef9)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/ab7ddd35-a617-4d1f-9895-72fac001a5ae)
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "s3:PutObject",
+                "s3:GetObject",
+                "s3:ListBucket",
+                "s3:DeleteObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::madhavi27.xyz",
+                "arn:aws:s3:::madhavi27.xyzI/*"
+            ]
+        }
+    ]
+}
+```
+  - Click on `Review policy` and give a name to the policy 's3AccessForSync` and Click on `Create Policy`
+  ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/4b50fd72-9d7c-4581-a666-1075f32717e5)
+  ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/e18357d1-7aed-4e02-8c6a-6ab860c182f8)
+- Copy and paste the Role ARN `arn:aws:iam::480134889878:role/CrdSyncRole-Role-8AN0R7B0BZFS` in the sync.yaml file which you have created in 
+ `.github/workflows/sync.yaml`
+ Referenced documents:
+ [github actions](https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs)
+ [github_action_configure-aws-credentials](https://github.com/aws-actions/configure-aws-credentials)
+
+
 
 
  
