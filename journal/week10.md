@@ -796,6 +796,87 @@ RootBucket:
  ## CFN Diagramming Static Frontend
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/089f966b-d7f7-4c70-aa7e-1828c20dfa8a)
 
+## Sync tool for static website hosting
+- create a separate static build bash script file to run npm build.
+Run it manually in the frontend-react-js path.
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/14618c71-4d31-4e40-b9e0-219ba0030263)
+correct the warning for some of the file.
+- Rerun the bash script file `bin/frontend/static-build`
+- Once the static build is done zip the content of the build folder and upload into s3 bucket (madhavi.xyz)
+ use the command `zip -r build.zip build/` to zip the contents of the folder build into the folder(frontend-react-js)
+ ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/06ce0988-8745-4b72-8c17-5740f64c7e01)
+- Download the build.zip into your laptop.
+- Upload the files into your `s3 bucket (madhavi27.xyz which is public)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/bd152098-7993-4f45-966c-739deb24487d)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/d03a019a-f8c6-4c15-afb1-3361c2f1ea0a)
+- Click to upload to s3.
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/4c3c4dfe-62fd-41d9-b79c-d85a811db0c4)
+- Open the browser and open `madhavi27.xyz`
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/a8cfe341-8821-464e-a545-519b62215843)
+Now it is showing us the web application.
+**Install the sync tool to sync the changes in the s3 bucket.**
+- Create new bash script file in bin/frontend/sync
+- Install the aws_s3_website_sync using the command `gem install aws_s3_website_sync` to install the package aws_s3_website_sync 
+  which we use in the bash script above.In your gitpod root folder.
+  ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/4f41b2db-b6b8-4756-8ec8-956b436d4522)
+- create a temp directory and create a file .keep
+  use the command `git add -f temp/.keep`  - to add a file to the gitpod repo
+  ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/13751fb4-744d-4364-8074-6238013e0938)
+
+- create a file for sync-env to specify the evn vars in folder erb `erb/sync.env.erb` for the bash script file `bin/frontend/sync`
+```ruby
+SYNC_S3_BUCKET=madhavi27.xyz
+SYNC_CLOUDFRONT_DISTRUBTION_ID=<cloudfront ID>
+SYNC_BUILD_DIR=<%= ENV['THEIA_WORKSPACE_ROOT'] %>/frontend-react-js/build
+SYNC_OUTPUT_CHANGESET_PATH=<%=  ENV['THEIA_WORKSPACE_ROOT'] %>/tmp/sync-changeset.json 
+SYNC_AUTO_APPROVE=false
+```
+- modify the bash script file `bin/frontend/generate-env` to generate the env var for both the files frontend-react-js.env.erb and sync.env.erb
+```sh
+#!/usr/bin/env ruby
+
+require 'erb'
+
+template = File.read 'erb/frontend-react-js.env.erb'
+content = ERB.new(template).result(binding)
+filename = "frontend-react-js.env"
+File.write(filename, content)
+
+template = File.read 'erb/sync.env.erb'
+content = ERB.new(template).result(binding)
+filename = "sync.env"
+File.write(filename, content)
+```
+- Generate the both the env files for frontend-react-js. using command `./bin/frontend/generate-env`
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/b8118686-1f92-4149-a919-09ac95e456b7)
+- install package dotenv to upload the env files. 'gem install dotenv`
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/50764a26-6773-42cf-b656-ea807a160297)
+-Run the sync bash script file '././bin/frontend/sync`
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/935f6349-c0eb-4485-bc91-8d0e7dbd5e1d)
+
+**To Test the sync tool**
+- Do a change to a file in the frontend app file like DesktopSidebar.js.
+- Run the npm install build  by running bash script file `./bin/frontend/static-build` 
+  once it is build.
+  ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/0bed7e7a-8193-4cff-ad31-34b47cb41234)
+
+- run the sync tool ruby script file `./bin/frontend/sync` to test whether it picked up our changes.
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/2064694c-97f8-4f3e-90eb-3d0b9391409a)
+- type yes to apply the plan
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/fc36940c-0966-44c9-a2a8-885d5ce71f06)
+- After the apply it will generate invalidation on the cloudfornt.
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/8cb4deb9-9383-4646-86d3-164b971b6ca9)
+- Test the frontend app has picked up the changes in the browser madhavi27.xyz
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/a8087f29-1579-48d3-bbf3-4906925237f8)
+
+
+
+ 
+
+ 
+
+
+
 
 
 
