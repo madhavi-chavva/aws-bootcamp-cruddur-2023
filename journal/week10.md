@@ -1198,6 +1198,14 @@ Reprovision the service stack cfn by running the script file `./bin/cfn/service`
 when you do the crud it has to work with out errors. 
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/beaf5a44-456c-474f-9493-d6c1e2cbbfaf)
 
+## CICD Pipeline and Create Activity
+signup with another account and create another cognito user and signin with new user and make a crud request.
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/7ff5fda1-7517-47d9-800c-2d458bebc578)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/5b28c79b-f422-4535-8cc1-e3e2540ad555)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/64c0791d-a84e-41d9-a23a-720807f851ac)
+
+
+
 
 
 
