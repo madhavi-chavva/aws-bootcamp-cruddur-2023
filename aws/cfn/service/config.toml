@@ -4,5 +4,5 @@ region = 'us-east-1'
 stack_name = 'CrdSrvBackendFlask'
 
 [parameters]
-EnvFrontendUrl = 'madhavi27.xyz'
-EnvBackendUrl = 'api.madhavi27.xyz'
+EnvFrontendUrl = 'https://madhavi27.xyz'
+EnvBackendUrl = 'https://api.madhavi27.xyz'
