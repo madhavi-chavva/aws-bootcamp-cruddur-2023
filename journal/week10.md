@@ -1157,7 +1157,49 @@ def lambda_handler(event, context):
    ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/2d627ccf-3099-4ff1-ae1c-66d22c7fec7a)
    ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/91abb17b-00a8-4c55-bc79-927e72f25547)
    
+   ## Use CORS for Service
+   -Update the config.toml of the CFN stack aws/cfn/service/config.toml to pass the parameters for the 
    
+   ```toml
+   EnvFrontendUrl = 'https://madhavi27.xyz'
+   EnvBackendUrl = 'https://api.madhavi27.xyz'
+   ```
+   - Also update the bash script file to pass the parameters into the CFN stack service in `bin/cfn/service`
+   ```sh
+   #! /usr/bin/env bash
+set -e # stop the execution of the script if it fails
+
+CFN_PATH="/workspace/aws-bootcamp-cruddur-2023/aws/cfn/service/template.yaml"
+CONFIG_PATH="/workspace/aws-bootcamp-cruddur-2023/aws/cfn/service/config.toml"
+echo $CFN_PATH
+
+cfn-lint $CFN_PATH
+
+BUCKET=$(cfn-toml key deploy.bucket -t $CONFIG_PATH)
+REGION=$(cfn-toml key deploy.region -t $CONFIG_PATH)
+STACK_NAME=$(cfn-toml key deploy.stack_name -t $CONFIG_PATH)
+PARAMETERS=$(cfn-toml params v2 -t $CONFIG_PATH)
+
+aws cloudformation deploy \
+  --stack-name $STACK_NAME \
+  --s3-bucket $BUCKET \
+  --s3-prefix backend-service \
+  --region $REGION \
+  --template-file "$CFN_PATH" \
+  --no-execute-changeset \
+  --tags group=cruddur-backend-flask \
+  --parameter-overrides $PARAMETERS \
+  --capabilities CAPABILITY_NAMED_IAM
+  ```
+Reprovision the service stack cfn by running the script file `./bin/cfn/service`
+
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/fcc329f8-e286-47ca-85fb-56a0415bed0f)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/36f93a29-a4b0-4112-b499-59b0f11a2d97)
+when you do the crud it has to work with out errors. 
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/beaf5a44-456c-474f-9493-d6c1e2cbbfaf)
+
+
+
 
 
    
