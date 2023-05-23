@@ -1021,9 +1021,152 @@ end
  Referenced documents:
  [github actions](https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs)
  [github_action_configure-aws-credentials](https://github.com/aws-actions/configure-aws-credentials)
+ 
+ ## Reconnect Database and Post Confirmation Lambda
+ - Modify the CFN for the CICD to take `serviceName:backend-flask` and  decided not use a cross-stack name.
+ - Provision the CFN cicd by running the bash script file. `./bin/cfn/cicd` once it is done
+ - Provision the CFN-satck service  by running the bash script file `./bin/cfn/service`. Once it is provisioned
+ - Now test it locally.
+   -now change docker-compose.yaml file to point to the `Dockerfile.prod` for the build in service: backend-flask
+   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/444cfb0d-4393-431e-a17f-56dd419d7be7)
+   - Do docker-compose up 
+   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/5cebef6a-2f1f-47f3-83db-301d94e29616)
+   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/7d1775b0-bd00-4545-89b1-9f46ece36332)
+   check the backend-flask `api/activities/home` in the browser
+   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/b2fad7eb-86da-4f60-a65d-0392530bebe6)
+   connect to the database by using the script file `./bin/db/connect
+   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/a4e92052-9c1b-4b8d-a441-683cca50c85a)
+   Now build the backend-flask docker file by the script `./bin/backend/build`
+   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/9e575ce2-9079-4d65-8c8b-f03709e2365a)
+   Now push the image to the ecr.
+   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/20d4d5aa-feee-4823-bdc4-258d31e5eae6)
+   provision the CFN service script run `./bin/cfn/service`
+   then the backend-flask service is up and running 
+   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/df083c80-8afc-462b-80eb-3bfeb041487b)
+   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/5e2762c1-067f-4ac4-93fd-d9c93b79e733)
+   check the backend-flask in the browser.
+   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/7747e3cb-902a-4a12-b671-d97af48ac0a5)
+   check for the env| grep PROD in the gitpod local as it is connected to the older database.
+   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/2cde97a9-25d0-4e65-bb96-56ad906aed16)
+   now change the prod_connectionurl to newer database.
+   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/a606c765-b79b-4be6-8b4c-ef9c0ccb429a)
+   Add an InBound Rule to the rds security group `sg-0073f2378d229a436 - CrdDbRDSSG`
+   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/a9ebc727-f5dc-450c-ae19-09b89a086f99)
+   Run the script to update the gitpod ip address in the security group '`sg-0073f2378d229a436 - CrdDbRDSSG` of rds. `./bin/rds/update-sg-rule` 
+   In order to run the above script we need to export `securitygroup inbound rule` and `securitygroup ID` of the rds. 
+   ```sh
+   export DB_SG_RULE_ID="sgr-0f56b911f67bf1ce6"
+   gp env DB_SG_RULE_ID="sgr-0f56b911f67bf1ce6"
+   ```
+   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/084ee305-6623-41b7-aa54-c1baa84e12e2)
+   
+   ```sh
+   export DB_SG_ID="sg-0073f2378d229a436"
+   gp env DB_SG_ID="sg-0073f2378d229a436"
+   ```
+   export the gitpod ip address by executing curl ifconfig.me
+   ```sh
+   export GITPOD_IP=$(curl ifconfig.me)
+   ```
+   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/7590bae9-75d3-4633-b6da-074ab689cca4)
+   now execute the script `./bin/rds/update-sg-rule`
+   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/27fc8ba9-178c-4d6f-a85f-bcda64a63559)
+   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/6e7220df-b978-467b-95a6-086a2b50ca07)
+   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/15c6891c-459b-47ef-8f66-48555a916df9)
+   Connect to the rds using the script file `./bin/db/connect prod`
+   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/6cd56a50-20d1-48a3-9c7d-cc62fa2d2ab1)
+   Do a schema-load for the prod by running `./bin/db/schema-load prod`
+   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/d834377d-96e8-460c-bebc-3da0bb61a909)
+   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/2551f0a0-866b-4fc6-8877-e54f2bab7f64)
+   Override the connection_url to Prod_connectionurl to run the migrate script.
+   `CONNECTION_URL=$PROD_CONNECTION_URL ./bin/db/migrate`
+   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/b769ceb1-dee4-451c-8630-7dec20406deb)
+   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/d68c9244-5417-4f31-b3a8-003e6b84ec0e)
+   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/8ef6b3e3-4568-409b-9cc2-ff8681ceea14)
+   - Edit the CFN stack frontend to through an error message. and redeploy the cfn stack using script `./bin/cfn/frontend ` 
+   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/9987f7bf-e44f-47b9-a866-560543dfb1a6)
+   **Modify the changes to lambda function `cruddur-post-confirmation` **
+   - Modify the lambda function `cruddur-post-confirmation` to trigger when you signin to the app and changed the connection url in env var from      cruddur-db-instance to cruddur-instance.
+   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/9c63e875-c649-4031-8fc8-c164fd9afb33)
+   - create new security group CognitoLambdaSG it should contain outbound rule with `ALLTRAFFIC` 0.0.0.0/0 but no inbound rule.
+   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/46e771fe-a155-4a2f-b44b-a06cea7ce097)
+   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/369d7f77-9ddf-4480-a768-2132d81ba688)
+   - change lambda `cruddur-post-confirmation`  -> configuration -> vpc change to new vpc and subnets and sg CognitoLambdaSG
+   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/0f5ebfa7-ff8a-465f-8424-3179694f0609)
+   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/09e2bcd4-f149-46e5-b2e8-d61280e864cd)
+   - delete the cognitoUser and signup again
+   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/e3c6da2c-4177-438f-8aab-bf0072872e9e)
+   - But the data is not inserted into the rds. modified the code in lambda function `cur.execute(sql,*params) to cur.execute(sql,params)`.
+   ```py
+   import json
+import psycopg2
+import os
+
+def lambda_handler(event, context):
+    user = event['request']['userAttributes']
+    print('userAttributes')
+    print(user)
+
+    user_display_name  = user['name']
+    user_email         = user['email']
+    user_handle        = user['preferred_username']
+    cognito_user_id    = user['sub']
+    try:
+      print('entered-try')
+      sql = f"""
+         INSERT INTO public.users (
+          display_name, 
+          email,
+          handle, 
+          cognito_user_id
+          ) 
+        VALUES(
+          %(display_name)s,
+          %(email)s,
+          %(handle)s,
+          %(cognito_user_id)s
+        )
+      """
+      print('SQL Statement ----')
+      print(sql)
+      conn = psycopg2.connect(os.getenv('CONNECTION_URL'))
+      cur = conn.cursor()
+      params = {
+        'display_name': user_display_name,
+        'email': user_email,
+        'handle': user_handle,
+        'cognito_user_id': cognito_user_id
+      }
+      cur.execute(sql,params)
+      conn.commit() 
+
+    except (Exception, psycopg2.DatabaseError) as error:
+      print('error:')
+      print(error)
+    finally:
+      if conn is not None:
+          cur.close()
+          conn.close()
+          print('Database connection closed.')
+    return event
+    ```
+   
+   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/cbf58a19-3410-4675-9a17-34f62858ff3b)
+   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/ca2bf82a-c50e-4ec3-a5e2-e0e1bef8cd0b)
+   ### post a crud
+   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/2d627ccf-3099-4ff1-ae1c-66d22c7fec7a)
+   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/91abb17b-00a8-4c55-bc79-927e72f25547)
+   
+   
+
+
+   
 
 
 
+
+
+ 
 
  
 
