@@ -741,6 +741,33 @@ It failed for the first time because codestar connection(`CrdCicd-connection`) i
 - Edit the config.toml with the `GithubRepo = 'madhavi-chavva/aws-bootcamp-cruddur-2023'` 
 then click on the `release changes` then it has to pick the source changes.
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/ce69d427-867b-47ae-876b-4aeeca228156)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/5b628928-cf06-440e-a06a-c386ea6c4b70)
+- codepipeline has failed because of the build name is not correct. correct the build name and reprovision the cfn-stack by 
+ running the script file `./bin/cfn/cicd`
+ ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/e56c2c72-ea2c-45fb-9828-80e8f049022d)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/acd541b1-f5bf-432d-9c1f-db2f12548d4e)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/97bc67bd-2e1c-4ba3-95d5-634bc158b84f)
+Click on `execute changeset` to pick the new changes into the stack
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/d3a969b4-fa08-4c20-8faf-a25d8f7d632d)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/fecbed0e-c1ad-4626-858f-820f3b01c34f)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/77f3af13-97b0-4c6f-897b-438ce1266ea0)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/563e3e32-93ec-40ea-8a4e-464fdafae88e)
+Even after we fix the codebuild name you get with different error 
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/a721a1d9-6790-49bc-bbd5-6bacbb404bbe)
+`arn:aws:sts::480134889878:assumed-role/CrdCicd-CodePipelineRole-1EUN4ZKAS1LOP/1684950776474 is not authorized to perform: codebuild:BatchGetBuilds on resource:`
+Add the permission `codebuild:BatchGetBuilds` in the cfn cicd change set template.yml and reprovision and see it works this time.
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/d1a70868-8d2c-4f68-a988-315dcd572b02)
+click on `release change` to pick the changes to the pipeline
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/f9b48b2c-d4f4-4dd4-ba4c-09a9ec7f4886)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/291a191b-8075-4f0b-acad-0423aa1af521)
+This time it failed with different errors `AccessDenied: Access Denied
+ status code: 403, request id: E5SYNTVCV38YJAG5, host id: 9GdB9hXs/yDZU0dZR+L9S8hkfGbcidN5tvT6J80HVXdzeLsAa/1obJpi5SONB/Qzul/fIqJsAS4= for primary source and source version arn:aws:s3:::codepipeline-cruddur-artifacts-m/CrdCicd-Pipeline-QJ7/Source/PyABmmZ`
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/be865c34-025c-41fa-bf84-5bdb702b87b0)
+Modify the template.yml of cfn stack and the nested codebuild.yml accordingly to access the artifact bucket and policies to access the bucket 
+and reprovision the cfn-stack again by running the script file. Also specify the path of the buildspec.yml file in the backend-flask in the config.toml and  codebuild.yml, template.yml accordingly
+Once the changeset is provisioned goto your codepipeline and release the changes and the pipeline will release the changes.
+This time it ran successfully.
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/8302393e-a7f6-4cf8-9841-484bf41da24b)
 
 ## CFN Diagramming CICD
 
@@ -1203,6 +1230,18 @@ signup with another account and create another cognito user and signin with new 
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/7ff5fda1-7517-47d9-800c-2d458bebc578)
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/5b28c79b-f422-4535-8cc1-e3e2540ad555)
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/64c0791d-a84e-41d9-a23a-720807f851ac)
+
+Test the another cognito user in the development with the local postgres db.
+Make sure the backend service in the docker-compose.yaml file is pointing to Dockerfile of local.
+Run the docker-compose up once it is up and running.
+seed the data into the local db. by running the script `./bin/db/setup`
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/48bf6fec-b81d-4bcb-85d1-c420ae480a4a)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/b792d3dc-acb1-4818-94ca-121af3036d5e)
+Now run the script to update the cognito_user_id './bin/db/update_cognito_user_ids`
+open the forntend app and signin with the new cognito user id and make a message post to crud. if the message post crud is not working make a
+change in the `ActivityForm.js` to pass the bearer token.
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/b0407828-f911-42c9-863e-ee9aa38ec99e)
+
 
 
 
