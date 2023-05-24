@@ -1061,7 +1061,7 @@ end
    ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/7d1775b0-bd00-4545-89b1-9f46ece36332)
    check the backend-flask `api/activities/home` in the browser
    ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/b2fad7eb-86da-4f60-a65d-0392530bebe6)
-   connect to the database by using the script file `./bin/db/connect
+   connect to the database by using the script file `./bin/db/connect`
    ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/a4e92052-9c1b-4b8d-a441-683cca50c85a)
    Now build the backend-flask docker file by the script `./bin/backend/build`
    ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/9e575ce2-9079-4d65-8c8b-f03709e2365a)
