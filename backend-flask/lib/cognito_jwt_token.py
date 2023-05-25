@@ -3,6 +3,7 @@ import requests
 from jose import jwk, jwt
 from jose.exceptions import JOSEError
 from jose.utils import base64url_decode
+from flask import current_app as app
 
 from functools import wraps, partial
 from flask import request, g
@@ -136,7 +137,7 @@ def jwt_required(f=None, on_error=None):
             # unauthenticated request
             app.logger.debug(e)
             if on_error:
-                on_error(e)
+                return on_error(e)
             return {}, 401
         return f(*args, **kwargs)
     return decorated_function    
