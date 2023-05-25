@@ -1242,6 +1242,33 @@ open the forntend app and signin with the new cognito user id and make a message
 change in the `ActivityForm.js` to pass the bearer token.
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/b0407828-f911-42c9-863e-ee9aa38ec99e)
 
+## Refactor JWT to use a decorator
+- Modify the replyform.js to close the reply_popup onclick 
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/3bbed3c0-561d-4762-bcea-a0324b88b947)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/3311f433-b637-4c92-a62d-3afd84078acb)
+
+-create a decorator that will handle JWT verification
+Modify the code in app.py in backend-flask/app.py and backend-flask/lib/cognito_jwt_token.py
+once it is done check the frontend app is working as expected.
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/c6a73fc7-1af7-47dd-87b5-94c53aeb9bc8)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/730ae70b-225d-464b-afe1-54d7ee970c14)
+
+## Refactor app.py
+By creating separate python files for the honeycomb,xray,cloudwatch,cors,rollbar and make sure all the errors are fixed and apps(backend & frontend apps) are working as expected.
+
+## Refactor Flask Routes
+creating separate python files for the routes based on activities, messages, general and users and import the files and load the route in the appy.py.
+Make sure that the frontend and backend should be out of errors and work as expected.
+
+## Impliment Reply is working for the app.
+
+
+
+
+
+
+
+
 
 
 
