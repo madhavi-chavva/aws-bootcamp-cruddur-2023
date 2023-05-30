@@ -1262,6 +1262,28 @@ Make sure that the frontend and backend should be out of errors and work as expe
 
 ## Impliment Reply is working for the app.
 
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/43ec638c-7d12-4afe-8b40-1e1bf44bcf5c)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/7f183106-2bbe-472f-b544-1b88f9581cb2)
+
+unable to post the reply due to mismatch of the type in the field.
+Generate a migration file to change the field `reply_to_activity_uuid` from integer to string in the db schema  by running the script
+`./bin/generate/migration reply_activity_uuid_to_string`
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/5d478b77-79d5-4602-a180-d28495d42deb)
+
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/23d89829-8a53-4fe5-b208-4c807f26089f)
+Run migrate to Alter table with field `reply_to_activity_uuid` to convert type integer to uuid
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/5ee2a8ee-ca49-41b1-b6bf-ae19bf9875d1)
+
+
+
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/1a831548-da8e-43e3-b53d-30d478ded169)
+Run migrate
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/032d156a-f9b0-4a81-8a3b-9be88f267983)
+Make a new crud
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/48c9a83a-245d-4201-88c2-3c85ab6bb317)
+when you refresh the browser the data should be persisted by it didn't
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/4ead8c30-8d29-425d-9d15-c9ff90366885)
+
 
 
 
