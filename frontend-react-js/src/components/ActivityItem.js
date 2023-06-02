@@ -23,7 +23,7 @@ export default function ActivityItem(props) {
   }
 
   return (
-    <div className='acitivty_main'>
+    <div className='activity_item'>
       <ActivityContent activity={props.activity} />
       <div className="activity_actions">
         <ActivityActionReply setReplyActivity={props.setReplyActivity} activity={props.activity} setPopped={props.setPopped} activity_uuid={props.activity.uuid} count={props.activity.replies_count}/>
