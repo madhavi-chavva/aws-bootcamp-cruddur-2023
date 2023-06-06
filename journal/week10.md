@@ -1284,6 +1284,45 @@ Make a new crud
 when you refresh the browser the data should be persisted by it didn't
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/4ead8c30-8d29-425d-9d15-c9ff90366885)
 
+Manually update the activities table to drop the column `reply_to_activity_uuid` and add a cloumn 'reply_to_activity_uuid` as `uuid`
+using the commands.
+```
+ALTER TABLE activities DROP COLUMN reply_to_activity_uuid;
+ALTER TABLE activities ADD COLUMN reply_to_activity_uuid uuid;
+```
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/1efe4bec-d0f9-4598-82d4-4aab1d08a6d8)
+
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/d088809e-4460-422e-a8b8-d4d2bbc4ec75)
+
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/2ca35a3e-edc1-493d-87c4-c35d8d48b18d)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/678870ab-5af4-46c0-a36d-7168666d0f2d)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/bab8d1ac-29ed-4095-9984-3f3e0cbdfd54)
+
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/f1ef7d11-11d4-4eb8-ace6-5b30a067ff38)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/f76c7369-7dfe-4036-b4d2-28ea9a19c2b4)
+
+## Activity Show Page
+Change the display name  and handler from div to links, also change the text docoration and underline for the display name and handler
+in the files 
+ - frontend-react-js/src/components/ActivityContent.js
+ - frontend-react-js/src/components/ActivityContent.css
+
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/1e8092bc-17cd-46f0-82a8-75bde3f4bac8)
+
+Change the repost, share,like and reply to 
+change the behaviour of the reply focus onclick
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/5b9b66b1-c26b-4ad6-868b-f8b46fd623d0)
+
+- frontend-react-js/src/components/ActivityItem.css
+- frontend-react-js/src/components/ActivityItem.js
+- frontend-react-js/src/components/ActivityActionLike.js
+- frontend-react-js/src/components/ActivityActionReply.js
+- frontend-react-js/src/components/ActivityActionRepost.js
+- frontend-react-js/src/components/ActivityActionShare.js
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/065e1da6-1de9-4eeb-aae2-85d3f16a179c)
+
+
+
 
 
 
