@@ -1321,6 +1321,10 @@ change the behaviour of the reply focus onclick
 - frontend-react-js/src/components/ActivityActionShare.js
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/065e1da6-1de9-4eeb-aae2-85d3f16a179c)
 
+## Week- X Cleanup
+Seed other user into the postgres sql. and modify the files accordingly.
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/7bee7584-896a-4ad6-b1d1-3b150d474ba1)
+
 
 
 
