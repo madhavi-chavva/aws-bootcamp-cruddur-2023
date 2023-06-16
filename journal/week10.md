@@ -1322,8 +1322,27 @@ change the behaviour of the reply focus onclick
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/065e1da6-1de9-4eeb-aae2-85d3f16a179c)
 
 ## Week- X Cleanup
+Insert other user values into the seed.sql manually by using the connect to rds script `./bin/db/connect 
+```sql
+INSERT INTO public.activities (user_uuid, message, expires_at)
+VALUES
+  (
+    (SELECT uuid from public.users WHERE users.handle = 'madhu' LIMIT 1),
+    'This was imported as seed data!',
+    current_timestamp + interval '10 day'
+  ),
+  (
+    (SELECT uuid from public.users WHERE users.handle = 'sunrise' LIMIT 1),
+    'I am the other!',
+    current_timestamp + interval '10 day'
+  );
+```
 Seed other user into the postgres sql. and modify the files accordingly.
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/7bee7584-896a-4ad6-b1d1-3b150d474ba1)
+
+Profile page with 2 users
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/2fbc7e63-3bf9-4d7c-85ae-162eb316e35d)
+
 
 
 
