@@ -1,5 +1,6 @@
 import {getAccessToken} from 'lib/CheckAuth';
 
+
 async function request(method,url,payload_data,options){
   //console.log(options)
   if (options.hasOwnProperty('setErrors')){
@@ -30,7 +31,7 @@ async function request(method,url,payload_data,options){
     if (res.status === 200) {
       options.success(data)
     } else {
-      if (setErrors !== null){
+      if (options.setErrors !== null){
         options.setErrors(data)
       }
       console.log(res,data)
