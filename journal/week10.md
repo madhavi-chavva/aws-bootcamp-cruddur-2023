@@ -1349,11 +1349,26 @@ Implement back button on the `frontend-react-js/src/pages/ActivityShowPage.js` a
 Change the background color to black for the profile avatar
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/554cdf1a-c911-4405-a9cb-f8e362694c32)
 
-Make a reply 
+## Make a reply 
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/9f25d790-98f0-4bfa-8cf3-aaccbe528cc9)
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/4dc1f98c-a6d2-49da-9cc0-a678e893df7f)
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/91935ca3-6f73-4256-b2a9-5135f5438132)
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/be5aad89-47c0-4bec-9ead-2d433664b829)
+
+## Build the frontend app using the script `./bin/frontend/static-build`
+If there are any error during the static build fix them.
+- frontend-react-js/src/components/ProfileForm.js
+- frontend-react-js/src/components/MessageForm.js
+- frontend-react-js/src/pages/MessageGroupsPage.js
+- frontend-react-js/src/lib/Requests.js
+- frontend-react-js/src/components/MessageGroupItem.js
+Make sure that the static-build compiled successfully.
+
+## Merge the changes from main to prod to trigger the codepipeline and it has to be completed successfully.
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/98136cb0-72bb-43c3-8852-aeab67fc6793)
+
+
+
 
 
 
