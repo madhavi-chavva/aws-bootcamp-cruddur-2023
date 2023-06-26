@@ -25,7 +25,9 @@ Parameters:
     Default: 5
   BuildSpec:
     Type: String
-    Default: 'buildspec.yaml'        
+    Default: 'buildspec.yaml'
+  ArtifactBucketName:
+    Type: String        
 
 Resources:
   CodeBuild:
@@ -64,6 +66,16 @@ Resources:
         Version: '2012-10-17'
       Path: /
       Policies:
+        - PolicyName: !Sub ${AWS::StackName}S3ArtifactAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Action:
+                - s3:*
+                Effect: Allow
+                Resource:
+                  - !Sub arn:aws:s3:::${ArtifactBucketName}
+                  - !Sub arn:aws:s3:::${ArtifactBucketName}/*
         - PolicyName: !Sub ${AWS::StackName}ECRPolicy
           PolicyDocument:
             Version: '2012-10-17'
@@ -112,4 +124,4 @@ Resources:
 Outputs:
   CodeBuildProjectName:
     Description: "CodeBuildProjectName"
-    Value: !Sub ${AWS::StackName}Project
+    Value: !Ref CodeBuild
