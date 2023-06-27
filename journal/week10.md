@@ -1355,6 +1355,15 @@ Make a reply
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/91935ca3-6f73-4256-b2a9-5135f5438132)
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/be5aad89-47c0-4bec-9ead-2d433664b829)
 
+Build the backend by using new pull request if there are any merge conflicts resolve them. After merge request is confirmed a `codepipeline`
+will be triggered. Make sure that the codepipeline is ran successfully.
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/fc37fdda-f563-4942-8f5a-0e85135c1f2f)
+
+Compile the frontend app by using the script `./bin/frontend/static-build`. you will encounter compilation errors resolve them.
+Once compilation is done. run the script `./bin/frontend/sync` to sync the new changes into the s3 bucket and into the cloudfront.
+
+
+
 
 
 
