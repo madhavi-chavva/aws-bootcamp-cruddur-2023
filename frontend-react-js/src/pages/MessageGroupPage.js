@@ -9,6 +9,7 @@ import MessagesForm from 'components/MessageForm';
 import {get} from 'lib/Requests';
 import {checkAuth} from 'lib/CheckAuth';
 
+
 export default function MessageGroupPage() {
   const [messageGroups, setMessageGroups] = React.useState([]);
   const [messages, setMessages] = React.useState([]);
