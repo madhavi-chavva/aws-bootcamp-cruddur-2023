@@ -6,3 +6,4 @@ stack_name = 'CrdSrvBackendFlask'
 [parameters]
 EnvFrontendUrl = 'https://madhavi27.xyz'
 EnvBackendUrl = 'https://api.madhavi27.xyz'
+DDBMessageTable = 'CrdDdb-DynamoDBTable-6P6A39BV4R9E'

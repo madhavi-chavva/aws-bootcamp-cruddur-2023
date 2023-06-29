@@ -1355,6 +1355,70 @@ Make a reply
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/91935ca3-6f73-4256-b2a9-5135f5438132)
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/be5aad89-47c0-4bec-9ead-2d433664b829)
 
+Build the backend by using new pull request if there are any merge conflicts resolve them. After merge request is confirmed a `codepipeline`
+will be triggered. Make sure that the codepipeline is ran successfully.
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/fc37fdda-f563-4942-8f5a-0e85135c1f2f)
+
+Compile the frontend app by using the script `./bin/frontend/static-build`. you will encounter compilation errors resolve them.
+Once compilation is done. run the script `./bin/frontend/sync` to sync the new changes into the s3 bucket and into the cloudfront.
+when I did a sync for the frontend.
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/1b3b0bf8-4287-4414-ab2a-faee848cfdd3)
+Make sure that these `gem install dotenv and gem install aws_s3_website_sync` are installed before you run the script file sync `./bin/frontend/sync`
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/6de7a0e9-48f2-4b5e-adab-600ad05c403e)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/980bec7e-495a-4047-ab43-d328354f7217)
+
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/8dda215d-8df9-4b24-86a6-d8c9123bb699)
+
+Invalidations
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/a062ab2f-aa41-4af1-9210-dac5c5562a1a)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/90fcbc41-f145-453c-abdd-75e83565814f)
+
+open the browser and enter your domain name like madhavi27.xyz.
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/c20800a3-b2b3-40df-8f72-c04a00b97269)
+
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/b69a931c-4c88-49d5-bec9-eaeb7bdd1f42)
+Make the change to the Dynamodb table name in the cfn service.
+- aws/cfn/service/template.yaml
+- aws/cfn/service/config.toml
+- backend-flask/lib/ddb.py
+- erb/backend-flask.env.erb
+**Provision the `./bin/cfn/service`**
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/30a00ae6-449f-4fc3-a62a-1bddf1f240f4)
+
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/b8f48600-5b80-4e69-9b0d-5d2122635ea3)
+**Backend service is up and running**
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/bedabc03-6b95-4190-9f4c-da328bf24d54)
+**Task-definition with latest changes for DynamoDB table**
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/208f8f33-3e41-4609-9e1e-7e264f5ebe69)
+
+**Create a new pull request from the main to prod.**
+
+**write a cloudformation template to create a user with permissionn to write and read to dynamodb**
+Create a new cfn template to create a new user 
+ - aws/cfn/machine-user/config.toml
+ - aws/cfn/machine-user/template.yaml
+ - bin/cfn/machineuser
+Run the script to create a new IAM machine user.`./bin/cfn/machineuser`
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/d3f2fe23-e0e0-44ec-9b53-17551d32fbe1)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/afe79154-ec26-4f2a-9de0-594819df373c)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
