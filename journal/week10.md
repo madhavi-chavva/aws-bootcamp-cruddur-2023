@@ -1391,8 +1391,6 @@ Make the change to the Dynamodb table name in the cfn service.
 **Task-definition with latest changes for DynamoDB table**
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/208f8f33-3e41-4609-9e1e-7e264f5ebe69)
 
-**Create a new pull request from the main to prod.**
-
 **write a cloudformation template to create a user with permissionn to write and read to dynamodb**
 Create a new cfn template to create a new user 
  - aws/cfn/machine-user/config.toml
@@ -1401,6 +1399,25 @@ Create a new cfn template to create a new user
 Run the script to create a new IAM machine user.`./bin/cfn/machineuser`
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/d3f2fe23-e0e0-44ec-9b53-17551d32fbe1)
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/afe79154-ec26-4f2a-9de0-594819df373c)
+
+Generate the secret credentials for machine user and update them in the `ssm Parameter store` in 
+`/cruddur/backend-flask/AWS_ACCESS_KEY_ID` and `/cruddur/backend-flask/AWS_SECRET_ACCESS_KEY`
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/f4131d8a-fe9d-405b-8f2d-f4e7bd7f0027)
+
+**Create a new pull request from the main to prod.**
+create a new pull request from prod to week-x-again and the pipeline should work successfully.
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/4cb3cf39-78db-4eb3-a6ad-98131931fe4e)
+
+Open a new browser and enter the domain [madhavi27.xyz](https://madhavi27.xyz/)
+Login into alternate user and make a new message
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/6d8980ae-8913-4427-9e83-b9c1d550536b)
+The messages are stored in the dynamoDB(CrdDdb-DynamoDBTable-6P6A39BV4R9E)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/bbfcf198-8e59-4094-8c65-8a1406a76abc)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/f9a89dc0-be58-4d50-9404-f4437ea79cf9)
+
+
+
+
 
 
 
