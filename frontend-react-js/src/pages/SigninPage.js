@@ -12,10 +12,10 @@ export default function SigninPage() {
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [errors, setErrors] = React.useState('');
+  const [errors, setErrors] = React.useState([]);
 
   const onsubmit = async (event) => {
-    setErrors('')
+    setErrors([])
     event.preventDefault();
     Auth.signIn(email, password)
     .then(user => {
@@ -27,7 +27,7 @@ export default function SigninPage() {
       if (error.code === 'UserNotConfirmedException') {
         window.location.href = "/confirm"
       }
-      setErrors(error.message)
+      setErrors([error.message])
     }); 
     return false
   }

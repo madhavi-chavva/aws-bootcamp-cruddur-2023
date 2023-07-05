@@ -36,7 +36,7 @@ class CreateActivity:
       model['errors'] = ['message_blank'] 
     elif len(message) > 280:
       model['errors'] = ['message_exceed_max_chars_1024'] 
-
+    
     if model['errors']:
       model['data'] = {
         'handle':  user_handle,
