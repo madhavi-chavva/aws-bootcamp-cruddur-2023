@@ -1415,6 +1415,49 @@ The messages are stored in the dynamoDB(CrdDdb-DynamoDBTable-6P6A39BV4R9E)
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/bbfcf198-8e59-4094-8c65-8a1406a76abc)
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/f9a89dc0-be58-4d50-9404-f4437ea79cf9)
 
+### Implement the Rollbar for the production
+Modify the code in `backend-flask/lib/rollbar.py' and un comment the code in `backend-flask/routes/general.py` and add environment variable in
+`erb/backend-flask.env.erb'
+```py
+## XXX hack to make request data work with pyrollbar <= 0.16.3
+def _get_flask_request():
+    print("Getting flask request")
+    from flask import request
+    print("request:", request)
+    return request
+rollbar._get_flask_request = _get_flask_request
+
+def _build_request_data(request):
+    return rollbar._build_werkzeug_request_data(request)
+rollbar._build_request_data = _build_request_data
+## XXX end hack
+def init_rollbar(app):
+  rollbar_access_token = os.getenv('ROLLBAR_ACCESS_TOKEN')
+  flask_env = os.getenv('FLASK_ENV')
+  rollbar.init(
+      # access token
+      rollbar_access_token,
+      # environment name
+      'production',
+      flask_env,
+      # server root directory, makes tracebacks prettier
+      root=os.path.dirname(os.path.realpath(__file__)),
+      # flask already sets up logging
+      allow_logging_basic_config=False)
+  # send exceptions from `app` to rollbar, using flask's signal system.
+  got_request_exception.connect(rollbar.contrib.flask.report_exception, app)
+  return rollbar
+```
+- After the code changes are done run the backend build script using `./bin/backend/build`
+- Add the `EnvFlaskEnv` environment variable in the cfn service `aws/cfn/service`
+- Provision the cfn bash script `./bin/cfn/service` to pick the environment variable in the backend service. review the changes and execute changesets. once the backend service is up and running.
+- Goto `Task Definition' of backend-flask and verify the environment variable is picked up or not.
+  ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/8b18ca7f-c73e-43ca-b26c-aae31a0653b4)
+  
+
+
+
+
 
 
 
