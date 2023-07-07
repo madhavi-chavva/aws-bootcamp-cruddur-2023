@@ -1453,6 +1453,42 @@ def init_rollbar(app):
 - Provision the cfn bash script `./bin/cfn/service` to pick the environment variable in the backend service. review the changes and execute changesets. once the backend service is up and running.
 - Goto `Task Definition' of backend-flask and verify the environment variable is picked up or not.
   ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/8b18ca7f-c73e-43ca-b26c-aae31a0653b4)
+
+## Profile picture update was not working[PUT 405 error].
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/058b528c-6f82-40b1-9041-8b13d55ebaac)
+Changes need to be done for the production.
+- change the `"Access-Control-Allow-Origin": ` in `Lambda(cruddurAvatarUpload)` to production url like `"https://madhavi27.xyz"' there shouldn't be any trailing backslash(/) at the end of the url.
+ ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/5def7a5d-28a5-4895-b48a-1242177086ba) 
+- change `bucket(madhavi27-uploaded-avatars)` cors permission
+  ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/7776fe83-e874-4231-ab91-4265bbe29cf1)
+  ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/107d6d8e-1e95-4d73-a508-c6f4762927be)
+- Pass the `gateway_url environment variable(REACT_APP_API_GATEWAY_ENDPOINT_URL)' into the static-build file where we passed all other env vars 
+  to the frontend app.
+  ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/9dd97ba1-fd02-410e-b641-eb38703aa08b)
+- Change the code in the `backend-flask/routes/users.py` from the method from Post to put
+  ```py
+  @app.route("/api/profile/update", methods=['PUT','OPTIONS'])
+  @cross_origin()
+  @jwt_required()
+  def data_update_profile():
+    bio          = request.json.get('bio',None)
+    display_name = request.json.get('display_name',None)
+    model = UpdateProfile.run(
+      cognito_user_id=g.cognito_user_id,
+      bio=bio,
+      display_name=display_name
+    )
+    return model_json(model)
+  ```
+- push the backend changes by using the script `./bin/backend/build and ./bin/backend/push'
+- Goto aws console to ECS and stop the running backend service and while unstill a new service is provisioned and running
+  ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/780675ca-ce72-4347-9a58-51f5e5737be9)
+- Push the frontend changes by running the script './bin/frontend/static-build and ./bin/frontend/sync`
+- go to aws console cloudfront and check a new invalidation has been provisioned.
+  ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/9f862805-162d-48a4-8bd7-0084a7ce9942)
+- Now Go into your browser and launch the app(https://madhavi27.xyz) goto profile and update the avatar. It should work without any issues.
+ ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/47d503dd-e789-4536-9dcc-810b9f443006)
+
   
 
 
