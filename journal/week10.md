@@ -1489,6 +1489,17 @@ Changes need to be done for the production.
 - Now Go into your browser and launch the app(https://madhavi27.xyz) goto profile and update the avatar. It should work without any issues.
  ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/47d503dd-e789-4536-9dcc-810b9f443006)
 
+## I had a issue with the Bio field which is not updating in the Rds.
+With the fix of the profile picture update my bio is also working.
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/a5ed74f4-07f7-4980-9175-5b9153b01b25)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/8ba39cbc-4cbd-44c7-ac9a-1036a04ddd0e)
+
+Login into your prod DB by using the script file `./bin/db/connect prod` check wheather the bio field is updated or not
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/aaef0960-dd7b-4f2c-b9d1-92d2b8a32bbb)
+
+
+
+
   
 
 
