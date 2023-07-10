@@ -1495,7 +1495,7 @@ With the fix of the profile picture update my bio is also working.
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/8ba39cbc-4cbd-44c7-ac9a-1036a04ddd0e)
 
 Login into your prod DB by using the script file `./bin/db/connect prod` check wheather the bio field is updated or not
-![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/aaef0960-dd7b-4f2c-b9d1-92d2b8a32bbb)
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/8d100156-7ea7-440c-8485-ec14cec5113e)
 
 
 
