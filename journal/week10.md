@@ -1497,6 +1497,13 @@ With the fix of the profile picture update my bio is also working.
 Login into your prod DB by using the script file `./bin/db/connect prod` check wheather the bio field is updated or not
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/8d100156-7ea7-440c-8485-ec14cec5113e)
 
+## update the profile avatar of other user.(alternate user or second user)
+- Remove the Hardcoded user handler in the `frontend-react-js/src/components/DesktopNavigation.js`
+- Push the frontend changes by running the script './bin/frontend/static-build and ./bin/frontend/sync`
+- Go to aws console cloudfront and check a new invalidation has been provisioned.
+![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/c3a13d84-6a3d-4eba-a0e5-7737604a7819)
+
+
 
 
 
