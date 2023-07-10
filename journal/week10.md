@@ -1501,6 +1501,7 @@ Login into your prod DB by using the script file `./bin/db/connect prod` check w
 - Remove the Hardcoded user handler in the `frontend-react-js/src/components/DesktopNavigation.js`
 - Push the frontend changes by running the script './bin/frontend/static-build and ./bin/frontend/sync`
 - Go to aws console cloudfront and check a new invalidation has been provisioned.
+- Now Go into your browser and launch the app(https://madhavi27.xyz) goto profile and update the avatar. It should work without any issues.
 ![image](https://github.com/madhavi-chavva/aws-bootcamp-cruddur-2023/assets/125069098/c3a13d84-6a3d-4eba-a0e5-7737604a7819)
 
 
